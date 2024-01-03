@@ -150,7 +150,7 @@ require('lazy').setup({
 
   {
     -- Theme inspired by Atom
-    'ellisonleao/gruvbox.nvim',
+    -- 'ellisonleao/gruvbox.nvim',
     -- 'navarasu/onedark.nvim',
     -- 'folke/tokyonight.nvim',
     -- 'danilo-augusto/vim-afterglow',
@@ -159,13 +159,12 @@ require('lazy').setup({
     -- 'jacoborus/tender.vim',
     -- 'bluz71/vim-nightfly-colors',
     -- 'savq/melange-nvim',
+    -- 'NLKNguyen/papercolor-theme',
+    'Shatur/neovim-ayu',
     priority = 1000,
     config = function()
-      require('gruvbox').setup({
-        constrast = 'hard',
-      })
       vim.o.background = 'dark'
-      vim.cmd.colorscheme 'gruvbox'
+      vim.cmd.colorscheme 'ayu'
     end,
   },
 
@@ -176,7 +175,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'gruvbox',
+        theme = 'ayu',
         component_separators = '|',
         section_separators = '',
       },
