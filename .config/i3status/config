@@ -1,0 +1,28 @@
+general {
+	colors = true
+}
+
+order += "volume master"
+order += "time"
+
+run_watch DHCP {
+	pidfile = "/var/run/dhclient*.pid"
+}
+
+disk "/" { 
+	format = "%free"
+}
+
+memory {
+	format = "%free"
+}
+
+time {
+	format = "󰃭 %d %B %Y -  %H:%M %Z"
+}
+
+volume master {
+	format = " %volume"
+	format_muted = " %volume (muted)"
+	device = "pulse"
+}
