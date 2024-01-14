@@ -1,3 +1,0 @@
-return {
-	'MortenStabenau/matlab-vim'
-}
