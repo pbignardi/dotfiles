@@ -17,7 +17,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # oh my posh enabling
-eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/retrobox.json)"
+eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/oneminimal.toml)"
 eval "$(zoxide init zsh)"
 # alias vim to neovim
 alias vim=nvim
