@@ -1,20 +1,18 @@
 return {
 	"nvimtools/none-ls.nvim",
+	enabled = false,
 	config = function()
 		local null_ls = require("null-ls")
 		null_ls.setup({
 			sources = {
-				null_ls.builtins.formatting.stylua,
 				null_ls.builtins.completion.spell,
+				null_ls.builtins.diagnostics.pylint.with({
+					diagnostics_postprocess = function(diagnostic)
+						diagnostic.code = diagnostic.message_id
+					end,
+				}),
+				null_ls.builtins.completion.luasnip,
 			},
-		})
-
-		-- configure to autoformat on save
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			pattern = "*",
-			callback = function()
-				vim.lsp.buf.format()
-			end,
 		})
 	end,
 }

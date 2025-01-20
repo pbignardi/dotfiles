@@ -46,4 +46,4 @@ local nordic = {
 	end,
 }
 
-return nordic
+return onedark
