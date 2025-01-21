@@ -1,8 +1,12 @@
 return {
-	-- Vim Sleuth for tab indent
+	{
+		"libhagwan/fzf-lua",
+		opts = {},
+	},
+	-- show colors
 	{
 		"norcalli/nvim-colorizer.lua",
-		enabled = true,
+		enabled = false,
 		config = function()
 			require("colorizer").setup()
 		end,

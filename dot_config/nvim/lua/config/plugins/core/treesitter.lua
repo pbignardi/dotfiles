@@ -10,7 +10,7 @@ return {
 		configs.setup({
 			modules = {},
 			sync_install = true,
-			ignore_install = {},
+			ignore_install = { "latex" },
 			ensure_installed = {
 				"c",
 				"cpp",

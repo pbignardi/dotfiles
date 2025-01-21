@@ -24,3 +24,6 @@ vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle<CR>", { desc = "Toggle 
 
 -- lsp
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Open Code Actions" })
+
+-- noice
+vim.keymap.set("n", "<leader>qq", vim.cmd.NoiceDismiss, { desc = "Dismiss Noice Notifications" })
