@@ -1,13 +1,7 @@
 return {
 	"lervag/vimtex",
+	lazy = false,
 	config = function()
-		vim.keymap.set(
-			"n",
-			"<leader>lf",
-			vim.cmd.ccl and vim.cmd.VimtexCompileSS,
-			{ desc = "Vimtex single shot compile" }
-		)
-		vim.keymap.set("n", "<leader>lv", vim.cmd.VimtexView, { desc = "Vimtex view compiled PDF" })
 		vim.g.vimtex_view_method = "skim"
 		vim.g.vimtex_view_skim_activate = 1
 		vim.g.vimtex_view_skim_no_select = 1
@@ -24,4 +18,7 @@ return {
 			},
 		}
 	end,
+	keys = {
+		{ "<leader>lf", vim.cmd.ccl and vim.cmd.VimtexCompileSS, desc = "Vimtex: Compile" },
+	},
 }

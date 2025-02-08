@@ -1,6 +1,7 @@
 -- misc
 vim.keymap.set("n", "<leader>x", ":.lua<CR>", { desc = "Run current Lua line" })
-vim.keymap.set("v", "<leader>x", ":lua<CR>", { desc = "Run current Lua selectino" })
+vim.keymap.set("v", "<leader>x", ":lua<CR>", { desc = "Run current Lua selection" })
+vim.keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save file" })
 
 -- buffer
 vim.keymap.set("n", "j", "v:count == 0? 'gj' : 'j'", { expr = true, silent = true })
@@ -18,6 +19,7 @@ local ts_builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>sg", ts_builtin.live_grep, { desc = "Search in the content of files" })
 vim.keymap.set("n", "<leader>sf", ts_builtin.find_files, { desc = "Find file" })
 vim.keymap.set("n", "<leader>/", ts_builtin.buffers, { desc = "Select currently open buffers" })
+vim.keymap.set("n", "<leader>tc", ts_builtin.colorscheme, { desc = "Select currently open buffers" })
 
 -- neotree
 vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle<CR>", { desc = "Toggle file system explorer" })

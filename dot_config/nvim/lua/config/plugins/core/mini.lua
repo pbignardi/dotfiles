@@ -2,9 +2,6 @@ return {
 	"echasnovski/mini.nvim",
 	enabled = true,
 	config = function()
-		-- statusline
-		require("mini.statusline").setup()
-
 		-- ai textobjects
 		require("mini.ai").setup()
 
@@ -31,5 +28,20 @@ return {
 
 		-- surround
 		require("mini.surround").setup()
+
+		-- colors
+		require("mini.colors").setup()
+
+        -- starter
+		require("mini.starter").setup({
+			header = table.concat({
+				[[                          _              ]],
+				[[   ____  ___  ____ _   __(_)___ ___      ]],
+				[[  / __ \/ _ \/ __ \ | / / / __ `__ \     ]],
+				[[ / / / /  __/ /_/ / |/ / / / / / / /     ]],
+				[[/_/ /_/\___/\____/|___/_/_/ /_/ /_/      ]],
+				[[                                         ]],
+			}, '\n'),
+		})
 	end,
 }

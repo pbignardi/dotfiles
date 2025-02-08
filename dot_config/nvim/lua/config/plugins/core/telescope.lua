@@ -10,6 +10,13 @@ return {
 		"nvim-telescope/telescope-ui-select.nvim",
 		opts = {},
 		config = function()
+			require("telescope").setup({
+				pickers = {
+					colorscheme = {
+						enable_preview = true,
+					},
+				},
+			})
 			require("telescope").load_extension("ui-select")
 		end,
 	},

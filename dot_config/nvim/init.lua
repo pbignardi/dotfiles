@@ -1,6 +1,7 @@
 require("config.options")
 require("config.lazy")
 require("config.remaps")
+require("config.colorscheme")
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight yanked text",
