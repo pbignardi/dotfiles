@@ -31,7 +31,7 @@ alias ss='tmss'
 alias sm='tmsm'
 
 # source fzf theme
-source $HOME/.config/fzf/fzf-onedark.conf
+source $HOME/.config/fzf/fzf-hybrid.conf
 
 # setup fzf
 eval "$(fzf --zsh)"
