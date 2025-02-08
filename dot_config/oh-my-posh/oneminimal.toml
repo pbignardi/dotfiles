@@ -20,9 +20,18 @@ final_space = true
     type = 'prompt'
     alignment = 'left'
     newline = true
-    
+
     [[blocks.segments]]
-        template = '<green><i>{{ .UserName }}</i></>@<blue>{{.HostName}}</>'
+        template = ' {{.Venv}}'
+        foreground = 'transparent'
+        background = 'yellow'
+        trailing_diamond = ''
+        leading_diamond = ''
+        type = 'python'
+        style = 'diamond'
+
+    [[blocks.segments]]
+        template = '<blue><i>{{ .UserName }}</i></>@<green>{{.HostName}}</>'
         foreground = 'white'
         background = 'transparent'
         type = 'session'
@@ -31,8 +40,8 @@ final_space = true
     [[blocks.segments]]
         style = 'plain'
         type = 'path'
-        foreground = 'magenta'
-    
+        foreground = 'darkGray'
+
     [[blocks.segments]]
         style = 'plain'
         type = 'text'
