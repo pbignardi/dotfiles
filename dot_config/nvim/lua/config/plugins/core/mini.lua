@@ -2,6 +2,9 @@ return {
 	"echasnovski/mini.nvim",
 	enabled = true,
 	config = function()
+		-- notify
+		require("mini.notify").setup()
+
 		-- ai textobjects
 		require("mini.ai").setup()
 
@@ -32,7 +35,7 @@ return {
 		-- colors
 		require("mini.colors").setup()
 
-        -- starter
+		-- starter
 		require("mini.starter").setup({
 			header = table.concat({
 				[[                          _              ]],
@@ -41,7 +44,7 @@ return {
 				[[ / / / /  __/ /_/ / |/ / / / / / / /     ]],
 				[[/_/ /_/\___/\____/|___/_/_/ /_/ /_/      ]],
 				[[                                         ]],
-			}, '\n'),
+			}, "\n"),
 		})
 	end,
 }
