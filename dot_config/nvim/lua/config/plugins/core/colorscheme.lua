@@ -2,7 +2,7 @@ local onedark = {
 	"navarasu/onedark.nvim",
 	config = function()
 		require("onedark").setup({ style = "darker" })
-		require("onedark").load()
+		-- require("onedark").load()
 	end,
 }
 
@@ -10,7 +10,7 @@ local monokai = {
 	"loctvl842/monokai-pro.nvim",
 	config = function()
 		require("monokai-pro").setup()
-		vim.cmd.colorscheme("monokai-pro")
+		-- vim.cmd.colorscheme("monokai-pro")
 	end,
 }
 
@@ -31,4 +31,4 @@ local vim_hybrid = {
 	end,
 }
 
-return {}
+return { onedark, monokai }
