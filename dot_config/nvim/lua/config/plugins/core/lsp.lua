@@ -1,12 +1,6 @@
 local servers = {
 	gopls = {},
-	ruff = {
-		init_options = {
-			settings = {
-				linelength = 80,
-			},
-		},
-	},
+	pyright = {},
 	lua_ls = {
 		Lua = {
 			workspace = { checkThirdParty = false },
@@ -109,8 +103,7 @@ return {
 	{
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
-			require("mason-lspconfig").setup({
-			})
+			require("mason-lspconfig").setup({})
 		end,
 	},
 }
