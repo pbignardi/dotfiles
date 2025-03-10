@@ -1,0 +1,82 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palette": {
+    "bg": "#282828",
+    "black": "#1d2021",
+    "blue": "#458588",
+    "comment_grey": "#928374",
+    "cyan": "#8ec07c",
+    "green": "#98971a",
+    "magenta": "#cc241d",
+    "mirage_bg": "#32302f",
+    "orange": "#fe8019",
+    "purple": "#b16286",
+    "red": "#fb4934",
+    "visual_grey": "#928374",
+    "white": "#f9f5d7",
+    "yellow": "#fabd2f"
+  },
+  "transient_prompt": {
+    "foreground": "p:comment_grey",
+    "background": "transparent"
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0bc",
+          "template": " \ued1b {{.Venv}} ",
+          "foreground": "p:bg",
+          "background": "p:yellow",
+          "type": "python",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "trailing_diamond": "\ue0b0",
+          "template": " <i>{{ .UserName }}</i><p:white>@</><p:cyan>{{ .HostName }}</> ",
+          "foreground": "p:yellow",
+          "powerline_symbol": "\ue0bc",
+          "background": "p:black",
+          "type": "path",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "mixed_threshold": 1,
+            "style": "agnoster_short"
+          },
+          "template": " {{ .Path }} ",
+          "foreground": "p:yellow",
+          "powerline_symbol": "\ue0b0",
+          "background": "transparent",
+          "type": "path",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "fetch_stash_count": true,
+            "fetch_status": true
+          },
+          "template": " {{ .HEAD }}{{ if .Staging.Changed }}<p:cyan> \uf046 {{ .Staging.String }}</>{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
+          "foreground": "p:comment_grey",
+          "powerline_symbol": "\ue0b0",
+          "background": "transparent",
+          "type": "git",
+          "style": "powerline"
+        }
+      ]
+    }
+  ],
+  "version": 3
+}

@@ -1,0 +1,58 @@
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+version = 3
+final_space = true
+
+[palette]
+    gray = "#666666"
+
+[transient_prompt]
+    template = '{{ .PWD }}> '
+    foreground = "p:gray"
+    background = "transparent"
+
+[upgrade]
+    source = 'cdn'
+    interval = '168h'
+    auto = false
+    notice = false
+
+[[blocks]]
+    type = 'prompt'
+    alignment = 'left'
+    newline = true
+
+    [[blocks.segments]]
+        template = ' {{.Venv}}'
+        foreground = 'transparent'
+        background = 'yellow'
+        trailing_diamond = ''
+        leading_diamond = ''
+        type = 'python'
+        style = 'diamond'
+
+    [[blocks.segments]]
+        template = '<yellow><i>{{ .UserName }}</i></>@<lightBlue>{{.HostName}}</>'
+        foreground = 'white'
+        background = 'transparent'
+        type = 'session'
+        style = 'plain'
+
+    [[blocks.segments]]
+        style = 'plain'
+        type = 'path'
+        foreground = 'darkGray'
+        template = "  {{.Path}}"
+
+        [blocks.segments.properties]
+        style = 'folder'
+
+    [[blocks.segments]]
+        style = 'plain'
+        type = 'git'
+        foreground = 'green'
+
+    [[blocks.segments]]
+        style = 'plain'
+        type = 'text'
+        foreground = 'white'
+        template = '$ '

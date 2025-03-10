@@ -1,0 +1,23 @@
+#!/bin/bash
+
+HOSTFILE="$HOME/.ssh/known_hosts"
+if [ -f $HOSTFILE ]; then
+    selected=$(cat $HOSTFILE | awk -F' ' '{print $1}' | sort -u | fzf)
+else
+    exit 0
+fi
+
+session_name="'[SSH] $selected'"
+echo $session_name
+
+if ! tmux has-session -t=$session_name 2> /dev/null; then
+    tmux new-session -ds $session_name -c $session set foo bar
+fi
+    
+if [[ -z $TMUX ]]; then
+	att_or_switch='attach'
+else
+	att_or_switch='switch-client'
+fi
+
+tmux $att_or_switch -t $session_name
