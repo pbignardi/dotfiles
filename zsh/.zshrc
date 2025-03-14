@@ -2,11 +2,7 @@ export PATH=$PATH:$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # bitwarden ssh agent
-export SSH_AUTH_SOCK=/Users/paolo/.bitwarden-ssh-agent.sock
-
-# setup ZSH PLUGINS
-source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
+# export SSH_AUTH_SOCK=/Users/paolo/.bitwarden-ssh-agent.sock
 
 # ALIASES
 alias ll='ls -l'
@@ -41,14 +37,6 @@ export PATH
 
 # <<< juliaup initialize <<<
 
-#
-# The following lines were added by compinstall
-
-zstyle ':completion:*' completer _complete _ignored _approximate
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' matcher-list ''
-zstyle :compinstall filename '/Users/paolo/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
+# setup ZSH PLUGINS
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
