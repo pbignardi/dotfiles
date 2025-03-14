@@ -5,8 +5,8 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export SSH_AUTH_SOCK=/Users/paolo/.bitwarden-ssh-agent.sock
 
 # setup ZSH PLUGINS
-# source $HOME/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
 
 # ALIASES
 alias ll='ls -l'
@@ -21,18 +21,13 @@ alias egrep='egrep --color=auto'
 alias vim=nvim
 alias ss='tmss'
 alias sm='tmsm'
-# WSL ALIASES
-
-# MAC ALIASES
-
-
 
 # oh my posh enabling
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/oneminimal.toml)"
 eval "$(zoxide init zsh)"
 
 # source fzf theme
-source $HOME/.config/fzf/fzf-jellybeans.conf
+source $HOME/.config/fzf/fzf-moonfly.conf
 
 # setup fzf
 eval "$(fzf --zsh)"
