@@ -1,0 +1,74 @@
+{
+  "version": 2,
+  "palette": {
+    "bg": "#0a0e14",
+    "black": "#01060e",
+    "blue": "#53bdfa",
+    "comment_grey": "#5c6773",
+    "cyan": "#90e1c6",
+    "green": "#91b362",
+    "magenta": "#fae994",
+    "mirage_bg": "#1f2430",
+    "orange": "#ff8f40",
+    "purple": "#d2a6ff",
+    "red": "#ea6c73",
+    "visual_grey": "#607080",
+    "white": "#c7c7c7",
+    "yellow": "#f9af4f"
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "python",
+          "style": "diamond",
+          "trailing_diamond": "",
+          "leading_diamond": "\ue0b6",
+          "template": "  {{.Venv}} ",
+          "background": "p:yellow",
+          "foreground": "p:bg"
+        },
+        {
+          "type": "path",
+          "style": "diamond",
+          "trailing_diamond": "",
+          "powerline_symbol": "",
+          "template": " <i>{{ .UserName }}</i><p:white>@</><p:purple>{{ .HostName }}</> ",
+          "background": "p:mirage_bg",
+          "foreground": "p:blue"
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "template": " {{ .Path }} ",
+          "background": "transparent",
+          "foreground": "p:yellow",
+          "properties": {
+            "mixed_threshold": 1,
+            "style": "agnoster_short"
+          }
+        },
+        {
+          "background": "transparent",
+          "foreground": "p:comment_grey",
+          "powerline_symbol": "",
+          "style": "powerline",
+          "type": "git",
+          "template": " {{ .HEAD }}{{ if .Staging.Changed }}<p:cyan>  {{ .Staging.String }}</>{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "properties": {
+            "fetch_stash_count": true,
+            "fetch_status": true
+          }
+        }
+      ]
+    }
+  ],
+  "transient_prompt": {
+      "background": "transparent",
+      "foreground": "p:comment_grey",
+      "foreground_template": "<p:cyan>\ue691 </>"
+  }
+}
