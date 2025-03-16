@@ -1,8 +1,8 @@
 export PATH=$PATH:$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# bitwarden ssh agent
-# export SSH_AUTH_SOCK=/Users/paolo/.bitwarden-ssh-agent.sock
+autoload -Uz compinit
+compinit
 
 # ALIASES
 alias ll='ls -l'
@@ -27,6 +27,9 @@ source $HOME/.config/fzf/fzf-moonfly.conf
 
 # setup fzf
 eval "$(fzf --zsh)"
+
+# setup bitwarden autocompletion
+eval "$(bw completion --shell zsh); compdef _bw bw;"
 
 # >>> juliaup initialize >>>
 
