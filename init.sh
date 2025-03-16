@@ -5,22 +5,23 @@
 
 set -eou pipefail
 
+source common.sh
+
 LOCALBIN=$HOME/.local/bin
 LOCALSRC=$HOME/.src
 DOTFILES=$HOME/dotfiles
-DATAFILE=./data.json
 USERNAME=pbignardi
 VERSION="0.1.0"
 
-# Log stuff
-GREEN="\033[0;32m"
-GRAY="\033[0;90m"
-RED="\033[0;31m"
-YELLOW="\033[0;33m"
-CYAN="\033[0;36m"
-NC="\033[0m"
-BOLD="\033[1m"
-RESETBOLD="\033[22m"
+common_bundle=("tmux" "neovim" "alacritty" "fzf" "go" "oh-my-posh" "juliaup" "uv" "firefox")
+mac_bundle=(${common_bundle[@]} "skim")
+linux_bundle=(${common_bundle[@]} "zathura")
+
+brew_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "skim")
+dnf_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura")
+pacman_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura")
+zypper_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura")
+apt_pkgs=("tmux" "alacritty" "go" "firefox" "zathura")
 
 function _init_info () {
     STYLE="\033[1;32m"
@@ -40,52 +41,27 @@ function _init_info () {
     echo
 }
 
-function _breakline () {
-    echo -e ""
-}
-
-function _info () {
-    local message=$1
-    echo -e "${CYAN}[init: info]${NC} ${GRAY}$message${NC}"
-}
-
-function _warn () {
-    local message=$1
-    echo -e "${YELLOW}[init: warn]${NC} $message"
-}
-
-function _error () {
-    local message=$1
-    echo -e "${RED}[init: error]${NC} $message"
-}
-
-function _log () {
-    local message=$1
-    echo -e "${GREEN}[init: status]${NC} ${BOLD}$message${RESETBOLD}"
-}
-
 function _get_req () {
     local os=$1
     if [[ $os == "mac" ]]; then
-        cat $DATAFILE | jq -r '.pkgs.req | [.common[], .mac_only[]][]'
+        printf '%s\n' "${mac_bundle[@]}"
     else
-        cat $DATAFILE | jq -r '.pkgs.req | [.common[], .linux_only[]][]'
+        printf '%s\n' "${linux_bundle[@]}"
     fi
 }
 
 function _get_avail () {
     local os=$1
     case "$os" in
-        fedora) local pkg_manager="dnf" ;;
-        opensuse) local pkg_manager="zypper" ;;
-        debian) local pkg_manager="apt" ;;
-        arch) local pkg_manager="pacman" ;;
-        mac) local pkg_manager="brew" ;;
+        fedora) local avail=$(printf '%s\n' "${dnf_pkgs[@]}");;
+        opensuse) local avail=$(printf '%s\n' "${zypper_pkgs[@]}");;
+        debian) local avail=$(printf '%s\n' "${apt_pkgs[@]}");;
+        arch) local avail=$(printf '%s\n' "${pacman_pkgs[@]}");;
+        mac) local avail=$(printf '%s\n' "${brew_pkgs[@]}");;
         *) _error "Unknown distribution: $OS"; exit 1;;
     esac
 
-    local req=$(_get_req $os)
-    local avail=$(cat $DATAFILE | jq -r ".pkgs.prov.${pkg_manager}[]")
+    local req=$(_get_req $OS)
     echo -e "$req\n$avail" | sort | uniq -d
 }
 
@@ -152,7 +128,7 @@ read -p "- Enter your email address: " email
 _breakline
 
 # Install homebrew on Mac
-if [[ $OS == "mac" ]] && ! type brew >/dev/null 2>&1; then
+if [[ $OS == "mac" ]] && ! command -v brew >/dev/null 2>&1; then
     _log "Installing Homebrew"
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     _breakline
@@ -188,7 +164,7 @@ fi
 _breakline
 
 # Install bitwarden cli
-if ! type bw >/dev/null 2>&1; then
+if ! command -v bw >/dev/null 2>&1; then
     _log "Installing Bitwarden CLI"
     cd $LOCALBIN
     if [[ $OS == "mac" ]]; then
@@ -206,16 +182,10 @@ fi
 # Setup bitwarden cli
 bw_session="${BW_SESSION:-}"
 debug="${DEBUG:-}"
-if [[ -z $debug ]] && [[ -z $bw_session ]]; then
+if [[ -z $bw_session ]]; then
     _log "Setting up Bitwarden CLI"
     export BW_SESSION=$(bw login --raw || bw unlock --raw)
     _breakline
-fi
-
-# Ensure data.json is decrypted
-if [[ ! -f $DATAFILE ]]; then
-    _error "Could not retrieve file: $DATAFILE"
-    exit 1
 fi
 
 # Retrieve required packages
@@ -232,7 +202,7 @@ for pkg in $required; do
     esac
 done
 
-# Install package manager packages
+# Install packages via package manager
 case "$OS" in
     opensuse)
         _log "Installing packages with ${CYAN}zypper${NC}"
@@ -261,7 +231,7 @@ case "$OS" in
 esac
 
 # Install source packages
-if ! type nvim >/dev/null 2>&1; then
+if ! command -v nvim >/dev/null 2>&1; then
     _log "Build from source: ${CYAN}neovim${NC}"
 
     _info "Installing neovim dependencies"
@@ -294,6 +264,7 @@ if ! type nvim >/dev/null 2>&1; then
     sudo make install
 fi
 
+
 if ! command fzf --version >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}fzf${NC}"
     if [[ ! -d $LOCALSRC ]]; then
@@ -309,24 +280,25 @@ if ! command fzf --version >/dev/null 2>&1; then
     cp bin/* $LOCALBIN
 fi
 
-if ! type uv >/dev/null 2>&1; then
+if ! command -v uv >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}uv${NC}"
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-if ! type oh-my-posh >/dev/null 2>&1; then
+if ! command -v oh-my-posh >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}oh-my-posh${NC}"
     curl -s https://ohmyposh.dev/install.sh | bash -s
 fi
 
-if ! type juliaup >/dev/null 2>&1; then
+if ! command -v juliaup >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}juliaup${NC}"
     curl -fsSL https://install.julialang.org | sh
 fi
 _breakline
 
 # Install nerd-fonts
-if ! $(fc-list | grep RecMonoLinearNerdFont >/dev/null 2>&1); then
+fontlist=$(fc-list)
+if ! $(echo $fontlist | grep RecMonoLinearNerdFont >/dev/null 2>&1); then
     _log "Install font: Recurcive Nerd Font"
 
     cd $LOCALSRC
@@ -343,7 +315,7 @@ if ! $(fc-list | grep RecMonoLinearNerdFont >/dev/null 2>&1); then
     mv Recursive $HOME/.local/share/fonts/Recursive
 fi
 
-if ! $(fc-list | grep JetBrainsMonoNerdFont >/dev/null 2>&1); then
+if ! $(echo $fontlist | grep JetBrainsMonoNerdFont >/dev/null 2>&1); then
     _log "Install font: JetBrainsMono Nerd Font"
 
     cd $LOCALSRC
@@ -360,42 +332,56 @@ if ! $(fc-list | grep JetBrainsMonoNerdFont >/dev/null 2>&1); then
     mv JetBrainsMono $HOME/.local/share/fonts/JetBrainsMono
 fi
 
+# Change shell to ZSH
+if [[ $SHELL != *"zsh"* ]]; then
+    _log "Changing shell to ZSH"
+    chsh -s $(which zsh) $USER
+    _info "Change will take effect after logout"
+fi
+
 # Setup Github SSH keys
+# currently copy private key from vault. future: use bitwarden ssh-agent, maybe
 if ! ssh -T git@github.com >/dev/null 2>&1 || [[ -z $debug ]]; then
     _log "Setup Github SSH keys and authentication"
 
-    key_id=""
-    read -p "Enter SSH key Bitwarden id: " key_id
-
     if [[ -f $HOME/.ssh/github ]]; then
-        _warn "Deleting existing github key"
-        # mv $HOME/.ssh/github $HOME/.ssh/github.old
-        rm $HOME/.ssh/github
+        _warn "Moving existing ~/.ssh/github key to ~/.ssh/github.old"
+        mv $HOME/.ssh/github $HOME/.ssh/github.old
+    fi
+    if [[ -f $HOME/.ssh/github.pub ]]; then
+        _warn "Moving existing ~/.ssh/github.pub key to ~/.ssh/github.pub.old"
+        mv $HOME/.ssh/github.pub $HOME/.ssh/github.pub.old
     fi
 
-    # retrieve private key from bitwarden vault
-    bw get notes $key_id > $HOME/.ssh/github
-    # set private attributes for private key
+    # use fzf to select the SSH key
+    key_name=$(bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' | fzf --height=20%)
+    # copy private key
+    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.privateKey" > $HOME/.ssh/github
+    # copy public key
+    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.publicKey" > $HOME/.ssh/github.pub
+
+    # set permissions for keys
     chmod 600 $HOME/.ssh/github
+    chmod 644 $HOME/.ssh/github.pub
 
     # Update .ssh/config file
-    echo "Host github.com" >> $HOME/.ssh/config
-    echo -e "\tIdentityFile ~/.ssh/github" >> $HOME/.ssh/config
+    if ! $(cat $HOME/.ssh/config | grep "Host github.com"); then
+        _info "Updating ~/.ssh/config"
+        echo "" >> $HOME/.ssh/config
+        echo "Host github.com" >> $HOME/.ssh/config
+        echo -e "\tIdentityFile ~/.ssh/github" >> $HOME/.ssh/config
+    else
+        _error "Could not update ~/.ssh/config file. Modify it manually before proceding"
+        read -p "Press any key to continue"
+    fi
 fi
+_breakline
 
 # Clone dotfiles repo
-_info "Dotfiles installation"
-read -p "Clone dotfiles into ~/dotfiles? This will erase existing dotfiles (y/N)" yn
-case "$yn" in
-    [yY]*) clone=true;;
-    *) clone=false;;
-esac
-if [[ $clone == true ]]; then
-    if [[ -d $DOTFILES ]] && [[ ! -z $debug ]]; then
-        _warn "~/dotfiles already exists, erasing it now"
-        rm -rf $DOTFILES
-    fi
-    git clone git@github.com:${USERNAME}/github $DOTFILES
-    cd $DOTFILES
-    stow */
-fi
+_log "Stowing dotfiles"
+cd $DOTFILES
+# stow required packages
+for d in $DOTFILES/*/; do
+    _info "Stowing $d"
+    # stow $d
+done
