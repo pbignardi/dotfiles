@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Initialize a new system, automatically.
 # Paolo Bignardi - 2025
@@ -7,20 +7,17 @@ set -eou pipefail
 
 source common.sh
 
-LOCALBIN=$HOME/.local/bin
-LOCALSRC=$HOME/.src
-DOTFILES=$HOME/dotfiles
 USERNAME=pbignardi
 VERSION="0.1.0"
 
-common_bundle=("tmux" "neovim" "alacritty" "fzf" "go" "oh-my-posh" "juliaup" "uv" "firefox")
+common_bundle=("tmux" "neovim" "alacritty" "fzf" "go" "oh-my-posh" "juliaup" "uv" "firefox" "gum")
 mac_bundle=(${common_bundle[@]} "skim")
 linux_bundle=(${common_bundle[@]} "zathura")
 
-brew_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "skim")
-dnf_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura")
-pacman_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura")
-zypper_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura")
+brew_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "skim" "gum")
+dnf_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
+pacman_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
+zypper_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
 apt_pkgs=("tmux" "alacritty" "go" "firefox" "zathura")
 
 function _init_info () {
@@ -50,6 +47,22 @@ function _get_req () {
     fi
 }
 
+function github_authenticated() {
+  # Attempt to ssh to GitHub
+  ssh -T git@github.com &>/dev/null
+  RET=$?
+  if [ $RET == 1 ]; then
+    # user is authenticated, but fails to open a shell with GitHub
+    return 0
+  elif [ $RET == 255 ]; then
+    # user is not authenticated
+    return 1
+  else
+    _error "unknown exit code in attempt to ssh into git@github.com"
+  fi
+  return 2
+}
+
 function _get_avail () {
     local os=$1
     case "$os" in
@@ -58,11 +71,23 @@ function _get_avail () {
         debian) local avail=$(printf '%s\n' "${apt_pkgs[@]}");;
         arch) local avail=$(printf '%s\n' "${pacman_pkgs[@]}");;
         mac) local avail=$(printf '%s\n' "${brew_pkgs[@]}");;
-        *) _error "Unknown distribution: $OS"; exit 1;;
+        *) _error "Unknown distribution: $os"; exit 1;;
     esac
 
-    local req=$(_get_req $OS)
+    local req=$(_get_req $os)
     echo -e "$req\n$avail" | sort | uniq -d
+}
+
+function _get_installed () {
+    local os=$1
+    case "$os" in
+        fedora) ;;
+        opensuse) ;;
+        debian) ;;
+        arch) ;;
+        mac) brew list -1 --full-name;;
+        *) _error "Unknown distribution: $OS"; exit 1;;
+    esac
 }
 
 # Display init.sh info
@@ -103,28 +128,28 @@ export PATH=$LOCALBIN:$PATH
 # Query for personal information
 _log "Enter configuration details"
 # Ask for work/personal alternative
-read -p "- Is this your work computer? (y/N) " yn
+read -p '=> Is this your work computer? (y/N) ' yn
 case $yn in
     [Yy]* ) work=true;;
     * ) work=false;;
 esac
 
 # Ask for WSL
-read -p "- Is this a WSL instance? (y/N) " yn
+read -p '=> Is this a WSL instance? (y/N) ' yn
 case $yn in
     [Yy]* ) wsl=true;;
     * ) wsl=false;;
 esac
 
 # Ask if it is personal laptop
-read -p "- Is this your personal laptop? (y/N) " yn
+read -p '=> Is this your personal laptop? (y/N) ' yn
 case $yn in
     [Yy]* ) personal_laptop=true;;
     * ) personal_laptop=false;;
 esac
 
 # Ask for email address
-read -p "- Enter your email address: " email
+read -p '=> Enter your email address: ' email
 _breakline
 
 # Install homebrew on Mac
@@ -149,8 +174,8 @@ for dep in ${base_deps[@]}; do
     fi
 done
 
+_log "Installing base dependencies"
 if [[ ! -z ${toinst_deps[@]+"${toinst_deps[@]}"} ]]; then
-    _log "Installing base dependencies"
     case "$OS" in
         fedora) sudo dnf -y install ${toinst_deps[@]};;
         debian) sudo apt -y install ${toinst_deps[@]};;
@@ -163,7 +188,14 @@ else
 fi
 _breakline
 
-# Install bitwarden cli
+# Delete Bitwarden if there are updates
+if command -v bw && ! $(bw update | grep "No update available" >/dev/null 2>&1); then
+    _log "Uninstalling old version of Bitwarden CLI"
+    rm $(command -v bw)
+    _breakline
+fi
+
+# Install Bitwarden CLI
 if ! command -v bw >/dev/null 2>&1; then
     _log "Installing Bitwarden CLI"
     cd $LOCALBIN
@@ -179,50 +211,53 @@ if ! command -v bw >/dev/null 2>&1; then
     _breakline
 fi
 
-# Setup bitwarden cli
-bw_session="${BW_SESSION:-}"
-debug="${DEBUG:-}"
-if [[ -z $bw_session ]]; then
+# Setup Bitwarden CLI
+bw_session=${BW_SESSION:-}
+debug=${DEBUG:-}
+if [[ -z $bw_session ]] && [[ -z $debug ]]; then
     _log "Setting up Bitwarden CLI"
     export BW_SESSION=$(bw login --raw || bw unlock --raw)
     _breakline
 fi
 
 # Retrieve required packages
-required=$(echo -n $(_get_req $OS))
-available=$(echo -n $(_get_avail $OS))
-_info "Required packages for $OS: $required"
-_breakline
-
-installable=""
-for pkg in $required; do
-    case "$available" in
-        *$pkg*) installable+="$pkg ";;
-        *) ;;
-    esac
-done
+required=`echo -n $(_get_req $OS)`
+available=`echo -n $(_get_avail $OS)`
 
 # Install packages via package manager
 case "$OS" in
     opensuse)
         _log "Installing packages with ${CYAN}zypper${NC}"
-        sudo zypper in -y $installable
+        _info "Required packages: ${required[@]}"
+        sudo zypper in -y ${available[@]}
+        _breakline
         ;;
     arch)
         _log "Installing packages with ${CYAN}pacman${NC}"
-        sudo pacman -S --noconfirm $installable
+        _info "Required packages: ${required[@]}"
+        sudo pacman -S --noconfirm ${available[@]}
         ;;
     debian)
         _log "Installing packages with ${CYAN}apt${NC}"
-        sudo apt install -y $installable
+        _info "Required packages: ${required[@]}"
+        sudo apt install -y ${available[@]}
         ;;
     fedora)
         _log "Installing packages with ${CYAN}dnf${NC}"
-        sudo dnf install -y $installable
+        _info "Required packages: ${required[@]}"
+        sudo dnf install -y ${available[@]}
         ;;
     mac)
         _log "Installing packages with ${CYAN}brew${NC}"
-        brew install $installable
+        _info "Required packages: ${available[@]}"
+
+        # grep -v -f <(_pkg_list "mac") <(printf '%s\n' "${installable[@]}")
+        if ! grep -v -f <(_get_installed $OS) <(_get_avail $OS); then
+            _info "All required packages are already installed"
+        else
+            to_install=$(grep -v -f <(_get_installed $OS) <(_get_avail $OS))
+            brew install ${available[@]}
+        fi
         ;;
     *)
         _error "Unknown operating system. Aborting"
@@ -294,6 +329,17 @@ if ! command -v juliaup >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}juliaup${NC}"
     curl -fsSL https://install.julialang.org | sh
 fi
+
+if ! command -v gum >/dev/null 2>&1; then
+    _log "Install from build script: ${CYAN}gum${NC}"
+    if [[ $os == "debian" ]]; then
+        sudo mkdir -p /etc/apt/keyrings
+        curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+        sudo apt update && sudo apt install gum
+    fi
+fi
+
 _breakline
 
 # Install nerd-fonts
@@ -341,7 +387,7 @@ fi
 
 # Setup Github SSH keys
 # currently copy private key from vault. future: use bitwarden ssh-agent, maybe
-if ! ssh -T git@github.com >/dev/null 2>&1 || [[ -z $debug ]]; then
+if ! github_authenticated; then
     _log "Setup Github SSH keys and authentication"
 
     if [[ -f $HOME/.ssh/github ]]; then
@@ -353,8 +399,8 @@ if ! ssh -T git@github.com >/dev/null 2>&1 || [[ -z $debug ]]; then
         mv $HOME/.ssh/github.pub $HOME/.ssh/github.pub.old
     fi
 
-    # use fzf to select the SSH key
-    key_name=$(bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' | fzf --height=20%)
+    # use gum to select the SSH key
+    key_name=$(bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' | gum choose --header="Choose SSH key" --cursor.foreground="6" --header.foreground="8")
     # copy private key
     bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.privateKey" > $HOME/.ssh/github
     # copy public key
@@ -365,7 +411,7 @@ if ! ssh -T git@github.com >/dev/null 2>&1 || [[ -z $debug ]]; then
     chmod 644 $HOME/.ssh/github.pub
 
     # Update .ssh/config file
-    if ! $(cat $HOME/.ssh/config | grep "Host github.com"); then
+    if ! $(cat $HOME/.ssh/config >/dev/null 2>&1 | grep "Host github.com"); then
         _info "Updating ~/.ssh/config"
         echo "" >> $HOME/.ssh/config
         echo "Host github.com" >> $HOME/.ssh/config
@@ -377,11 +423,28 @@ if ! ssh -T git@github.com >/dev/null 2>&1 || [[ -z $debug ]]; then
 fi
 _breakline
 
+# If there are changes in the repo, put out a warning and exit
+_log "Cloning dotfiles repository"
+if [[ `git -C $DOTFILES status --porcelain` ]]; then
+    # changes
+    _warn "There are pending changes. ${RED}Exiting${NC}"
+    exit 1
+fi
+
+# Set SSH as URL remote
+if git -C $DOTFILES status; then
+    git -C $DOTFILES remote set-url origin git@github.com:$USERNAME/dotfiles.git
+    git -C $DOTFILES pull --set-upstream origin
+else
+    git clone git@github.com:$USERNAME/dotfiles.git $DOTFILES
+fi
+
 # Clone dotfiles repo
 _log "Stowing dotfiles"
 cd $DOTFILES
 # stow required packages
+# TODO: define packages to stow for each system.
 for d in $DOTFILES/*/; do
     _info "Stowing $d"
-    # stow $d
+    stow $d
 done

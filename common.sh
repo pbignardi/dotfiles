@@ -3,6 +3,10 @@
 # Common functions
 # Paolo Bignardi - 2025
 
+LOCALBIN=$HOME/.local/bin
+LOCALSRC=$HOME/.src
+DOTFILES=$HOME/dotfiles
+
 # Log stuff
 GREEN="\033[0;32m"
 GRAY="\033[0;90m"
@@ -19,20 +23,20 @@ function _breakline () {
 
 function _info () {
     local message=$1
-    echo -e "${CYAN}[init: info]${NC} ${GRAY}$message${NC}"
+    echo -e "${CYAN}[init: info]${NC} ${GRAY}${message}${NC}"
 }
 
 function _warn () {
     local message=$1
-    echo -e "${YELLOW}[init: warn]${NC} $message"
+    echo -e "${YELLOW}[init: warn]${NC} ${message}"
 }
 
 function _error () {
     local message=$1
-    echo -e "${RED}[init: error]${NC} $message"
+    echo -e "${RED}[init: error]${NC} ${message}"
 }
 
 function _log () {
     local message=$1
-    echo -e "${GREEN}[init: status]${NC} ${BOLD}$message${RESETBOLD}"
+    echo -e "${GREEN}[init: status]${NC} ${BOLD}${message}${RESETBOLD}"
 }
