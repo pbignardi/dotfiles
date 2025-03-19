@@ -31,6 +31,10 @@ eval "$(fzf --zsh)"
 # setup bitwarden autocompletion
 eval "$(bw completion --shell zsh); compdef _bw bw;"
 
+# setup pyenv and pyenv-virtualenv
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
 # >>> juliaup initialize >>>
 
 # !! Contents within this block are managed by juliaup !!
