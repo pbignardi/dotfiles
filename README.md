@@ -26,7 +26,7 @@ bash ~/dotfiles/init.sh
 ### Running the script directly
 Using `curl`, just run
 ```sh
-curl <INSERT LINK HERE> | bash
+bash <(curl -Ls https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/main/init.sh)
 ```
 
 > [!CAUTION]
