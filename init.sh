@@ -5,13 +5,11 @@
 
 set -eou pipefail
 
-source common.sh
-
 LOCALBIN=$HOME/.local/bin
 LOCALSRC=$HOME/.src
 DOTFILES=$HOME/dotfiles
 USERNAME=pbignardi
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 common_bundle=("tmux" "neovim" "alacritty" "fzf" "go" "oh-my-posh" "juliaup" "uv" "firefox" "gum" "pyenv")
 mac_bundle=(${common_bundle[@]} "skim")
