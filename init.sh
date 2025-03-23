@@ -11,7 +11,7 @@ DOTFILES=$HOME/dotfiles
 USERNAME=pbignardi
 VERSION="1.0.1"
 
-common_bundle=("tmux" "neovim" "alacritty" "fzf" "oh-my-posh" "juliaup" "uv" "firefox" "gum" "pyenv")
+common_bundle=("tmux" "neovim" "alacritty" "fzf" "oh-my-posh" "juliaup" "uv" "gum" "pyenv")
 mac_bundle=(${common_bundle[@]} "skim")
 linux_bundle=(${common_bundle[@]} "zathura")
 
