@@ -447,8 +447,10 @@ fi
 if git -C $DOTFILES status; then
     git -C $DOTFILES remote set-url origin git@github.com:$USERNAME/dotfiles.git
     git -C $DOTFILES pull --set-upstream origin
+    git -C $DOTFILES submodule update --init --recursive
 else
-    git clone git@github.com:$USERNAME/dotfiles.git $DOTFILES
+    git -C $DOTFILES clone git@github.com:$USERNAME/dotfiles.git $DOTFILES
+    git -C $DOTFILES submodule update --init --recursive
 fi
 
 # Clone dotfiles repo
