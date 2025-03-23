@@ -192,7 +192,7 @@ fi
 _breakline
 
 # Delete Bitwarden if there are updates
-if command -v bw && ! $(bw update | grep "No update available" >/dev/null 2>&1); then
+if command -v bw >/dev/null 2>&1 && ! $(bw update | grep "No update available" >/dev/null 2>&1); then
     _log "Uninstalling old version of Bitwarden CLI"
     rm $(command -v bw)
     _breakline
@@ -386,13 +386,15 @@ if [[ $SHELL != *"zsh"* ]]; then
     _log "Changing shell to ZSH"
     chsh -s $(which zsh) $USER
     _info "Change will take effect after logout"
+    _breakline
 fi
 
 # Setup Github SSH keys
 # currently copy private key from vault. future: use bitwarden ssh-agent, maybe
-if ! github_authenticated; then
-    _log "Setup Github SSH keys and authentication"
-
+_log "Setup Github SSH keys and authentication"
+if github_authenticated; then
+    _info "SSH to Github already working"
+else
     if [[ -f $HOME/.ssh/github ]]; then
         _warn "Moving existing ~/.ssh/github key to ~/.ssh/github.old"
         mv $HOME/.ssh/github $HOME/.ssh/github.old
