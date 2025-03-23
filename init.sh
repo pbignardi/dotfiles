@@ -149,7 +149,10 @@ case $yn in
 esac
 
 # Ask for email address
-read -p '=> Enter your email address: ' email
+read -p '=> Enter email address: ' email
+
+# Ask for name
+read -p '=> Enter user name: ' name
 _breakline
 
 # Install homebrew on Mac
@@ -421,6 +424,13 @@ if ! github_authenticated; then
         read -p "Press any key to continue"
     fi
 fi
+_breakline
+
+# Setting gitconfig global options
+_log "Setting .gitconfig file"
+git config --global user.name "$name"
+git config --global user.email "$email"
+git config --global core.editor "nvim"
 _breakline
 
 # If there are changes in the repo, put out a warning and exit
