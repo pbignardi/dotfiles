@@ -11,22 +11,15 @@ Well there are some good ones, but I feel like they are mostly overkill for what
 After having tried `chezmoi` I figured it was probably easier to maintain a simple script with all the steps I need to perform to setup a new computer with the software and configuration I need.
 
 ## Bootstrap
-There are two possible way to automatically setup the dotfiles onto a new computer: cloning the repository or downloading and running the `init.sh` script.
+To automatically setup a new system, clone the repository and run the `init.sh` script with `bash`.
 
-### Cloning the repository
-If `git` is already installed on the system, just clone the repo
+Clone the repo
 ```sh
 git clone https://github.com/pbignardi/dotfiles $HOME/dotfiles
 ```
-After this, run the setup script with
+and run the setup script with
 ```sh
 bash ~/dotfiles/init.sh
-```
-
-### Running the script directly
-Using `curl`, just run
-```sh
-bash <(curl -Ls https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/main/init.sh)
 ```
 
 > [!CAUTION]
