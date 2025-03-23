@@ -345,7 +345,7 @@ if ! command fzf --version >/dev/null 2>&1; then
     fi
 
     git clone --depth 1 https://github.com/junegunn/fzf.git $LOCALSRC/fzf
-    cd $LOCALSRC/fzf/install --bin
+    $LOCALSRC/fzf/install --bin
 
     if [[ ! -d $LOCALBIN ]]; then
         mkdir -p $LOCALBIN
