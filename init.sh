@@ -13,7 +13,7 @@ DOTFILES=$HOME/dotfiles
 USERNAME=pbignardi
 VERSION="1.0.0"
 
-common_bundle=("tmux" "neovim" "alacritty" "fzf" "go" "oh-my-posh" "juliaup" "uv" "firefox" "gum")
+common_bundle=("tmux" "neovim" "alacritty" "fzf" "go" "oh-my-posh" "juliaup" "uv" "firefox" "gum" "pyenv")
 mac_bundle=(${common_bundle[@]} "skim")
 linux_bundle=(${common_bundle[@]} "zathura")
 
@@ -358,6 +358,11 @@ fi
 if ! command -v uv >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}uv${NC}"
     curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
+if command -v pyenv >/dev/null 2>&1; then
+    _log "Install from build script: ${CYAN}pyenv${NC}"
+    curl -fsSL https://pyenv.run | bash
 fi
 
 if ! command -v oh-my-posh >/dev/null 2>&1; then
