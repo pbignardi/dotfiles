@@ -156,7 +156,7 @@ _info "Identified OS: $OS"
 
 # Configure PATH
 if [[ ! -d $LOCALBIN ]]; then
-    mkdir $LOCALBIN
+    mkdir -p $LOCALBIN
 fi
 export PATH=$LOCALBIN:$PATH
 
@@ -325,7 +325,7 @@ if ! command -v nvim >/dev/null 2>&1; then
     # clone into
     _info "Cloning neovim into $LOCALSRC"
     if [[ ! -d $LOCALSRC ]]; then
-        mkdir $LOCALSRC
+        mkdir -p $LOCALSRC
     fi
     git clone https://github.com/neovim/neovim
     cd neovim
@@ -341,14 +341,14 @@ fi
 if ! command fzf --version >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}fzf${NC}"
     if [[ ! -d $LOCALSRC ]]; then
-        mkdir $LOCALSRC
+        mkdir -p $LOCALSRC
     fi
 
     git clone --depth 1 https://github.com/junegunn/fzf.git $LOCALSRC/fzf
     cd $LOCALSRC/fzf/install --bin
 
     if [[ ! -d $LOCALBIN ]]; then
-        mkdir $LOCALBIN
+        mkdir -p $LOCALBIN
     fi
     cp bin/* $LOCALBIN
 fi
@@ -395,7 +395,7 @@ if ! $(echo $fontlist | grep RecMonoLinearNerdFont >/dev/null 2>&1); then
     unzip -d Recursive Recursive.zip
 
     if [[ ! -d $HOME/.local/share/fonts ]]; then
-        mkdir $HOME/.local/share/fonts
+        mkdir -p $HOME/.local/share/fonts
     fi
     if [[ -d $HOME/.local/share/fonts/Recursive ]]; then
         _warn "Deleting $HOME/.local/share/fonts/Recursive"
@@ -412,7 +412,7 @@ if ! $(echo $fontlist | grep JetBrainsMonoNerdFont >/dev/null 2>&1); then
     unzip -d JetBrainsMono JetBrainsMono.zip
 
     if [[ ! -d $HOME/.local/share/fonts ]]; then
-        mkdir $HOME/.local/share/fonts
+        mkdir -p $HOME/.local/share/fonts
     fi
     if [[ -d $HOME/.local/share/fonts/JetBrainsMono ]]; then
         _warn "Deleting $HOME/.local/share/fonts/JetBrainsMono"
