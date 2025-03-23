@@ -350,7 +350,9 @@ if ! command fzf --version >/dev/null 2>&1; then
     if [[ ! -d $LOCALBIN ]]; then
         mkdir -p $LOCALBIN
     fi
-    cp bin/* $LOCALBIN
+    for f in $(ls bin); do
+        cp bin/$f $LOCALBIN
+    done
 fi
 
 if ! command -v uv >/dev/null 2>&1; then
