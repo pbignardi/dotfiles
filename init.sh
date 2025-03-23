@@ -7,8 +7,11 @@ set -eou pipefail
 
 source common.sh
 
+LOCALBIN=$HOME/.local/bin
+LOCALSRC=$HOME/.src
+DOTFILES=$HOME/dotfiles
 USERNAME=pbignardi
-VERSION="0.1.0"
+VERSION="1.0.0"
 
 common_bundle=("tmux" "neovim" "alacritty" "fzf" "go" "oh-my-posh" "juliaup" "uv" "firefox" "gum")
 mac_bundle=(${common_bundle[@]} "skim")
@@ -19,6 +22,40 @@ dnf_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
 pacman_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
 zypper_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
 apt_pkgs=("tmux" "alacritty" "go" "firefox" "zathura")
+
+# Log stuff
+GREEN="\033[0;32m"
+GRAY="\033[0;90m"
+RED="\033[0;31m"
+YELLOW="\033[0;33m"
+CYAN="\033[0;36m"
+NC="\033[0m"
+BOLD="\033[1m"
+RESETBOLD="\033[22m"
+
+function _breakline () {
+    echo -e ""
+}
+
+function _info () {
+    local message=$1
+    echo -e "${CYAN}[init: info]${NC} ${GRAY}${message}${NC}"
+}
+
+function _warn () {
+    local message=$1
+    echo -e "${YELLOW}[init: warn]${NC} ${message}"
+}
+
+function _error () {
+    local message=$1
+    echo -e "${RED}[init: error]${NC} ${message}"
+}
+
+function _log () {
+    local message=$1
+    echo -e "${GREEN}[init: status]${NC} ${BOLD}${message}${RESETBOLD}"
+}
 
 function _init_info () {
     STYLE="\033[1;32m"
