@@ -1,5 +1,6 @@
-# My *own* dotfiles
-**This is still a work-in-progress, and as such should be treated**
+# My *own* dotfiles 🏡
+>[!WARNING]
+> This is still a work-in-progress, use with caution.
 
 How I store my dotfiles and automate the setup.
 The setup is based on `stow` to manage the configuation files
@@ -28,7 +29,7 @@ Using `curl`, just run
 curl <INSERT LINK HERE> | bash
 ```
 
-> [!IMPORTANT]
+> [!CAUTION]
 > The `init.sh` assumes a bare system, where almost nothing is installed.
 > If you are running it not on a new system, **make sure to backup all your data before proceeding**.
 
