@@ -48,3 +48,13 @@ The `init.sh` script performs the following actions:
 - Setting `~/.gitconfig` file.
 - Set SSH remote to dotfiles repo.
 - Clone and `stow` dotfiles.
+
+## Future development
+- [ ] Modularize `init.sh` script
+    - [ ] `common.sh` for common features
+    - [ ] `setup_ssh.sh` for setting up SSH
+    - [ ] `install_pkgs.sh` for installing required packages
+    - [ ] `install_fonts.sh` for installing the fonts
+    - [ ] `stow_dotfiles.sh` to symlink all required dotfiles
+- [ ] JSON file for package and stow packages specification
+- [ ] Create `curl`-able (or `wget`-able) script.
