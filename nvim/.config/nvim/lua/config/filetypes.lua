@@ -10,3 +10,11 @@ vim.filetype.add({
         ["helmfile.*%.ya?ml"] = "helm",
     },
 })
+
+-- gams filetype
+vim.filetype.add({
+    extension = {
+        gms = 'gams',
+    }
+})
+

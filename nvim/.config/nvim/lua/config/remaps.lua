@@ -11,8 +11,7 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 vim.keymap.set("n", "<leader>ts", require("mini.trailspace").trim, { desc = "Trim trailing spaces" })
 
 -- files
-vim.keymap.set("n", "<leader>f", require("oil").open, { desc = "Open file explorer" })
-vim.keymap.set("n", "<leader>pv", vim.cmd.Vex, { desc = "Open file explorer in vertical split" })
+vim.keymap.set("n", "<leader>f", require("oil").toggle_float, { desc = "Open file explorer" })
 
 -- telescope
 local ts_builtin = require("telescope.builtin")
