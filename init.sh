@@ -5,11 +5,7 @@
 
 set -eou pipefail
 
-LOCALBIN=$HOME/.local/bin
-LOCALSRC=$HOME/.src
-DOTFILES=$HOME/dotfiles
-USERNAME=pbignardi
-VERSION="1.0.1"
+source common.sh
 
 common_bundle=("tmux" "neovim" "alacritty" "fzf" "oh-my-posh" "juliaup" "uv" "gum" "pyenv")
 mac_bundle=(${common_bundle[@]} "skim")
@@ -20,40 +16,6 @@ dnf_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
 pacman_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
 zypper_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
 apt_pkgs=("tmux" "alacritty" "go" "firefox" "zathura")
-
-# Log stuff
-GREEN="\033[0;32m"
-GRAY="\033[0;90m"
-RED="\033[0;31m"
-YELLOW="\033[0;33m"
-CYAN="\033[0;36m"
-NC="\033[0m"
-BOLD="\033[1m"
-RESETBOLD="\033[22m"
-
-function _breakline () {
-    echo -e ""
-}
-
-function _info () {
-    local message=$1
-    echo -e "${CYAN}[init: info]${NC} ${GRAY}${message}${NC}"
-}
-
-function _warn () {
-    local message=$1
-    echo -e "${YELLOW}[init: warn]${NC} ${message}"
-}
-
-function _error () {
-    local message=$1
-    echo -e "${RED}[init: error]${NC} ${message}"
-}
-
-function _log () {
-    local message=$1
-    echo -e "${GREEN}[init: status]${NC} ${BOLD}${message}${RESETBOLD}"
-}
 
 function _init_info () {
     STYLE="\033[1;32m"
@@ -80,22 +42,6 @@ function _get_req () {
     else
         printf '%s\n' "${linux_bundle[@]}"
     fi
-}
-
-function github_authenticated() {
-  # Attempt to ssh to GitHub
-  ssh -T git@github.com &>/dev/null
-  RET=$?
-  if [ $RET == 1 ]; then
-    # user is authenticated, but fails to open a shell with GitHub
-    return 0
-  elif [ $RET == 255 ]; then
-    # user is not authenticated
-    return 1
-  else
-    _error "unknown exit code in attempt to ssh into git@github.com"
-  fi
-  return 2
 }
 
 function _get_avail () {
@@ -387,41 +333,8 @@ fi
 
 _breakline
 
-# Install nerd-fonts
-fontlist=$(fc-list)
-if ! $(echo $fontlist | grep RecMonoLinearNerdFont >/dev/null 2>&1); then
-    _log "Install font: Recurcive Nerd Font"
-
-    cd $LOCALSRC
-    wget -q --show-progress "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Recursive.zip"
-    unzip -d Recursive Recursive.zip
-
-    if [[ ! -d $HOME/.local/share/fonts ]]; then
-        mkdir -p $HOME/.local/share/fonts
-    fi
-    if [[ -d $HOME/.local/share/fonts/Recursive ]]; then
-        _warn "Deleting $HOME/.local/share/fonts/Recursive"
-        rm -rf $HOME/.local/share/fonts/Recursive
-    fi
-    mv Recursive $HOME/.local/share/fonts/Recursive
-fi
-
-if ! $(echo $fontlist | grep JetBrainsMonoNerdFont >/dev/null 2>&1); then
-    _log "Install font: JetBrainsMono Nerd Font"
-
-    cd $LOCALSRC
-    wget -q --show-progress "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
-    unzip -d JetBrainsMono JetBrainsMono.zip
-
-    if [[ ! -d $HOME/.local/share/fonts ]]; then
-        mkdir -p $HOME/.local/share/fonts
-    fi
-    if [[ -d $HOME/.local/share/fonts/JetBrainsMono ]]; then
-        _warn "Deleting $HOME/.local/share/fonts/JetBrainsMono"
-        rm -rf $HOME/.local/share/fonts/JetBrainsMono
-    fi
-    mv JetBrainsMono $HOME/.local/share/fonts/JetBrainsMono
-fi
+# Install NerdFonts
+. install_fonts.sh
 
 # Change shell to ZSH
 if [[ $SHELL != *"zsh"* ]]; then
@@ -431,44 +344,8 @@ if [[ $SHELL != *"zsh"* ]]; then
     _breakline
 fi
 
-# Setup Github SSH keys
-# currently copy private key from vault. future: use bitwarden ssh-agent, maybe
-_log "Setup Github SSH keys and authentication"
-if github_authenticated; then
-    _info "SSH to Github already working"
-else
-    if [[ -f $HOME/.ssh/github ]]; then
-        _warn "Moving existing ~/.ssh/github key to ~/.ssh/github.old"
-        mv $HOME/.ssh/github $HOME/.ssh/github.old
-    fi
-    if [[ -f $HOME/.ssh/github.pub ]]; then
-        _warn "Moving existing ~/.ssh/github.pub key to ~/.ssh/github.pub.old"
-        mv $HOME/.ssh/github.pub $HOME/.ssh/github.pub.old
-    fi
-
-    # use gum to select the SSH key
-    key_name=$(bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' | gum choose --header="Choose SSH key" --cursor.foreground="6" --header.foreground="8")
-    # copy private key
-    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.privateKey" > $HOME/.ssh/github
-    # copy public key
-    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.publicKey" > $HOME/.ssh/github.pub
-
-    # set permissions for keys
-    chmod 600 $HOME/.ssh/github
-    chmod 644 $HOME/.ssh/github.pub
-
-    # Update .ssh/config file
-    if ! $(cat $HOME/.ssh/config >/dev/null 2>&1 | grep "Host github.com"); then
-        _info "Updating ~/.ssh/config"
-        echo "" >> $HOME/.ssh/config
-        echo "Host github.com" >> $HOME/.ssh/config
-        echo -e "\tIdentityFile ~/.ssh/github" >> $HOME/.ssh/config
-    else
-        _error "Could not update ~/.ssh/config file. Modify it manually before proceding"
-        read -p "Press any key to continue"
-    fi
-fi
-_breakline
+# Setup SSH Keys
+. setup_ssh.sh
 
 # Setting gitconfig global options
 _log "Setting .gitconfig file"
@@ -477,30 +354,8 @@ git config --global user.email "$email"
 git config --global core.editor "nvim"
 _breakline
 
-# If there are changes in the repo, put out a warning and exit
-_log "Cloning dotfiles repository"
-if [[ `git -C $DOTFILES status --porcelain` ]]; then
-    # changes
-    _warn "There are pending changes. ${RED}Exiting${NC}"
-    exit 1
-fi
+# Retrieve dotfiles changes
+. update_dotfiles.sh
 
-# Set SSH as URL remote
-if git -C $DOTFILES status; then
-    git -C $DOTFILES remote set-url origin git@github.com:$USERNAME/dotfiles.git
-    git -C $DOTFILES pull --set-upstream origin
-    git -C $DOTFILES submodule update --init --recursive
-else
-    git -C $DOTFILES clone git@github.com:$USERNAME/dotfiles.git $DOTFILES
-    git -C $DOTFILES submodule update --init --recursive
-fi
-
-# Clone dotfiles repo
-_log "Stowing dotfiles"
-cd $DOTFILES
-# stow required packages
-# TODO: define packages to stow for each system.
-for d in $DOTFILES/*/; do
-    _info "Stowing $d"
-    stow $d
-done
+# Stow dotfiles
+. stow_dotfiles.sh
