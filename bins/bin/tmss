@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# tmss - TMux Session Selector
+
+selected=$(tmux ls -F "#{session_name}" | fzf --tmux)
+if [[ -z $selected ]]; then
+	exit 0
+fi
+
+if [[ -z $TMUX ]]; then
+	tmux att -t $selected
+	exit 0
+else
+	tmux switch-client -t $selected
+	exit 0
+fi
+

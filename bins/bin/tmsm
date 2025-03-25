@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# tmsc - TMux Session Creator
+
+session=`find $HOME ~/Documents ~/Documents/Dottorato ~/Documents/CoerciveWaveEquation ~/projects -type d -mindepth 1 -maxdepth 1 | fzf --tmux`
+
+if [[ -z $session ]]; then
+	exit 0
+fi
+
+# take basename, lower case, remove spaces and dots
+session_name=$(basename $session | awk '{print tolower($0)}' | tr '. ' '-')
+
+# if session does not exist, create it
+if ! tmux has-session -t=$session_name 2> /dev/null; then
+	tmux new-session -ds $session_name -c $session
+fi
+
+# check if we are currently in a tmux session
+if [[ -z $TMUX ]]; then
+	att_or_switch='attach'
+else
+	att_or_switch='switch-client'
+fi
+
+tmux $att_or_switch -t $session_name
+
