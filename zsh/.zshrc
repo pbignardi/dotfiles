@@ -40,14 +40,5 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
 
 # Scripts binds
-function _session_switcher {
-    tmss
-}
-zle -N _session_switcher
-bindkey '^f' _session_switcher
-
-function _session_factory {
-    tmsm
-}
-zle -N _session_factory
-bindkey '^b' _session_factory
+bindkey -s ^f "tmss\n"
+bindkey -s ^b "tmsm\n"
