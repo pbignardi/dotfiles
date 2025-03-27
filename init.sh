@@ -263,44 +263,91 @@ if [[ -z $bw_session ]] && [[ -z $debug ]]; then
     _breakline
 fi
 
-# Retrieve required packages
-required=`echo -n $(_get_req $OS)`
-available=`echo -n $(_get_avail $OS)`
-
-# Install packages via package manager
+# Install base packages via package manager
 case "$OS" in
     opensuse)
         _log "Installing packages with ${CYAN}zypper${NC}"
-        _info "Required packages: ${required[@]}"
-        sudo zypper in -y ${available[@]}
+
+        _info "Core packages: ${zypper_core[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_core[@]}"); then
+            _info "Core packages already installed"
+        else
+            sudo zypper in ${zypper_core[@]}
+        fi
+        _info "Extra packages: ${zypper_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo zypper in ${zypper_extra[@]}
+        fi
+
         _breakline
         ;;
     arch)
         _log "Installing packages with ${CYAN}pacman${NC}"
-        _info "Required packages: ${required[@]}"
-        sudo pacman -S --noconfirm ${available[@]}
+
+        _info "Core packages: ${pacman_core[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_core[@]}"); then
+            _info "Core packages already installed"
+        else
+            sudo pacman -S --noconfirm ${pacman_core[@]}
+        fi
+        _info "Extra packages: ${pacman_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo zypper -S --noconfirm ${pacman_extra[@]}
+        fi
+
+        _breakline
         ;;
     debian)
         _log "Installing packages with ${CYAN}apt${NC}"
-        _info "Required packages: ${required[@]}"
-        sudo apt install -y ${available[@]}
+
+        _info "Core packages: ${apt_core[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_core[@]}"); then
+            _info "Core packages already installed"
+        else
+            sudo apt-get install -y ${apt_core[@]}
+        fi
+        _info "Extra packages: ${apt_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo apt-get install -y ${apt_extra[@]}
+        fi
+
+        _breakline
         ;;
     fedora)
         _log "Installing packages with ${CYAN}dnf${NC}"
-        _info "Required packages: ${required[@]}"
-        sudo dnf install -y ${available[@]}
+
+        _info "Core packages: ${dnf_core[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_core[@]}"); then
+            _info "Core packages already installed"
+        else
+            sudo dnf install -y ${dnf_core[@]}
+        fi
+        _info "Extra packages: ${dnf_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo dnf install -y ${dnf_extra[@]}
+        fi
+
+        _breakline
         ;;
     mac)
         _log "Installing packages with ${CYAN}brew${NC}"
-        _info "Required packages: ${available[@]}"
 
-        # grep -v -f <(_pkg_list "mac") <(printf '%s\n' "${installable[@]}")
-        if ! grep -v -f <(_get_installed $OS) <(_get_avail $OS); then
-            _info "All required packages are already installed"
+        _info "Core packages: ${brew_core[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${brew_core[@]}"); then
+            _info "Core packages already installed"
         else
-            to_install=$(grep -v -f <(_get_installed $OS) <(_get_avail $OS))
-            brew install ${available[@]}
+            sudo brew install ${brew_core[@]}
         fi
+
+        _breakline
         ;;
     *)
         _error "Unknown operating system. Aborting"
@@ -365,7 +412,7 @@ if ! command -v uv >/dev/null 2>&1; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-if command -v pyenv >/dev/null 2>&1; then
+if ! command -v pyenv >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}pyenv${NC}"
     curl -fsSL https://pyenv.run | bash
 fi
