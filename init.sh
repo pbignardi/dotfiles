@@ -9,17 +9,22 @@ LOCALBIN=$HOME/.local/bin
 LOCALSRC=$HOME/.src
 DOTFILES=$HOME/dotfiles
 USERNAME=pbignardi
-VERSION="1.0.1"
+VERSION="1.1.0"
 
-common_bundle=("tmux" "neovim" "alacritty" "fzf" "oh-my-posh" "juliaup" "uv" "gum" "pyenv")
-mac_bundle=(${common_bundle[@]} "skim")
-linux_bundle=(${common_bundle[@]} "zathura")
+apt_core=("tmux")
+apt_extra=("alacritty" "zathura")
 
-brew_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "skim" "gum")
-dnf_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
-pacman_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
-zypper_pkgs=("tmux" "neovim" "alacritty" "fzf" "go" "firefox" "zathura" "gum")
-apt_pkgs=("tmux" "alacritty" "go" "firefox" "zathura")
+dnf_core=("tmux" "neovim" "fzf" "gum")
+dnf_extra=("alacritty" "zathura")
+
+zypper_core=("tmux" "neovim" "fzf" "gum")
+zypper_extra=("alacritty" "zathura")
+
+pacman_core=("tmux" "neovim" "fzf" "gum")
+pacman_extra=("alacritty" "zathura")
+
+brew_core=("alacritty" "tmux" "neovim" "fzf" "gum" "skim")
+brew_extra=()
 
 # Log stuff
 GREEN="\033[0;32m"
@@ -500,7 +505,7 @@ _log "Stowing dotfiles"
 cd $DOTFILES
 # stow required packages
 # TODO: define packages to stow for each system.
-for d in $DOTFILES/*/; do
+for d in */; do
     _info "Stowing $d"
     stow $d
 done
