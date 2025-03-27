@@ -1,7 +1,7 @@
 local onedark = {
     "navarasu/onedark.nvim",
     config = function()
-        require("onedark").setup({ style = "darker" })
+        require("onedark").setup({ style = "warmer" })
     end,
 }
 
@@ -12,8 +12,21 @@ local jellybeans = {
     }
 }
 
-local tokyonight = {
-    'folke/tokyonight.nvim'
+local nightfox = {
+    "EdenEast/nightfox.nvim"
 }
 
-return { jellybeans, tokyonight }
+local kanagawa = {
+    "rebelot/kanagawa.nvim"
+}
+
+local melange = {
+    "savq/melange-nvim"
+}
+
+local dracula = {
+    "Mofiqul/dracula.nvim"
+}
+
+
+return { nightfox, onedark, jellybeans, kanagawa, melange, dracula }
