@@ -1,2 +1,3 @@
 *.c
 **/tmux/plugins
+**/lazy-lock.json
