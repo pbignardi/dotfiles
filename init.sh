@@ -158,6 +158,15 @@ else
 fi
 _info "Identified OS: $OS"
 
+# Update mirrors
+_log "Refresh package cache"
+case "$OS" in
+    debian) sudo apt-get update ;;
+    fedora) sudo dnf upgrade ;;
+    opensuse) sudo zypper ref ;;
+    arch) sudo pacman -Syu ;;
+esac
+_breakline
 
 # Configure PATH
 if [[ ! -d $LOCALBIN ]]; then
