@@ -445,6 +445,23 @@ _breakline
 
 # Install nerd-fonts
 fontlist=$(fc-list)
+if ! $(echo $fontlist | grep "MesloLGM" >/dev/null 2>&1); then
+    _log "Install font: Menlo Nerd Font"
+
+    cd $LOCALSRC
+    wget -q --show-progress "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip"
+    unzip -d Meslo Meslo.zip
+
+    if [[ ! -d $HOME/.local/share/fonts ]]; then
+        mkdir -p $HOME/.local/share/fonts
+    fi
+    if [[ -d $HOME/.local/share/fonts/Meslo ]]; then
+        _warn "Deleting $HOME/.local/share/fonts/Meslo"
+        rm -rf $HOME/.local/share/fonts/Meslo
+    fi
+    mv Meslo $HOME/.local/share/fonts/Meslo
+fi
+
 if ! $(echo $fontlist | grep RecMonoLinearNerdFont >/dev/null 2>&1); then
     _log "Install font: Recurcive Nerd Font"
 
