@@ -532,11 +532,13 @@ fi
 _breakline
 
 # Setting gitconfig global options
-_log "Setting .gitconfig file"
-git config --global user.name "$name"
-git config --global user.email "$email"
-git config --global core.editor "nvim"
-_breakline
+if ! [[ -z $name ]] && ! [[ -z $email ]]; then
+    _log "Setting .gitconfig file"
+    git config --global user.name "$name"
+    git config --global user.email "$email"
+    git config --global core.editor "nvim"
+    _breakline
+fi
 
 # If there are changes in the repo, put out a warning and exit
 _log "Cloning dotfiles repository"
