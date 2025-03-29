@@ -19,7 +19,7 @@ eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/oneminimal.toml)"
 eval "$(zoxide init zsh)"
 
 # source fzf theme
-source $HOME/.config/fzf/fzf-moonfly.conf
+source $HOME/.config/fzf/fzf-chalk.conf
 
 # setup fzf
 eval "$(fzf --zsh)"
