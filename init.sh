@@ -421,11 +421,6 @@ if ! command -v uv >/dev/null 2>&1; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-if ! command -v pyenv >/dev/null 2>&1; then
-    _log "Install from build script: ${CYAN}pyenv${NC}"
-    curl -fsSL https://pyenv.run | bash
-fi
-
 if ! command -v oh-my-posh >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}oh-my-posh${NC}"
     curl -s https://ohmyposh.dev/install.sh | bash -s
