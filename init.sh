@@ -435,7 +435,7 @@ fi
 
 if ! command -v gum >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}gum${NC}"
-    if [[ $os == "debian" ]]; then
+    if [[ $OS == "debian" ]]; then
         sudo mkdir -p /etc/apt/keyrings
         curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
         echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
