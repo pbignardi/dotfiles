@@ -16,7 +16,6 @@ source $HOME/.zsh_aliases
 
 # oh my posh enabling
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/oneminimal.toml)"
-eval "$(zoxide init zsh)"
 
 # source fzf theme
 source $HOME/.config/fzf/fzf-chalk.conf
@@ -28,8 +27,10 @@ eval "$(fzf --zsh)"
 eval "$(bw completion --shell zsh); compdef _bw bw;"
 
 # setup pyenv and pyenv-virtualenv
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+if command -v pyenv >/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
 
 # Initialize juliaup
 path=('/Users/paolo/.juliaup/bin' $path)
