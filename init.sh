@@ -450,6 +450,7 @@ fontlist=$(fc-list)
 if ! $(echo $fontlist | grep "MesloLGM" >/dev/null 2>&1); then
     _log "Install font: Menlo Nerd Font"
 
+    ! [[ -d $LOCALSRC ]] && mkdir $LOCALSRC
     cd $LOCALSRC
     wget -q --show-progress "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip"
     unzip -d Meslo Meslo.zip
@@ -467,6 +468,7 @@ fi
 if ! $(echo $fontlist | grep RecMonoLinearNerdFont >/dev/null 2>&1); then
     _log "Install font: Recurcive Nerd Font"
 
+    ! [[ -d $LOCALSRC ]] && mkdir $LOCALSRC
     cd $LOCALSRC
     wget -q --show-progress "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Recursive.zip"
     unzip -d Recursive Recursive.zip
@@ -484,6 +486,7 @@ fi
 if ! $(echo $fontlist | grep JetBrainsMonoNerdFont >/dev/null 2>&1); then
     _log "Install font: JetBrainsMono Nerd Font"
 
+    ! [[ -d $LOCALSRC ]] && mkdir $LOCALSRC
     cd $LOCALSRC
     wget -q --show-progress "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
     unzip -d JetBrainsMono JetBrainsMono.zip
