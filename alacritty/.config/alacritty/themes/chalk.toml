@@ -1,0 +1,28 @@
+# Colors (Chalk)
+
+# Default colors
+[colors.primary]
+background = '#151515'
+foreground = '#ffffff'
+
+# Normal colors
+[colors.normal]
+black   = '#000000'
+red     = '#FB9FB1'
+green   = '#ACC267'
+yellow  = '#DDB26F'
+blue    = '#6FC2EF'
+magenta = '#E1A3EE'
+cyan    = '#12CFC0'
+white   = '#D0D0D0'
+
+# Bright colors
+[colors.bright]
+black   = '#505050'
+red     = '#FB9FB1'
+green   = '#ACC267'
+yellow  = '#DDB26F'
+blue    = '#6FC2EF'
+magenta = '#E1A3EE'
+cyan    = '#12CFC0'
+white   = '#F5F5F5'

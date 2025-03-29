@@ -1,6 +1,6 @@
 [general]
 import = [
-    "~/.config/alacritty/themes/duskfly.toml"
+    "~/.config/alacritty/themes/chalk.toml"
 ]
 live_config_reload = true
 
@@ -9,13 +9,12 @@ TERM = "xterm-256color"
 
 [window]
 dimensions.columns = 100
-dimensions.lines = 26
+dimensions.lines = 30
 option_as_alt = "Both"
 
 [font]
 size=15
-# normal.family = "RecMonoLinear Nerd Font"
-normal.family = "JetBrainsMono Nerd Font"
+normal.family = "MesloLGM Nerd Font Mono"
 normal.style = "Regular"
 
 [cursor]
