@@ -405,7 +405,7 @@ if ! command fzf --version >/dev/null 2>&1; then
         mkdir -p $LOCALSRC
     fi
 
-    [[ -d $LOCALSRC/fzf ]] && rm $LOCALSRC/fzf
+    [[ -d $LOCALSRC/fzf ]] && rm -rf $LOCALSRC/fzf
 
     git clone --depth 1 https://github.com/junegunn/fzf.git $LOCALSRC/fzf
     $LOCALSRC/fzf/install --bin
