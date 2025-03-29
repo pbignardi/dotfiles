@@ -413,8 +413,8 @@ if ! command fzf --version >/dev/null 2>&1; then
     if [[ ! -d $LOCALBIN ]]; then
         mkdir -p $LOCALBIN
     fi
-    for f in $(ls bin); do
-        cp bin/$f $LOCALBIN
+    for f in $(ls $LOCALSRC/fzf/bin); do
+        cp $LOCALSRC/fzf/bin/$f $LOCALBIN
     done
 fi
 
