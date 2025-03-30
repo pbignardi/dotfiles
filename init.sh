@@ -12,18 +12,18 @@ USERNAME=pbignardi
 VERSION="1.1.0"
 
 apt_core=("tmux")
-apt_extra=("alacritty" "zathura")
+apt_extra=("kitty" "zathura")
 
 dnf_core=("tmux" "neovim" "fzf" "gum")
-dnf_extra=("alacritty" "zathura")
+dnf_extra=("kitty" "zathura")
 
 zypper_core=("tmux" "neovim" "fzf" "gum")
-zypper_extra=("alacritty" "zathura")
+zypper_extra=("kitty" "zathura")
 
 pacman_core=("tmux" "neovim" "fzf" "gum")
-pacman_extra=("alacritty" "zathura")
+pacman_extra=("kitty" "zathura")
 
-brew_core=("alacritty" "tmux" "neovim" "fzf" "gum" "skim")
+brew_core=("kitty" "tmux" "neovim" "fzf" "gum" "skim")
 brew_extra=()
 
 # Log stuff
