@@ -13,7 +13,8 @@ return {
 					javascript = { "prettierd", "prettier", stop_after_first = true },
 					go = { "gofmt" },
 					tex = {},
-                    julia = { lsp_format = "prefer"}
+					julia = { lsp_format = "prefer" },
+					sh = { "shfmt" },
 				},
 			})
 
