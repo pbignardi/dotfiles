@@ -34,6 +34,8 @@ YELLOW="\033[0;33m"
 CYAN="\033[0;36m"
 NC="\033[0m"
 BOLD="\033[1m"
+ITALIC="\033[3m"
+NOITALIC="\033[23m"
 RESETBOLD="\033[22m"
 
 function _breakline() {
@@ -166,6 +168,7 @@ else
     exit 1
 fi
 _info "Identified OS: $OS"
+_breakline
 
 # Update mirrors
 _log "Refresh package cache"
@@ -186,6 +189,7 @@ export PATH=$LOCALBIN:$PATH
 # Query for personal information
 if [[ -f dotfiles-data ]]; then
     _log "Load configuration details"
+    _info "To clear configuration details, delete ${ITALIC}dotfiles-data${NOITALIC}"
     source dotfiles-data
 else
     _log "Enter configuration details"
