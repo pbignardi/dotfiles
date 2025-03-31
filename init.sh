@@ -12,18 +12,18 @@ USERNAME=pbignardi
 VERSION="1.1.0"
 
 apt_core=("tmux")
-apt_extra=("kitty" "zathura")
+apt_extra=("zathura")
 
 dnf_core=("tmux" "neovim" "fzf" "gum")
-dnf_extra=("kitty" "zathura")
+dnf_extra=("zathura")
 
 zypper_core=("tmux" "neovim" "fzf" "gum")
-zypper_extra=("kitty" "zathura")
+zypper_extra=("wezterm" "zathura")
 
 pacman_core=("tmux" "neovim" "fzf" "gum")
-pacman_extra=("kitty" "zathura")
+pacman_extra=("wezterm" "zathura")
 
-brew_core=("kitty" "tmux" "neovim" "fzf" "gum" "skim")
+brew_core=("wezterm" "tmux" "neovim" "fzf" "gum" "skim")
 brew_extra=()
 
 # Log stuff
@@ -36,31 +36,31 @@ NC="\033[0m"
 BOLD="\033[1m"
 RESETBOLD="\033[22m"
 
-function _breakline () {
+function _breakline() {
     echo -e ""
 }
 
-function _info () {
+function _info() {
     local message=$1
     echo -e "${CYAN}[init: info]${NC} ${GRAY}${message}${NC}"
 }
 
-function _warn () {
+function _warn() {
     local message=$1
     echo -e "${YELLOW}[init: warn]${NC} ${message}"
 }
 
-function _error () {
+function _error() {
     local message=$1
     echo -e "${RED}[init: error]${NC} ${message}"
 }
 
-function _log () {
+function _log() {
     local message=$1
     echo -e "${GREEN}[init: status]${NC} ${BOLD}${message}${RESETBOLD}"
 }
 
-function _init_info () {
+function _init_info() {
     STYLE="\033[1;32m"
     RESET="\033[0m"
 
@@ -78,7 +78,7 @@ function _init_info () {
     echo
 }
 
-function _get_req () {
+function _get_req() {
     local os=$1
     if [[ $os == "mac" ]]; then
         printf '%s\n' "${mac_bundle[@]}"
@@ -88,45 +88,51 @@ function _get_req () {
 }
 
 function github_authenticated() {
-  # Attempt to ssh to GitHub
-  ssh -T git@github.com &>/dev/null
-  RET=$?
-  if [ $RET == 1 ]; then
-    # user is authenticated, but fails to open a shell with GitHub
-    return 0
-  elif [ $RET == 255 ]; then
-    # user is not authenticated
-    return 1
-  else
-    _error "unknown exit code in attempt to ssh into git@github.com"
-  fi
-  return 2
+    # Attempt to ssh to GitHub
+    ssh -T git@github.com &>/dev/null
+    RET=$?
+    if [ $RET == 1 ]; then
+        # user is authenticated, but fails to open a shell with GitHub
+        return 0
+    elif [ $RET == 255 ]; then
+        # user is not authenticated
+        return 1
+    else
+        _error "unknown exit code in attempt to ssh into git@github.com"
+    fi
+    return 2
 }
 
-function _get_avail () {
+function _get_avail() {
     local os=$1
     case "$os" in
-        fedora) local avail=$(printf '%s\n' "${dnf_pkgs[@]}");;
-        opensuse) local avail=$(printf '%s\n' "${zypper_pkgs[@]}");;
-        debian) local avail=$(printf '%s\n' "${apt_pkgs[@]}");;
-        arch) local avail=$(printf '%s\n' "${pacman_pkgs[@]}");;
-        mac) local avail=$(printf '%s\n' "${brew_pkgs[@]}");;
-        *) _error "Unknown distribution: $os"; exit 1;;
+    fedora) local avail=$(printf '%s\n' "${dnf_pkgs[@]}") ;;
+    opensuse) local avail=$(printf '%s\n' "${zypper_pkgs[@]}") ;;
+    debian) local avail=$(printf '%s\n' "${apt_pkgs[@]}") ;;
+    arch) local avail=$(printf '%s\n' "${pacman_pkgs[@]}") ;;
+    mac) local avail=$(printf '%s\n' "${brew_pkgs[@]}") ;;
+    *)
+        _error "Unknown distribution: $os"
+        exit 1
+        ;;
     esac
 
     local req=$(_get_req $os)
     echo -e "$req\n$avail" | sort | uniq -d
 }
 
-function _get_installed () {
+function _get_installed() {
     local os=$1
     case "$os" in
-        fedora) ;;
-        opensuse) ;;
-        debian) ;;
-        arch) ;;
-        mac) brew list -1 --full-name;;
-        *) _error "Unknown distribution: $OS"; exit 1;;
+    fedora) ;;
+    opensuse) ;;
+    debian) ;;
+    arch) ;;
+    mac) brew list -1 --full-name ;;
+    *)
+        _error "Unknown distribution: $OS"
+        exit 1
+        ;;
     esac
 }
 
@@ -137,18 +143,21 @@ _init_info
 if [[ -f /etc/os-release ]]; then
     source /etc/os-release
     case "$ID" in
-        # rhel systems
-        fedora) OS="fedora";;
-        # suse systems
-        opensuse*) OS="opensuse";;
-        # debian systems
-        debian) OS="debian";;
-        ubuntu) OS="debian";;
-        linuxmint) OS="debian";;
-        pop*) OS="debian";;
-        # arch systems
-        arch*) OS="arch";;
-        *) _error "Distribution with $ID not supported"; exit 1;;
+    # rhel systems
+    fedora) OS="fedora" ;;
+    # suse systems
+    opensuse*) OS="opensuse" ;;
+    # debian systems
+    debian) OS="debian" ;;
+    ubuntu) OS="debian" ;;
+    linuxmint) OS="debian" ;;
+    pop*) OS="debian" ;;
+    # arch systems
+    arch*) OS="arch" ;;
+    *)
+        _error "Distribution with $ID not supported"
+        exit 1
+        ;;
     esac
 elif [[ $(uname -s) == "Darwin" ]]; then
     OS="mac"
@@ -161,10 +170,10 @@ _info "Identified OS: $OS"
 # Update mirrors
 _log "Refresh package cache"
 case "$OS" in
-    debian) sudo apt-get update ;;
-    fedora) sudo dnf upgrade ;;
-    opensuse) sudo zypper ref ;;
-    arch) sudo pacman -Syu ;;
+debian) sudo apt-get update ;;
+fedora) sudo dnf upgrade ;;
+opensuse) sudo zypper ref ;;
+arch) sudo pacman -Syu ;;
 esac
 _breakline
 
@@ -175,33 +184,56 @@ fi
 export PATH=$LOCALBIN:$PATH
 
 # Query for personal information
-_log "Enter configuration details"
+if [[ -f dotfiles-data ]]; then
+    _log "Load configuration details"
+    source dotfiles-data
+else
+    _log "Enter configuration details"
+    echo "#!/usr/bin/env bash" >dotfiles-data
+fi
+
 # Ask for work/personal alternative
-read -p '=> Is this your work computer? (y/N) ' yn
-case $yn in
-    [Yy]* ) work=true;;
-    * ) work=false;;
-esac
+if [[ -z ${work:-} ]]; then
+    read -p '=> Is this your work computer? (y/N) ' yn
+    case $yn in
+    [Yy]*) work=true ;;
+    *) work=false ;;
+    esac
+    echo "work=$work" >>data.sh
+fi
 
 # Ask for WSL
-read -p '=> Is this a WSL instance? (y/N) ' yn
-case $yn in
-    [Yy]* ) wsl=true;;
-    * ) wsl=false;;
-esac
+if [[ -z ${wsl:-} ]]; then
+    read -p '=> Is this a WSL instance? (y/N) ' yn
+    case $yn in
+    [Yy]*) wsl=true ;;
+    *) wsl=false ;;
+    esac
+    echo "wsl=$wsl" >>data.sh
+fi
 
 # Ask if it is personal laptop
-read -p '=> Is this your personal laptop? (y/N) ' yn
-case $yn in
-    [Yy]* ) personal_laptop=true;;
-    * ) personal_laptop=false;;
-esac
+if [[ -z ${personal_laptop:-} ]]; then
+    read -p '=> Is this your personal laptop? (y/N) ' yn
+    case $yn in
+    [Yy]*) personal_laptop=true ;;
+    *) personal_laptop=false ;;
+    esac
+
+    echo "personal_laptop=$personal_laptop" >>data.sh
+fi
 
 # Ask for email address
-read -p '=> Enter email address: ' email
+if [[ -z ${email:-} ]]; then
+    read -p '=> Enter email address: ' email
+    echo email=\"$email\" >>data.sh
+fi
 
 # Ask for name
-read -p '=> Enter user name: ' name
+if [[ -z ${name:-} ]]; then
+    read -p '=> Enter user name: ' name
+    echo name=\"$name\" >>data.sh
+fi
 _breakline
 
 # Install homebrew on Mac
@@ -229,11 +261,11 @@ done
 _log "Installing base dependencies"
 if [[ ! -z ${toinst_deps[@]+"${toinst_deps[@]}"} ]]; then
     case "$OS" in
-        fedora) sudo dnf -y install ${toinst_deps[@]};;
-        debian) sudo apt -y install ${toinst_deps[@]};;
-        opensuse) sudo zypper in -y install ${toinst_deps[@]};;
-        arch) sudo pacman -S --noconfirm ${toinst_deps[@]};;
-        *) _error "Unknown operating system. Aborting";;
+    fedora) sudo dnf -y install ${toinst_deps[@]} ;;
+    debian) sudo apt -y install ${toinst_deps[@]} ;;
+    opensuse) sudo zypper in -y install ${toinst_deps[@]} ;;
+    arch) sudo pacman -S --noconfirm ${toinst_deps[@]} ;;
+    *) _error "Unknown operating system. Aborting" ;;
     esac
 else
     _info "Base dependencies already satisfied"
@@ -274,97 +306,112 @@ fi
 
 # Install base packages via package manager
 case "$OS" in
-    opensuse)
-        _log "Installing packages with ${CYAN}zypper${NC}"
+opensuse)
+    _log "Installing packages with ${CYAN}zypper${NC}"
 
-        _info "Core packages: ${zypper_core[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_core[@]}"); then
-            _info "Core packages already installed"
-        else
-            sudo zypper in ${zypper_core[@]}
-        fi
-        _info "Extra packages: ${zypper_extra[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}"); then
-            _info "Extra packages already installed"
-        else
-            sudo zypper in ${zypper_extra[@]}
-        fi
+    _info "Core packages: ${zypper_core[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_core[@]}"); then
+        _info "Core packages already installed"
+    else
+        sudo zypper in ${zypper_core[@]}
+    fi
+    _info "Extra packages: ${zypper_extra[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}"); then
+        _info "Extra packages already installed"
+    else
+        sudo zypper in ${zypper_extra[@]}
+    fi
 
-        _breakline
-        ;;
-    arch)
-        _log "Installing packages with ${CYAN}pacman${NC}"
+    _breakline
+    ;;
+arch)
+    _log "Installing packages with ${CYAN}pacman${NC}"
 
-        _info "Core packages: ${pacman_core[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_core[@]}"); then
-            _info "Core packages already installed"
-        else
-            sudo pacman -S --noconfirm ${pacman_core[@]}
-        fi
-        _info "Extra packages: ${pacman_extra[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}"); then
-            _info "Extra packages already installed"
-        else
-            sudo zypper -S --noconfirm ${pacman_extra[@]}
-        fi
+    _info "Core packages: ${pacman_core[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_core[@]}"); then
+        _info "Core packages already installed"
+    else
+        sudo pacman -S --noconfirm ${pacman_core[@]}
+    fi
+    _info "Extra packages: ${pacman_extra[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}"); then
+        _info "Extra packages already installed"
+    else
+        sudo zypper -S --noconfirm ${pacman_extra[@]}
+    fi
 
-        _breakline
-        ;;
-    debian)
-        _log "Installing packages with ${CYAN}apt${NC}"
+    _breakline
+    ;;
+debian)
+    _log "Installing packages with ${CYAN}apt${NC}"
 
-        _info "Core packages: ${apt_core[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_core[@]}"); then
-            _info "Core packages already installed"
-        else
-            sudo apt-get install -y ${apt_core[@]}
-        fi
-        _info "Extra packages: ${apt_extra[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}"); then
-            _info "Extra packages already installed"
-        else
-            sudo apt-get install -y ${apt_extra[@]}
-        fi
+    _info "Core packages: ${apt_core[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_core[@]}"); then
+        _info "Core packages already installed"
+    else
+        sudo apt-get install -y ${apt_core[@]}
+    fi
+    _info "Extra packages: ${apt_extra[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}"); then
+        _info "Extra packages already installed"
+    else
+        sudo apt-get install -y ${apt_extra[@]}
+    fi
 
-        _breakline
-        ;;
-    fedora)
-        _log "Installing packages with ${CYAN}dnf${NC}"
+    _breakline
+    ;;
+fedora)
+    _log "Installing packages with ${CYAN}dnf${NC}"
 
-        _info "Core packages: ${dnf_core[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_core[@]}"); then
-            _info "Core packages already installed"
-        else
-            sudo dnf install -y ${dnf_core[@]}
-        fi
-        _info "Extra packages: ${dnf_extra[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}"); then
-            _info "Extra packages already installed"
-        else
-            sudo dnf install -y ${dnf_extra[@]}
-        fi
+    _info "Core packages: ${dnf_core[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_core[@]}"); then
+        _info "Core packages already installed"
+    else
+        sudo dnf install -y ${dnf_core[@]}
+    fi
+    _info "Extra packages: ${dnf_extra[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}"); then
+        _info "Extra packages already installed"
+    else
+        sudo dnf install -y ${dnf_extra[@]}
+    fi
 
-        _breakline
-        ;;
-    mac)
-        _log "Installing packages with ${CYAN}brew${NC}"
+    _breakline
+    ;;
+mac)
+    _log "Installing packages with ${CYAN}brew${NC}"
 
-        _info "Core packages: ${brew_core[@]}"
-        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${brew_core[@]}"); then
-            _info "Core packages already installed"
-        else
-            sudo brew install ${brew_core[@]}
-        fi
+    _info "Core packages: ${brew_core[@]}"
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${brew_core[@]}"); then
+        _info "Core packages already installed"
+    else
+        sudo brew install ${brew_core[@]}
+    fi
 
-        _breakline
-        ;;
-    *)
-        _error "Unknown operating system. Aborting"
-        exit 1
-        ;;
+    _breakline
+    ;;
+*)
+    _error "Unknown operating system. Aborting"
+    exit 1
+    ;;
 esac
 
 # Install source packages
+if ! command -v wezterm >/dev/null 2>&1; then
+    case "$OS" in
+    fedora)
+        sudo dnf copr enable wezfurlong/wezterm-nightly
+        sudo dnf install wezterm
+        ;;
+    debian)
+        curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg
+        echo 'deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+        sudo apt-get update
+        sudo apt-get install wezterm
+        ;;
+    esac
+fi
+
 if ! command -v nvim >/dev/null 2>&1; then
     _log "Build from source: ${CYAN}neovim${NC}"
 
@@ -397,7 +444,6 @@ if ! command -v nvim >/dev/null 2>&1; then
     make CMAKE_BUILD_TYPE=Release
     sudo make install
 fi
-
 
 if ! command fzf --version >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}fzf${NC}"
@@ -527,9 +573,9 @@ else
     # use gum to select the SSH key
     key_name=$(bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' | gum choose --header="Choose SSH key" --cursor.foreground="6" --header.foreground="8")
     # copy private key
-    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.privateKey" > $HOME/.ssh/github
+    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.privateKey" >$HOME/.ssh/github
     # copy public key
-    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.publicKey" > $HOME/.ssh/github.pub
+    bw get item "$key_name" 2>/dev/null | jq -r ".sshKey.publicKey" >$HOME/.ssh/github.pub
 
     # set permissions for keys
     chmod 600 $HOME/.ssh/github
@@ -538,9 +584,9 @@ else
     # Update .ssh/config file
     if ! $(cat $HOME/.ssh/config >/dev/null 2>&1 | grep "Host github.com"); then
         _info "Updating ~/.ssh/config"
-        echo "" >> $HOME/.ssh/config
-        echo "Host github.com" >> $HOME/.ssh/config
-        echo -e "\tIdentityFile ~/.ssh/github" >> $HOME/.ssh/config
+        echo "" >>$HOME/.ssh/config
+        echo "Host github.com" >>$HOME/.ssh/config
+        echo -e "\tIdentityFile ~/.ssh/github" >>$HOME/.ssh/config
     else
         _error "Could not update ~/.ssh/config file. Modify it manually before proceding"
         read -p "Press any key to continue"
@@ -559,7 +605,7 @@ _breakline
 
 # If there are changes in the repo, put out a warning and exit
 _log "Cloning dotfiles repository"
-if [[ `git -C $DOTFILES status --porcelain` ]]; then
+if [[ $(git -C $DOTFILES status --porcelain) ]]; then
     # changes
     _warn "There are pending changes. ${RED}Exiting${NC}"
     exit 1
