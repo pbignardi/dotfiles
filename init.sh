@@ -319,11 +319,13 @@ opensuse)
     else
         sudo zypper in ${zypper_core[@]}
     fi
-    _info "Extra packages: ${zypper_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}"); then
-        _info "Extra packages already installed"
-    else
-        sudo zypper in ${zypper_extra[@]}
+    if [[ $wsl ]]; then
+        _info "Extra packages: ${zypper_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo zypper in ${zypper_extra[@]}
+        fi
     fi
 
     _breakline
@@ -337,11 +339,13 @@ arch)
     else
         sudo pacman -S --noconfirm ${pacman_core[@]}
     fi
-    _info "Extra packages: ${pacman_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}"); then
-        _info "Extra packages already installed"
-    else
-        sudo zypper -S --noconfirm ${pacman_extra[@]}
+    if [[ $wsl ]]; then
+        _info "Extra packages: ${pacman_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo zypper -S --noconfirm ${pacman_extra[@]}
+        fi
     fi
 
     _breakline
@@ -355,11 +359,13 @@ debian)
     else
         sudo apt-get install -y ${apt_core[@]}
     fi
-    _info "Extra packages: ${apt_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}"); then
-        _info "Extra packages already installed"
-    else
-        sudo apt-get install -y ${apt_extra[@]}
+    if [[ $wsl ]]; then
+        _info "Extra packages: ${apt_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo apt-get install -y ${apt_extra[@]}
+        fi
     fi
 
     _breakline
@@ -373,11 +379,13 @@ fedora)
     else
         sudo dnf install -y ${dnf_core[@]}
     fi
-    _info "Extra packages: ${dnf_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}"); then
-        _info "Extra packages already installed"
-    else
-        sudo dnf install -y ${dnf_extra[@]}
+    if [[ $wsl ]]; then
+        _info "Extra packages: ${dnf_extra[@]}"
+        if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}"); then
+            _info "Extra packages already installed"
+        else
+            sudo dnf install -y ${dnf_extra[@]}
+        fi
     fi
 
     _breakline
