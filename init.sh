@@ -3,13 +3,7 @@
 # Initialize a new system, automatically.
 # Paolo Bignardi - 2025
 
-set -eou pipefail
-
-LOCALBIN=$HOME/.local/bin
-LOCALSRC=$HOME/.src
-DOTFILES=$HOME/dotfiles
-USERNAME=pbignardi
-VERSION="1.1.0"
+source common.sh
 
 apt_core=("tmux")
 apt_extra=("zathura")
