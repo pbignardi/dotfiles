@@ -206,13 +206,13 @@ opensuse)
     _log "Installing packages with ${CYAN}zypper${NC}"
 
     _info "Core packages: ${zypper_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_core[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_core[@]}") >/dev/null; then
         _info "Core packages already installed"
     else
         sudo zypper in ${zypper_core[@]}
     fi
     _info "Extra packages: ${zypper_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}") >/dev/null; then
         _info "Extra packages already installed"
     else
         sudo zypper in ${zypper_extra[@]}
@@ -224,13 +224,13 @@ arch)
     _log "Installing packages with ${CYAN}pacman${NC}"
 
     _info "Core packages: ${pacman_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_core[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_core[@]}") >/dev/null; then
         _info "Core packages already installed"
     else
         sudo pacman -S --noconfirm ${pacman_core[@]}
     fi
     _info "Extra packages: ${pacman_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}") >/dev/null; then
         _info "Extra packages already installed"
     else
         sudo zypper -S --noconfirm ${pacman_extra[@]}
@@ -242,13 +242,13 @@ debian)
     _log "Installing packages with ${CYAN}apt${NC}"
 
     _info "Core packages: ${apt_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_core[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_core[@]}") >/dev/null; then
         _info "Core packages already installed"
     else
         sudo apt-get install -y ${apt_core[@]}
     fi
     _info "Extra packages: ${apt_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}") >/dev/null; then
         _info "Extra packages already installed"
     else
         sudo apt-get install -y ${apt_extra[@]}
@@ -260,13 +260,13 @@ fedora)
     _log "Installing packages with ${CYAN}dnf${NC}"
 
     _info "Core packages: ${dnf_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_core[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_core[@]}") >/dev/null; then
         _info "Core packages already installed"
     else
         sudo dnf install -y ${dnf_core[@]}
     fi
     _info "Extra packages: ${dnf_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}") >/dev/null; then
         _info "Extra packages already installed"
     else
         sudo dnf install -y ${dnf_extra[@]}
@@ -278,7 +278,7 @@ mac)
     _log "Installing packages with ${CYAN}brew${NC}"
 
     _info "Core packages: ${brew_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${brew_core[@]}"); then
+    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${brew_core[@]}") >/dev/null; then
         _info "Core packages already installed"
     else
         sudo brew install ${brew_core[@]}
