@@ -187,13 +187,13 @@ fi
 export PATH=$LOCALBIN:$PATH
 
 # Query for personal information
-if [[ -f dotfiles-data ]]; then
+if [[ -f .data.sh ]]; then
     _log "Load configuration details"
-    _info "To clear configuration details, delete ${ITALIC}dotfiles-data${NOITALIC}"
-    source dotfiles-data
+    _info "To clear configuration details, delete ${ITALIC}.data.sh${NOITALIC}"
+    source .data.sh
 else
     _log "Enter configuration details"
-    echo "#!/usr/bin/env bash" >dotfiles-data
+    echo "#!/usr/bin/env bash" >.data.sh
 fi
 
 # Ask for work/personal alternative
@@ -203,7 +203,7 @@ if [[ -z ${work:-} ]]; then
     [Yy]*) work=true ;;
     *) work=false ;;
     esac
-    echo "work=$work" >>data.sh
+    echo "work=$work" >>.data.sh
 fi
 
 # Ask for WSL
@@ -213,7 +213,7 @@ if [[ -z ${wsl:-} ]]; then
     [Yy]*) wsl=true ;;
     *) wsl=false ;;
     esac
-    echo "wsl=$wsl" >>data.sh
+    echo "wsl=$wsl" >>.data.sh
 fi
 
 # Ask if it is personal laptop
@@ -224,19 +224,19 @@ if [[ -z ${personal_laptop:-} ]]; then
     *) personal_laptop=false ;;
     esac
 
-    echo "personal_laptop=$personal_laptop" >>data.sh
+    echo "personal_laptop=$personal_laptop" >>.data.sh
 fi
 
 # Ask for email address
 if [[ -z ${email:-} ]]; then
     read -p '=> Enter email address: ' email
-    echo email=\"$email\" >>data.sh
+    echo email=\"$email\" >>.data.sh
 fi
 
 # Ask for name
 if [[ -z ${name:-} ]]; then
     read -p '=> Enter user name: ' name
-    echo name=\"$name\" >>data.sh
+    echo name=\"$name\" >>.data.sh
 fi
 _breakline
 

@@ -1,4 +1,4 @@
 *.c
 **/tmux/plugins
 **/lazy-lock.json
-dotfiles-data
+.data.sh
