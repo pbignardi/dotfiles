@@ -20,103 +20,6 @@ pacman_extra=("wezterm" "zathura")
 brew_core=("wezterm" "tmux" "neovim" "fzf" "gum" "skim")
 brew_extra=()
 
-# Log stuff
-GREEN="\033[0;32m"
-GRAY="\033[0;90m"
-RED="\033[0;31m"
-YELLOW="\033[0;33m"
-CYAN="\033[0;36m"
-NC="\033[0m"
-BOLD="\033[1m"
-ITALIC="\033[3m"
-NOITALIC="\033[23m"
-RESETBOLD="\033[22m"
-
-function _breakline() {
-    echo -e ""
-}
-
-function _info() {
-    local message=$1
-    echo -e "${CYAN}[init: info]${NC} ${GRAY}${message}${NC}"
-}
-
-function _warn() {
-    local message=$1
-    echo -e "${YELLOW}[init: warn]${NC} ${message}"
-}
-
-function _error() {
-    local message=$1
-    echo -e "${RED}[init: error]${NC} ${message}"
-}
-
-function _log() {
-    local message=$1
-    echo -e "${GREEN}[init: status]${NC} ${BOLD}${message}${RESETBOLD}"
-}
-
-function _init_info() {
-    STYLE="\033[1;32m"
-    RESET="\033[0m"
-
-    pretty=${PRETTY:-true}
-    if [[ $pretty ]]; then
-        echo '     _       _ __         __  '
-        echo '    (_)___  (_) /_  _____/ /_ '
-        echo '   / / __ \/ / __/ / ___/ __ \'
-        echo '  / / / / / / /__ (__  ) / / /'
-        echo ' /_/_/ /_/_/\__(_)____/_/ /_/ '
-        echo
-    fi
-    echo -e "${STYLE}init.sh${NC} -- Initialize a new system, automatically"
-    echo "version $VERSION"
-    echo
-}
-
-function _get_req() {
-    local os=$1
-    if [[ $os == "mac" ]]; then
-        printf '%s\n' "${mac_bundle[@]}"
-    else
-        printf '%s\n' "${linux_bundle[@]}"
-    fi
-}
-
-function github_authenticated() {
-    # Attempt to ssh to GitHub
-    ssh -T git@github.com &>/dev/null
-    RET=$?
-    if [ $RET == 1 ]; then
-        # user is authenticated, but fails to open a shell with GitHub
-        return 0
-    elif [ $RET == 255 ]; then
-        # user is not authenticated
-        return 1
-    else
-        _error "unknown exit code in attempt to ssh into git@github.com"
-    fi
-    return 2
-}
-
-function _get_avail() {
-    local os=$1
-    case "$os" in
-    fedora) local avail=$(printf '%s\n' "${dnf_pkgs[@]}") ;;
-    opensuse) local avail=$(printf '%s\n' "${zypper_pkgs[@]}") ;;
-    debian) local avail=$(printf '%s\n' "${apt_pkgs[@]}") ;;
-    arch) local avail=$(printf '%s\n' "${pacman_pkgs[@]}") ;;
-    mac) local avail=$(printf '%s\n' "${brew_pkgs[@]}") ;;
-    *)
-        _error "Unknown distribution: $os"
-        exit 1
-        ;;
-    esac
-
-    local req=$(_get_req $os)
-    echo -e "$req\n$avail" | sort | uniq -d
-}
-
 function _get_installed() {
     local os=$1
     case "$os" in
@@ -133,7 +36,17 @@ function _get_installed() {
 }
 
 # Display init.sh info
-_init_info
+STYLE="\033[1;32m"
+RESET="\033[0m"
+echo '     _       _ __         __  '
+echo '    (_)___  (_) /_  _____/ /_ '
+echo '   / / __ \/ / __/ / ___/ __ \'
+echo '  / / / / / / /__ (__  ) / / /'
+echo ' /_/_/ /_/_/\__(_)____/_/ /_/ '
+echo
+echo -e "${STYLE}init.sh${NC} -- Initialize a new system, automatically"
+echo "version $VERSION"
+echo
 
 # Identify target system
 if [[ -f /etc/os-release ]]; then
