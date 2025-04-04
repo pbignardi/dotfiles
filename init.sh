@@ -183,28 +183,8 @@ else
 fi
 _breakline
 
-# Delete Bitwarden if there are updates
-if command -v bw >/dev/null 2>&1 && ! $(bw update | grep "No update available" >/dev/null 2>&1); then
-    _log "Uninstalling old version of Bitwarden CLI"
-    rm $(command -v bw)
-    _breakline
-fi
-
-# Install Bitwarden CLI
-if ! command -v bw >/dev/null 2>&1; then
-    _log "Installing Bitwarden CLI"
-    cd $LOCALBIN
-    if [[ $OS == "mac" ]]; then
-        wget "https://bitwarden.com/download/?app=cli&platform=macos" -O bw.zip
-    else
-        wget "https://bitwarden.com/download/?app=cli&platform=linux" -O bw.zip
-    fi
-    unzip bw.zip
-    rm bw.zip
-    chmod u+x bw
-    cd
-    _breakline
-fi
+# Install or update Bitwarden CLI
+. update_bw.sh
 
 # Setup Bitwarden CLI
 bw_session=${BW_SESSION:-}
