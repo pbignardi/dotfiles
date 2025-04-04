@@ -33,8 +33,7 @@ if command -v pyenv >/dev/null 2>&1; then
 fi
 
 # Initialize juliaup
-path=('/Users/paolo/.juliaup/bin' $path)
-export PATH
+export PATH=$PATH:$HOME/.juliaup/bin
 
 # setup ZSH PLUGINS
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
