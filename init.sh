@@ -183,15 +183,20 @@ else
 fi
 _breakline
 
-# Install or update Bitwarden CLI
-. update_bw.sh
+# Setting gitconfig global options
+_log "Setting .gitconfig file"
+git config --global core.editor "nvim"
+if ! [[ -z $name ]] && ! [[ -z $email ]]; then
+    git config --global user.name "$name"
+    git config --global user.email "$email"
+fi
+_breakline
 
-# Setup Bitwarden CLI
-bw_session=${BW_SESSION:-}
-debug=${DEBUG:-}
-if [[ -z $bw_session ]] && [[ -z $debug ]]; then
-    _log "Setting up Bitwarden CLI"
-    export BW_SESSION=$(bw login --raw || bw unlock --raw)
+# Change shell to ZSH
+if [[ $SHELL != *"zsh"* ]]; then
+    _log "Changing shell to ZSH"
+    chsh -s $(which zsh) $USER
+    _info "Change will take effect after logout"
     _breakline
 fi
 
@@ -382,29 +387,23 @@ fi
 
 _breakline
 
-# Install nerd-fonts
-. install_nerdfonts.sh
+# Install or update Bitwarden CLI
+. update_bw.sh
 
-# Change shell to ZSH
-if [[ $SHELL != *"zsh"* ]]; then
-    _log "Changing shell to ZSH"
-    chsh -s $(which zsh) $USER
-    _info "Change will take effect after logout"
+# Setup Bitwarden CLI
+bw_session=${BW_SESSION:-}
+debug=${DEBUG:-}
+if [[ -z $bw_session ]] && [[ -z $debug ]]; then
+    _log "Setting up Bitwarden CLI"
+    export BW_SESSION=$(bw login --raw || bw unlock --raw)
     _breakline
 fi
 
+# Install nerd-fonts
+. install_nerdfonts.sh
 
 # Setup Github SSH keys
 . setup_ssh.sh
-
-# Setting gitconfig global options
-_log "Setting .gitconfig file"
-git config --global core.editor "nvim"
-if ! [[ -z $name ]] && ! [[ -z $email ]]; then
-    git config --global user.name "$name"
-    git config --global user.email "$email"
-fi
-_breakline
 
 # Clone dotfiles repo
 . pull_dotfiles.sh
