@@ -13,8 +13,8 @@ config.window_padding = {
 }
 
 -- font configuration
-config.font = wezterm.font("MesloLGM Nerd Font Mono")
-config.font_size = 15
+config.font = wezterm.font("SauceCodePro Nerd Font")
+config.font_size = 14
 
 -- colorscheme configuration
 config.color_scheme = "Chalk (base16)"
