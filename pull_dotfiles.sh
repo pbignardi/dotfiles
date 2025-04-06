@@ -24,7 +24,7 @@ fi
 if git -C $DOTFILES status >/dev/null 2>&1; then
     cd $DOTFILES
     git remote set-url origin git@github.com:$USERNAME/dotfiles.git
-    git pull --set-upstream origin
+    git pull --set-upstream origin main
     git submodule update --init --recursive
 else
     git clone git@github.com:$USERNAME/dotfiles.git $DOTFILES
