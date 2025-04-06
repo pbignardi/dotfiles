@@ -13,8 +13,9 @@ config.window_padding = {
 }
 
 -- font configuration
-config.font = wezterm.font("SauceCodePro Nerd Font")
+config.font = wezterm.font("Hack")
 config.font_size = 14
+config.line_height = 1.1
 
 -- colorscheme configuration
 config.color_scheme = "Chalk (base16)"
