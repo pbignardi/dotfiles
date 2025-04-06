@@ -33,6 +33,8 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # Keybinds
 bindkey "^p" history-search-backward
 bindkey "^n" history-search-forward
+bindkey -s "^b" "tmsm\n"
+bindkey -s "^f" "tmss\n"
 
 # Add Homebrew to PATH on MAC (in the future move to different STOW)
 if [[ $(uname -s) == "Darwin" ]]; then

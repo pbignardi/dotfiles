@@ -1,0 +1,17 @@
+function zle_eval {
+    echo -en "\e[2K\r"
+    eval "$@"
+    zle redisplay
+}
+
+tmux_session_create() {
+    zle_eval tmsm
+}
+zle -N tmux_session_create
+bindkey '^B' tmux_session_create
+
+tmux_session_switch() {
+    zle_eval tmss
+}
+zle -N tmux_session_switch
+bindkey '^F' tmux_session_switch
