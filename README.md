@@ -1,4 +1,5 @@
 # My *own* dotfiles 🏡
+
 >[!WARNING]
 > This is still a work-in-progress, use with caution.
 
@@ -11,6 +12,7 @@ Well there are some good ones, but I feel like they are mostly overkill for what
 After having tried `chezmoi` I figured it was probably easier to maintain a simple script with all the steps I need to perform to setup a new computer with the software and configuration I need.
 
 ## Bootstrap
+
 To automatically setup a new system, clone the repository and run the `init.sh` script with `bash`.
 
 Clone the repo
@@ -24,15 +26,13 @@ bash ~/dotfiles/init.sh
 
 > [!CAUTION]
 > The `init.sh` assumes a bare system, where almost nothing is installed.
-> If you are running it not on a new system, **make sure to backup all your data before proceeding**.
+> If you are running it not on a new system, **make sure to backup all your dotfiles before proceeding**.
 
 ## How does `init.sh` work?
+
 The `init.sh` script, performs some basic setup, to automate some of the configuration steps that are required on each system.
 Dotfiles are assumed to be stored in the `~/dotfiles` directory,
 and each program has its own Stow package.
-
-> [!NOTE]
-> While the `init.sh` script is convenient, it is not strictly necessary. If you only want the *dotfiles* you can manually `stow` each Stow package. *You* will have to install packages and configure the system on your own.
 
 The `init.sh` script performs the following actions:
 - Preliminary steps (a few questions, determining the operating system, setting `PATH`, etc...)
@@ -49,12 +49,9 @@ The `init.sh` script performs the following actions:
 - Set SSH remote to dotfiles repo.
 - Clone and `stow` dotfiles.
 
-## Future development
-- [ ] Modularize `init.sh` script
-    - [ ] `common.sh` for common features
-    - [ ] `setup_ssh.sh` for setting up SSH
-    - [ ] `install_pkgs.sh` for installing required packages
-    - [ ] `install_fonts.sh` for installing the fonts
-    - [ ] `stow_dotfiles.sh` to symlink all required dotfiles
-- [ ] JSON file for package and stow packages specification
-- [ ] Create `curl`-able (or `wget`-able) script.
+Some of the action performed by `init.sh` are separated into different scripts which `init.sh` call.
+For reference:
+- `install_nerdfonts.sh`: checks for installed Nerd Fonts and install the missing ones.
+- `pull_dotfiles.sh`: pulls new changes from the remote git repository.
+- `stow_dotfiles.sh`: symlinks all the required dotfiles.
+- `update_bw.sh`: checks for updates of Bitwarden CLI and installs them.
