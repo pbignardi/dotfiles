@@ -14,14 +14,14 @@ if [[ $(git -C $DOTFILES status --porcelain) ]]; then
 fi
 
 # check if ~/dotfiles exists and is not a git repo
-if [[ -d $DOTFILES ]] && ! git -C $DOTFILES status; then
+if [[ -d $DOTFILES ]] && ! git -C $DOTFILES status >/dev/null 2>&1; then
     _warn "$DOTFILES exists, but is not a git repo."
     _info "Moving $DOTFILES to $DOTFILES.old"
     mv $DOTFILES "$DOTFILES.old"
 fi
 
 # Set SSH as URL remote
-if git -C $DOTFILES status; then
+if git -C $DOTFILES status >/dev/null 2>&1; then
     cd $DOTFILES
     git remote set-url origin git@github.com:$USERNAME/dotfiles.git
     git pull --set-upstream origin
