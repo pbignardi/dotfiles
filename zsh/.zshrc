@@ -2,6 +2,13 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/bin
 
+# setup ZSH PLUGINS
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
+source $HOME/.zsh/zsh-completions/zsh-completions.plugin.zsh
+
+autoload -U compinit && compinit
+
 # Add Homebrew to PATH on MAC (in the future move to different STOW)
 if [[ $(uname -s) == "Darwin" ]]; then
     export PATH=$PATH:/opt/homebrew/bin
@@ -34,10 +41,6 @@ fi
 
 # Initialize juliaup
 export PATH=$PATH:$HOME/.juliaup/bin
-
-# setup ZSH PLUGINS
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
 
 # Scripts binds
 bindkey -s ^f "tmss\n"
