@@ -57,4 +57,6 @@ else
         read -p "Press any key to continue"
     fi
 fi
+# return to dotfiles
+cd $DOTFILES
 _breakline

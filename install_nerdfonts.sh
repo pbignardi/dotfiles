@@ -30,6 +30,9 @@ function font_install() {
 
 font_install "SauceCodePro Nerd Font" "SourceCodePro"
 font_install "MesloLGM" "Meslo"
-font_install "RecMonoLinearNerdFont" "Recursive"
+font_install "RecMonoLinear Nerd Font" "Recursive"
 font_install "JetBrainsMonoNerdFont" "JetBrainsMono"
 font_install "VictorMono Nerd Font" "VictorMono"
+
+# return to dotfiles
+cd $DOTFILES

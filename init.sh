@@ -339,6 +339,9 @@ if ! command -v nvim >/dev/null 2>&1; then
     _info "Build and install neovim"
     make CMAKE_BUILD_TYPE=Release
     sudo make install
+
+    # return to dotfiles
+    cd $DOTFILES
 fi
 
 if ! command fzf --version >/dev/null 2>&1; then

@@ -31,3 +31,6 @@ else
     cd $DOTFILES
     git submodule update --init --recursive
 fi
+
+# return to dotfiles
+cd $DOTFILES
