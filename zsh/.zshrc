@@ -6,6 +6,7 @@ export PATH=$PATH:$HOME/bin
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
 source $HOME/.zsh/zsh-completions/zsh-completions.plugin.zsh
+source $HOME/.zsh/fzf-tab/fzf-tab.plugin.zsh
 
 autoload -U compinit && compinit
 
@@ -25,6 +26,9 @@ setopt hist_find_no_dups
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # Keybinds
 bindkey "^p" history-search-backward
