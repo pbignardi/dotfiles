@@ -48,34 +48,15 @@ echo -e "${STYLE}init.sh${NC} -- Initialize a new system, automatically"
 echo "version $VERSION"
 echo
 
-# Identify target system
-if [[ -f /etc/os-release ]]; then
-    source /etc/os-release
-    case "$ID" in
-    # rhel systems
-    fedora) OS="fedora" ;;
-    # suse systems
-    opensuse*) OS="opensuse" ;;
-    # debian systems
-    debian) OS="debian" ;;
-    ubuntu) OS="debian" ;;
-    linuxmint) OS="debian" ;;
-    pop*) OS="debian" ;;
-    # arch systems
-    arch*) OS="arch" ;;
-    *)
-        _error "Distribution with $ID not supported"
-        exit 1
-        ;;
-    esac
-elif [[ $(uname -s) == "Darwin" ]]; then
-    OS="mac"
-else
-    _error "Unknown operating system. Aborting"
+# determine system
+OS=$(identify_system)
+if [[ -z ${OS:-} ]]; then
+    _error "Unsupported system"
     exit 1
+else
+    _info "Identified OS: $OS"
+    _breakline
 fi
-_info "Identified OS: $OS"
-_breakline
 
 # Update mirrors
 _log "Refresh package cache"
@@ -401,6 +382,9 @@ if [[ -z $bw_session ]] && [[ -z $debug ]]; then
     export BW_SESSION=$(bw login --raw || bw unlock --raw)
     _breakline
 fi
+
+# Install fonts
+. install_fonts.sh
 
 # Install nerd-fonts
 . install_nerdfonts.sh
