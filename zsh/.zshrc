@@ -9,14 +9,31 @@ source $HOME/.zsh/zsh-completions/zsh-completions.plugin.zsh
 
 autoload -U compinit && compinit
 
+# ZSH options
+HISTSIZE=5000
+HISTFILE=$HOME/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# Keybinds
+bindkey "^p" history-search-backward
+bindkey "^n" history-search-forward
+
 # Add Homebrew to PATH on MAC (in the future move to different STOW)
 if [[ $(uname -s) == "Darwin" ]]; then
     export PATH=$PATH:/opt/homebrew/bin
 fi
-
-# Load autocompletion on ZSH
-autoload -Uz compinit
-compinit
 
 # Import aliases
 source $HOME/.zsh_aliases
@@ -41,7 +58,3 @@ fi
 
 # Initialize juliaup
 export PATH=$PATH:$HOME/.juliaup/bin
-
-# Scripts binds
-bindkey -s ^f "tmss\n"
-bindkey -s ^b "tmsm\n"
