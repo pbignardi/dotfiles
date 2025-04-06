@@ -126,6 +126,17 @@ if [[ -z ${name:-} ]]; then
     read -p '=> Enter user name: ' name
     echo name=\"$name\" >>.data.sh
 fi
+
+# Ask to install NerdFonts
+if [[ -z ${nerdfonts:-} ]]; then
+    read -p '=> Do you want to install Nerd Fonts? (y/N) ' yn
+    case $yn in
+    [Yy]*) nerdfonts=true ;;
+    *) nerdfonts=false ;;
+    esac
+
+    echo "nerdfonts=$nerdfonts" >>.data.sh
+fi
 _breakline
 
 # Install homebrew on Mac
@@ -387,7 +398,9 @@ fi
 . install_fonts.sh
 
 # Install nerd-fonts
-. install_nerdfonts.sh
+if [[ -z ${nerdfonts:-} ]]; then
+    . install_nerdfonts.sh
+fi
 
 # Setup Github SSH keys
 . setup_ssh.sh
