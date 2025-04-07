@@ -15,7 +15,7 @@ zypper_core=("tmux" "neovim" "fzf" "gum")
 zypper_extra=("wezterm" "zathura")
 
 pacman_core=("tmux" "neovim" "fzf" "gum")
-pacman_extra=("wezterm" "zathura")
+pacman_extra=("wezterm" "zathura" "ttf-nerd-fonts-symbols-mono")
 
 brew_core=("wezterm" "tmux" "neovim" "fzf" "gum" "skim")
 brew_extra=()
