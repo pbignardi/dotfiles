@@ -153,7 +153,7 @@ if ! [[ $PATH == *"homebrew"* ]]; then
 fi
 
 # Install required base packages
-base_deps=("git" "stow" "jq" "gpg" "wget" "unzip" "zsh")
+base_deps=("git" "stow" "jq" "gpg" "wget" "unzip" "zsh" "gcc")
 toinst_deps=()
 for dep in ${base_deps[@]}; do
     if ! type $dep >/dev/null 2>&1; then
@@ -166,7 +166,7 @@ if [[ ! -z ${toinst_deps[@]+"${toinst_deps[@]}"} ]]; then
     case "$OS" in
     fedora) sudo dnf -y install ${toinst_deps[@]} ;;
     debian) sudo apt -y install ${toinst_deps[@]} ;;
-    opensuse) sudo zypper in -y install ${toinst_deps[@]} ;;
+    opensuse) sudo zypper in -y ${toinst_deps[@]} ;;
     arch) sudo pacman -S --noconfirm ${toinst_deps[@]} ;;
     *) _error "Unknown operating system. Aborting" ;;
     esac
@@ -201,13 +201,13 @@ opensuse)
     if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_core[@]}") >/dev/null; then
         _info "Core packages already installed"
     else
-        sudo zypper in ${zypper_core[@]}
+        sudo zypper in -y ${zypper_core[@]}
     fi
     _info "Extra packages: ${zypper_extra[@]}"
     if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}") >/dev/null; then
         _info "Extra packages already installed"
     else
-        sudo zypper in ${zypper_extra[@]}
+        sudo zypper in -y ${zypper_extra[@]}
     fi
 
     _breakline
@@ -225,7 +225,7 @@ arch)
     if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}") >/dev/null; then
         _info "Extra packages already installed"
     else
-        sudo zypper -S --noconfirm ${pacman_extra[@]}
+        sudo pacman -S --noconfirm ${pacman_extra[@]}
     fi
 
     _breakline
