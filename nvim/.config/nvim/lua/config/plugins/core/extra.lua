@@ -17,14 +17,6 @@ return {
 		"ibhagwan/fzf-lua",
 		opts = {},
 	},
-	-- show colors
-	{
-		"norcalli/nvim-colorizer.lua",
-		enabled = true,
-		config = function()
-			require("colorizer").setup()
-		end,
-	},
 	-- Display keychords
 	{
 		"folke/which-key.nvim",
