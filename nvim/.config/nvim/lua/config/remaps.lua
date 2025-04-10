@@ -11,17 +11,20 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 vim.keymap.set("n", "<leader>ts", require("mini.trailspace").trim, { desc = "Trim trailing spaces" })
 
 -- files
-vim.keymap.set("n", "<leader>f", require("oil").toggle_float, { desc = "Open file explorer" })
+local toggle_files = function(...)
+	if not MiniFiles.close() then
+		MiniFiles.open(...)
+	end
+end
+vim.keymap.set("n", "<leader>f", toggle_files, { desc = "Open file explorer" })
 
--- telescope
-local ts_builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>sg", ts_builtin.live_grep, { desc = "Search in the content of files" })
-vim.keymap.set("n", "<leader>sf", ts_builtin.find_files, { desc = "Find file" })
-vim.keymap.set("n", "<leader>/", ts_builtin.buffers, { desc = "Select currently open buffers" })
-vim.keymap.set("n", "<leader>tc", ts_builtin.colorscheme, { desc = "Select currently open buffers" })
-
--- neotree
-vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle<CR>", { desc = "Toggle file system explorer" })
+-- fuzzy finder
+local fzflua = require("fzf-lua")
+vim.keymap.set("n", "<leader>sg", fzflua.grep, { desc = "Search in the content of files" })
+vim.keymap.set("n", "<leader>sf", fzflua.files, { desc = "Find file" })
+vim.keymap.set("n", "<leader>sh", fzflua.helptags, { desc = "Search in help" })
+vim.keymap.set("n", "<leader>/", fzflua.buffers, { desc = "Select currently open buffers" })
+vim.keymap.set("n", "<leader>tc", fzflua.colorschemes, { desc = "Select currently open buffers" })
 
 -- lsp
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Open Code Actions" })

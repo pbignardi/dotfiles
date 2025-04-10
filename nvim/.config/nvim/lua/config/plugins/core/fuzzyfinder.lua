@@ -4,6 +4,15 @@ return {
 		"ibhagwan/fzf-lua",
 		enabled = true,
 		opts = {},
+		config = function(_, opts)
+			local fzflua = require("fzf-lua")
+			local actions = fzflua.actions
+
+			fzflua.setup(opts)
+			fzflua.register_ui_select()
+
+			return ops
+		end,
 	},
 	-- Telescope
 	{

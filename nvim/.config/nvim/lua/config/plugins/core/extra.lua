@@ -2,7 +2,7 @@ return {
 	-- python venv selector
 	{
 		"linux-cultist/venv-selector.nvim",
-		dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
+		dependencies = { "neovim/nvim-lspconfig" },
 		lazy = false,
 		branch = "regexp",
 		config = function()
@@ -11,11 +11,6 @@ return {
 		keys = {
 			{ "<leader>vs", vim.cmd.VenvSelect },
 		},
-	},
-	-- fzf lua
-	{
-		"ibhagwan/fzf-lua",
-		opts = {},
 	},
 	-- Display keychords
 	{

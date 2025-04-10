@@ -47,6 +47,9 @@ return {
 		local miniclue = require("mini.clue")
 		miniclue.setup({})
 
+		-- files
+		require("mini.files").setup({})
+
 		-- git support
 		require("mini.git").setup()
 
