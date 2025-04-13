@@ -49,6 +49,8 @@ eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/oneminimal.toml)"
 
 # source fzf theme
 source $HOME/.config/fzf/fzf-chalk.conf
+export FZF_DEFAULT_COMMAND='fd'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # setup fzf
 eval "$(fzf --zsh)"
@@ -64,3 +66,4 @@ fi
 
 # Initialize juliaup
 export PATH=$PATH:$HOME/.juliaup/bin
+
