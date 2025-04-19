@@ -4,36 +4,7 @@
 # Paolo Bignardi - 2025
 
 source common.sh
-
-apt_core=("tmux")
-apt_extra=("zathura")
-
-dnf_core=("tmux" "neovim" "fzf" "gum")
-dnf_extra=("zathura")
-
-zypper_core=("tmux" "neovim" "fzf" "gum")
-zypper_extra=("wezterm" "zathura")
-
-pacman_core=("tmux" "neovim" "fzf" "gum")
-pacman_extra=("wezterm" "zathura" "ttf-nerd-fonts-symbols-mono")
-
-brew_core=("wezterm" "tmux" "neovim" "fzf" "gum" "skim")
-brew_extra=()
-
-function _get_installed() {
-    local os=$1
-    case "$os" in
-    fedora) ;;
-    opensuse) ;;
-    debian) ;;
-    arch) ;;
-    mac) brew list -1 --full-name ;;
-    *)
-        _error "Unknown distribution: $OS"
-        exit 1
-        ;;
-    esac
-}
+source packages.sh
 
 # Display init.sh info
 STYLE="\033[1;32m"
@@ -58,15 +29,8 @@ else
     _breakline
 fi
 
-# Update mirrors
-_log "Refresh package cache"
-case "$OS" in
-debian) sudo apt-get update ;;
-fedora) sudo dnf upgrade ;;
-opensuse) sudo zypper ref ;;
-arch) sudo pacman -Syu ;;
-esac
-_breakline
+# Update system
+. update_packages
 
 # Configure PATH
 if [[ ! -d $LOCALBIN ]]; then
@@ -152,28 +116,23 @@ if ! [[ $PATH == *"homebrew"* ]]; then
     export PATH=$PATH:/opt/homebrew/bin
 fi
 
-# Install required base packages
-base_deps=("git" "stow" "jq" "gpg" "wget" "unzip" "zsh" "gcc")
-toinst_deps=()
-for dep in ${base_deps[@]}; do
-    if ! type $dep >/dev/null 2>&1; then
-        toinst_deps+=($dep)
-    fi
-done
-
-_log "Installing base dependencies"
-if [[ ! -z ${toinst_deps[@]+"${toinst_deps[@]}"} ]]; then
-    case "$OS" in
-    fedora) sudo dnf -y install ${toinst_deps[@]} ;;
-    debian) sudo apt -y install ${toinst_deps[@]} ;;
-    opensuse) sudo zypper in -y ${toinst_deps[@]} ;;
-    arch) sudo pacman -S --noconfirm ${toinst_deps[@]} ;;
-    *) _error "Unknown operating system. Aborting" ;;
-    esac
+# Install packages
+# base deps
+install_packages ${BASE_PACKAGES[@]}
+# common pkgs
+install_packages ${CORE_PACKAGE[@]}
+# specific packages
+if [[ $wsl == true ]]; then
+    install_packages ${WSL_EXTRAS[@]}
+elif [[ $os == "mac" ]]; then
+    install_packages ${MAC_EXTRAS[@]}
 else
-    _info "Base dependencies already satisfied"
+    # TODO move adding repository somewhere else
+    if [[ $OS == "fedora" ]]; then
+        sudo dnf copr enable wezfurlong/wezterm-nightly
+    fi
+    install_packages ${LINUX_EXTRAS[@]}
 fi
-_breakline
 
 # Setting gitconfig global options
 _log "Setting .gitconfig file"
@@ -192,150 +151,7 @@ if [[ $SHELL != *"zsh"* ]]; then
     _breakline
 fi
 
-# Install base packages via package manager
-case "$OS" in
-opensuse)
-    _log "Installing packages with ${CYAN}zypper${NC}"
-
-    _info "Core packages: ${zypper_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_core[@]}") >/dev/null; then
-        _info "Core packages already installed"
-    else
-        sudo zypper in -y ${zypper_core[@]}
-    fi
-    _info "Extra packages: ${zypper_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${zypper_extra[@]}") >/dev/null; then
-        _info "Extra packages already installed"
-    else
-        sudo zypper in -y ${zypper_extra[@]}
-    fi
-
-    _breakline
-    ;;
-arch)
-    _log "Installing packages with ${CYAN}pacman${NC}"
-
-    _info "Core packages: ${pacman_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_core[@]}") >/dev/null; then
-        _info "Core packages already installed"
-    else
-        sudo pacman -S --noconfirm ${pacman_core[@]}
-    fi
-    _info "Extra packages: ${pacman_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${pacman_extra[@]}") >/dev/null; then
-        _info "Extra packages already installed"
-    else
-        sudo pacman -S --noconfirm ${pacman_extra[@]}
-    fi
-
-    _breakline
-    ;;
-debian)
-    _log "Installing packages with ${CYAN}apt${NC}"
-
-    _info "Core packages: ${apt_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_core[@]}") >/dev/null; then
-        _info "Core packages already installed"
-    else
-        sudo apt-get install -y ${apt_core[@]}
-    fi
-    _info "Extra packages: ${apt_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${apt_extra[@]}") >/dev/null; then
-        _info "Extra packages already installed"
-    else
-        sudo apt-get install -y ${apt_extra[@]}
-    fi
-
-    _breakline
-    ;;
-fedora)
-    _log "Installing packages with ${CYAN}dnf${NC}"
-
-    _info "Core packages: ${dnf_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_core[@]}") >/dev/null; then
-        _info "Core packages already installed"
-    else
-        sudo dnf install -y ${dnf_core[@]}
-    fi
-    _info "Extra packages: ${dnf_extra[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${dnf_extra[@]}") >/dev/null; then
-        _info "Extra packages already installed"
-    else
-        sudo dnf install -y ${dnf_extra[@]}
-    fi
-
-    _breakline
-    ;;
-mac)
-    _log "Installing packages with ${CYAN}brew${NC}"
-
-    _info "Core packages: ${brew_core[@]}"
-    if ! grep -v -f <(_get_installed $OS) <(printf '%s\n' "${brew_core[@]}") >/dev/null; then
-        _info "Core packages already installed"
-    else
-        sudo brew install ${brew_core[@]}
-    fi
-
-    _breakline
-    ;;
-*)
-    _error "Unknown operating system. Aborting"
-    exit 1
-    ;;
-esac
-
 # Install source packages
-if ! command -v wezterm >/dev/null 2>&1; then
-    case "$OS" in
-    fedora)
-        sudo dnf copr enable wezfurlong/wezterm-nightly
-        sudo dnf install wezterm
-        ;;
-    debian)
-        curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg
-        echo 'deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
-        sudo apt-get update
-        sudo apt-get install wezterm
-        ;;
-    esac
-fi
-
-if ! command -v nvim >/dev/null 2>&1; then
-    _log "Build from source: ${CYAN}neovim${NC}"
-
-    _info "Installing neovim dependencies"
-    # install neovim dependencies
-    if [[ $OS == "opensuse" ]]; then
-        sudo zypper install ninja cmake gcc-c++ gettext-tools curl
-    fi
-    if [[ $OS == "fedora" ]]; then
-        sudo dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra
-    fi
-    if [[ $OS == "debian" ]]; then
-        sudo apt-get install ninja-build gettext cmake curl build-essential
-    fi
-    if [[ $OS == "arch" ]]; then
-        sudo pacman -S base-devel cmake ninja curl
-    fi
-
-    # clone into
-    _info "Cloning neovim into $LOCALSRC"
-    if [[ ! -d $LOCALSRC ]]; then
-        mkdir -p $LOCALSRC
-    fi
-    git clone https://github.com/neovim/neovim
-    cd neovim
-    git checkout stable
-
-    # build & install
-    _info "Build and install neovim"
-    make CMAKE_BUILD_TYPE=Release
-    sudo make install
-
-    # return to dotfiles
-    cd $DOTFILES
-fi
-
 if ! command fzf --version >/dev/null 2>&1; then
     _log "Install from build script: ${CYAN}fzf${NC}"
     if [[ ! -d $LOCALSRC ]]; then
