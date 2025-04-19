@@ -51,18 +51,18 @@ function identify_system() {
     if [[ -f /etc/os-release ]]; then
         source /etc/os-release
         case "$ID" in
-            # rhel systems
-            fedora) echo "fedora" ;;
-            # suse systems
-            opensuse*) echo "opensuse" ;;
-            # debian systems
-            debian) echo "debian" ;;
-            ubuntu) echo "debian" ;;
-            linuxmint) echo "debian" ;;
-            pop*) echo "debian" ;;
-            # arch systems
-            arch*) echo "arch" ;;
-            *) echo "" ;;
+        fedora)
+            echo "fedora"
+            ;;
+        opensuse*)
+            echo "opensuse"
+            ;;
+        arch*)
+            echo "arch"
+            ;;
+        *)
+            echo ""
+            ;;
         esac
     elif [[ $(uname -s) == "Darwin" ]]; then
         echo "mac"
