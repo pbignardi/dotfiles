@@ -127,7 +127,7 @@ install_packages ${CORE_PACKAGES[@]}
 _log "Install platform-specific packages"
 if [[ $wsl == true ]]; then
     install_packages ${WSL_EXTRAS[@]}
-elif [[ $os == "mac" ]]; then
+elif [[ $OS == "mac" ]]; then
     install_packages ${MAC_EXTRAS[@]}
 else
     # TODO move adding repository somewhere else
