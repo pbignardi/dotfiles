@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Common files.
 # Paolo Bignardi - 2025
 
 set -eou pipefail
@@ -110,6 +109,26 @@ function install_packages() {
             sudo dnf install -y ${to_install[@]}
             ;;
         esac
+    else
+        _info "Packages already installed: ${target[@]}"
     fi
+    _breakline
+}
 
+function update_packages() {
+    if [[ "$(uname)" == "Linux" ]]; then
+        _log "Updating system packages"
+        case "$(identify_system)" in
+        arch)
+            sudo pacman -Syu --noconfirm
+            ;;
+        opensuse)
+            sudo zypper dup -y
+            ;;
+        fedora)
+            sudo dnf upgrade -y
+            ;;
+        esac
+        _breakline
+    fi
 }
