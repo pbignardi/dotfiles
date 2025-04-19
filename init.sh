@@ -118,10 +118,13 @@ fi
 
 # Install packages
 # base deps
+_log "Install base packages"
 install_packages ${BASE_PACKAGES[@]}
 # common pkgs
+_log "Install core packages"
 install_packages ${CORE_PACKAGES[@]}
 # specific packages
+_log "Install platform-specific packages"
 if [[ $wsl == true ]]; then
     install_packages ${WSL_EXTRAS[@]}
 elif [[ $os == "mac" ]]; then
