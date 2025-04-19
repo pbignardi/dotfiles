@@ -8,8 +8,8 @@ BASE_PACKAGES=(
     git
     stow
     jq
-    gpg
-    wget
+    gpg2
+    wget2
     unzip
     zsh
     gcc
@@ -17,7 +17,7 @@ BASE_PACKAGES=(
 
 # required packages on all istances, even wsl
 CORE_PACKAGES=(
-    nvim
+    neovim
     fzf
     tmux
     gum
