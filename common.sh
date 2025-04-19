@@ -70,3 +70,46 @@ function identify_system() {
         echo ""
     fi
 }
+
+function is_installed() {
+    local package=$1
+    case "$(identify_system)" in
+    arch)
+        pacman -Qg "$1" &>/dev/null
+        ;;
+    fedora)
+        dnf list --installed "$1" &>/dev/null
+        ;;
+    opensuse)
+        zypper se -i "$1" &>/dev/null
+        ;;
+    esac
+}
+
+function install_packages() {
+    local target=("$@")
+    local to_install=()
+
+    for pkg in "${target[@]}"; do
+        if ! is_installed "$pkg"; then
+            to_install+=("pkg")
+        fi
+    done
+
+    if [ ${#to_install[@]} -ne 0 ]; then
+        _info "Installing ${to_install[*]}"
+
+        case "$(identify_system)" in
+        arch)
+            sudo pacman -S --noconfirm ${to_install[@]}
+            ;;
+        opensuse)
+            sudo zypper in -y ${to_install[@]}
+            ;;
+        fedora)
+            sudo dnf install -y ${to_install[@]}
+            ;;
+        esac
+    fi
+
+}
