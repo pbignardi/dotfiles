@@ -91,7 +91,7 @@ function install_packages() {
 
     for pkg in "${target[@]}"; do
         if ! is_installed "$pkg"; then
-            to_install+=("pkg")
+            to_install+=($pkg)
         fi
     done
 

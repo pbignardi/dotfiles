@@ -30,7 +30,7 @@ else
 fi
 
 # Update system
-. update_packages
+update_packages
 
 # Configure PATH
 if [[ ! -d $LOCALBIN ]]; then
@@ -120,7 +120,7 @@ fi
 # base deps
 install_packages ${BASE_PACKAGES[@]}
 # common pkgs
-install_packages ${CORE_PACKAGE[@]}
+install_packages ${CORE_PACKAGES[@]}
 # specific packages
 if [[ $wsl == true ]]; then
     install_packages ${WSL_EXTRAS[@]}
@@ -128,7 +128,8 @@ elif [[ $os == "mac" ]]; then
     install_packages ${MAC_EXTRAS[@]}
 else
     # TODO move adding repository somewhere else
-    if [[ $OS == "fedora" ]]; then
+    if [[ "$OS" == "fedora" ]]; then
+        echo "ciaooo"
         sudo dnf copr enable wezfurlong/wezterm-nightly
     fi
     install_packages ${LINUX_EXTRAS[@]}
