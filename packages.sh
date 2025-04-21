@@ -8,38 +8,41 @@ BASE_PACKAGES=(
     git
     stow
     jq
-    gpg2
-    wget2
     unzip
     zsh
     gcc
+    go
+    gum
+    nodejs
 )
 
-# required packages on all istances, even wsl
+# required packages on all istances (wsl, linux, mac)
 CORE_PACKAGES=(
     neovim
     fzf
     tmux
-    gum
     fd
     ripgrep
     bat
     btop
 )
 
-# extra packages required only on linux desktops
-LINUX_EXTRAS=(
+# linux packages
+LINUX_PACKAGES=(
+    zathura
     wezterm
+    distrobox
+    hack-fonts
+)
+
+# wsl packages
+WSL_PACKAGES=(
     zathura
 )
 
-# extra packages required only on wsl systems
-WSL_EXTRAS=(
-    zathura
-)
-
-# extra packages required only on mac
-MAC_EXTRAS=(
+# mac packages
+MAC_PACKAGES=(
     wezterm
     skim
+    font-hack
 )

@@ -1,10 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Initialize a new system, automatically.
 # Paolo Bignardi - 2025
 
 source common.sh
-source packages.sh
 
 # Display init.sh info
 STYLE="\033[1;32m"
@@ -26,11 +25,7 @@ if [[ -z ${OS:-} ]]; then
     exit 1
 else
     _info "Identified OS: $OS"
-    _breakline
 fi
-
-# Update system
-update_packages
 
 # Configure PATH
 if [[ ! -d $LOCALBIN ]]; then
@@ -101,13 +96,11 @@ if [[ -z ${nerdfonts:-} ]]; then
 
     echo "nerdfonts=$nerdfonts" >>.data.sh
 fi
-_breakline
 
 # Install homebrew on Mac
 if [[ $OS == "mac" ]] && ! command -v brew >/dev/null 2>&1; then
     _log "Installing Homebrew"
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    _breakline
 fi
 
 # Check if homebrew is on path
@@ -116,27 +109,11 @@ if ! [[ $PATH == *"homebrew"* ]]; then
     export PATH=$PATH:/opt/homebrew/bin
 fi
 
+# Update system
+. _scripts/update_system.sh
+
 # Install packages
-# base deps
-_log "Install base packages"
-install_packages ${BASE_PACKAGES[@]}
-# common pkgs
-_log "Install core packages"
-install_packages ${CORE_PACKAGES[@]}
-# specific packages
-_log "Install platform-specific packages"
-if [[ $wsl == true ]]; then
-    install_packages ${WSL_EXTRAS[@]}
-elif [[ $OS == "mac" ]]; then
-    install_packages ${MAC_EXTRAS[@]}
-else
-    # TODO move adding repository somewhere else
-    if [[ "$OS" == "fedora" ]]; then
-        echo "ciaooo"
-        sudo dnf copr enable wezfurlong/wezterm-nightly
-    fi
-    install_packages ${LINUX_EXTRAS[@]}
-fi
+. _scripts/install_packages.sh
 
 # Setting gitconfig global options
 _log "Setting .gitconfig file"
@@ -145,65 +122,16 @@ if ! [[ -z $name ]] && ! [[ -z $email ]]; then
     git config --global user.name "$name"
     git config --global user.email "$email"
 fi
-_breakline
 
 # Change shell to ZSH
 if [[ $SHELL != *"zsh"* ]]; then
     _log "Changing shell to ZSH"
     chsh -s $(which zsh) $USER
     _info "Change will take effect after logout"
-    _breakline
 fi
-
-# Install source packages
-if ! command fzf --version >/dev/null 2>&1; then
-    _log "Install from build script: ${CYAN}fzf${NC}"
-    if [[ ! -d $LOCALSRC ]]; then
-        mkdir -p $LOCALSRC
-    fi
-
-    [[ -d $LOCALSRC/fzf ]] && rm -rf $LOCALSRC/fzf
-
-    git clone --depth 1 https://github.com/junegunn/fzf.git $LOCALSRC/fzf
-    $LOCALSRC/fzf/install --bin
-
-    if [[ ! -d $LOCALBIN ]]; then
-        mkdir -p $LOCALBIN
-    fi
-    for f in $(ls $LOCALSRC/fzf/bin); do
-        cp $LOCALSRC/fzf/bin/$f $LOCALBIN
-    done
-fi
-
-if ! command -v uv >/dev/null 2>&1; then
-    _log "Install from build script: ${CYAN}uv${NC}"
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-fi
-
-if ! command -v oh-my-posh >/dev/null 2>&1; then
-    _log "Install from build script: ${CYAN}oh-my-posh${NC}"
-    curl -s https://ohmyposh.dev/install.sh | bash -s
-fi
-
-if ! command -v juliaup >/dev/null 2>&1; then
-    _log "Install from build script: ${CYAN}juliaup${NC}"
-    curl -fsSL https://install.julialang.org | sh
-fi
-
-if ! command -v gum >/dev/null 2>&1; then
-    _log "Install from build script: ${CYAN}gum${NC}"
-    if [[ $OS == "debian" ]]; then
-        sudo mkdir -p /etc/apt/keyrings
-        curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
-        echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
-        sudo apt update && sudo apt install gum
-    fi
-fi
-
-_breakline
 
 # Install or update Bitwarden CLI
-. update_bw.sh
+. _scripts/update_bw.sh
 
 # Setup Bitwarden CLI
 bw_session=${BW_SESSION:-}
@@ -211,22 +139,18 @@ debug=${DEBUG:-}
 if [[ -z $bw_session ]] && [[ -z $debug ]]; then
     _log "Setting up Bitwarden CLI"
     export BW_SESSION=$(bw login --raw || bw unlock --raw)
-    _breakline
 fi
-
-# Install fonts
-. install_fonts.sh
 
 # Install nerd-fonts
 if [[ -z ${nerdfonts:-} ]]; then
-    . install_nerdfonts.sh
+    . _scripts/install_nerdfonts.sh
 fi
 
-# Setup Github SSH keys
-. setup_ssh.sh
+# setup SSH
+. _scripts/setup_ssh.sh
 
 # Clone dotfiles repo
-. pull_dotfiles.sh
+. _scripts/pull_dotfiles.sh
 
 # Apply dotfiles
-. stow_dotfiles.sh
+. _scripts/stow_dotfiles.sh

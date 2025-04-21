@@ -110,9 +110,8 @@ function install_packages() {
             ;;
         esac
     else
-        _info "Packages already installed: ${target[@]}"
+        _info "Packages already installed: ${target[*]}"
     fi
-    _breakline
 }
 
 function update_packages() {
@@ -129,6 +128,5 @@ function update_packages() {
             sudo dnf upgrade -y
             ;;
         esac
-        _breakline
     fi
 }
