@@ -9,7 +9,6 @@ source common.sh
 if command -v bw >/dev/null 2>&1 && ! $(bw update | grep "No update available" >/dev/null 2>&1); then
     _log "Uninstalling old version of Bitwarden CLI"
     rm $(command -v bw)
-    _breakline
 fi
 
 # Install Bitwarden CLI
@@ -25,5 +24,4 @@ if ! command -v bw >/dev/null 2>&1; then
     rm bw.zip
     chmod u+x bw
     cd $DOTFILES
-    _breakline
 fi
