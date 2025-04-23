@@ -7,8 +7,6 @@ set -eou pipefail
 local_bin=$HOME/.local/bin
 local_src=$HOME/.src
 dotfiles=$HOME/dotfiles
-config_file=$dotfiles/.data.sh
-USERNAME=pbignardi
 VERSION="2.0.0"
 
 GREEN="\033[0;32m"
@@ -28,7 +26,7 @@ function _breakline() {
 
 function _info() {
     local message=$1
-    echo -e "${CYAN}>>>${NC} ${GRAY}${message}${NC}"
+    echo -e "${CYAN}>>>${NC} ${message}"
 }
 
 function _warn() {
@@ -43,7 +41,7 @@ function _error() {
 
 function _log() {
     local message=$1
-    echo -e "${GREEN}[bootstrap: log]${NC} ${BOLD}${message}${RESETBOLD}"
+    echo -e "${GREEN}[log]${NC} ${BOLD}${message}${RESETBOLD}"
 }
 
 function prompt_configuration() {

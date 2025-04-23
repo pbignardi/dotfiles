@@ -5,6 +5,7 @@ function print_logo() {
     local STYLE="\033[1;32m"
     local RESET="\033[0m"
     cat <<"EOF"
+
     .           .      .                     .
     |-. ,-. ,-. |- ,-. |- ,-. ,-. ,-.    ,-. |-.
     | | | | | | |  `-. |  |   ,-| | |    `-. | |
@@ -12,7 +13,8 @@ function print_logo() {
                                   |
                                   '
 EOF
-    echo -e "${STYLE}init.sh${RESET} -- Initialize a new system, automatically"
+    echo -e "${STYLE}bootstrap.sh${RESET} -- Initialize a new system, automatically"
+    echo
 }
 
 # Display logo and script informations
@@ -37,6 +39,12 @@ fi
 source packages.sh
 
 # Install packages from package manager
+case "$(platform)" in
+wsl) EXTRA_PACKAGES=(${WSL_PACKAGES[@]}) ;;
+linux) EXTRA_PACKAGES=(${LINUX_PACKAGES[@]}) ;;
+mac) EXTRA_PACKAGES=(${MAC_PACKAGES[@]}) ;;
+esac
+
 _log "Installing base dependencies"
 install_packages ${BASE_PACKAGES[@]}
 
@@ -44,26 +52,28 @@ _log "Installing core packages"
 install_packages ${CORE_PACKAGES[@]}
 
 _log "Installing extra packages"
-case "$(platform)" in
-wsl) install_packages ${WSL_PACKAGES[@]} ;;
-linux) install_packages ${LINUX_PACKAGES[@]} ;;
-mac) install_packages ${MAC_PACKAGES[@]} ;;
-esac
+install_packages ${EXTRA_PACKAGES[@]}
 
 # Install packages from build_script directory
 for s in $(ls build_scripts); do
-    _log "Running $s build script"
+    _log "Running ${CYAN}$s${NC}${BOLD} build script"
     source build_scripts/$s
 done
 
+# Login in Bitwarden
+_log "Bitwarden login"
+export BW_SESSION=$(bw login --raw || bw unlock --raw)
+test -z ${BW_SESSION:-} && exit 1
+
 # Setup SSH
+if ! github_authenticated; then
+    _log "Setup Github SSH Keys"
+    if [[ -f $HOME/.ssh/github ]]; then
+        mv $HOME/.ssh/github $HOME/.ssh/github.old
+    fi
 
-key_name=$(bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' | gum choose --header="Choose SSH key" --cursor.foreground="6" --header.foreground="8")
-
-if github_authenticated; then
-    key_name=$(bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' | gum choose --header="Choose SSH key" --cursor.foreground="6" --header.foreground="8")
-    # | xargs -I bw get item "{}" 2>/dev/null | jq -r ".sshKey.privateKey"
+    GUM_OPTIONS="--header='Choose SSH key' --cursor.foreground='6' --header.foreground='8'"
+    bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' |\
+        gum choose $GUM_OPTIONS | xargs -I bw get item {} 2>/dev/null |\
+        jq -r '.sshKey.privateKey' > $HOME/.ssh/github
 fi
-
-# Remove old dotfiles
-_log "Deleting old dotfiles"
