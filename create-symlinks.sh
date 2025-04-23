@@ -5,7 +5,7 @@
 
 source utils.sh
 
-STOW_DIRS=(nvim fzf oh-my-posh bins tmux wezterm zsh)
+STOW_DIRS=(nvim fzf oh-my-posh bins tmux wezterm zsh ssh)
 
 _log "Delete existing dotfiles"
 for folder in */; do
