@@ -74,7 +74,7 @@ if ! github_authenticated; then
 
     GUM_OPTIONS="--header='Choose SSH key' --cursor.foreground='6' --header.foreground='8'"
     bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' |\
-        gum choose $GUM_OPTIONS | xargs -I bw get item {} 2>/dev/null |\
+        gum choose | xargs -I bw get item {} 2>/dev/null |\
         jq -r '.sshKey.privateKey' > $HOME/.ssh/github
 fi
 
