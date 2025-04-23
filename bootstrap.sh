@@ -77,3 +77,10 @@ if ! github_authenticated; then
         gum choose $GUM_OPTIONS | xargs -I bw get item {} 2>/dev/null |\
         jq -r '.sshKey.privateKey' > $HOME/.ssh/github
 fi
+
+# Change shell to ZSH
+if [[ "$SHELL" != *"zsh"* ]]; then
+    _log "Change shell to ZSH"
+    chsh -s $(which zsh) $USER
+    _info "Change will take effect after logout"
+fi
