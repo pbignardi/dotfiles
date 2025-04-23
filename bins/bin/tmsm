@@ -10,18 +10,18 @@ fi
 
 includes=""
 for p in "${include_paths[@]}"; do
-    includes=$includes" --search-path "$p
+    includes=$includes" --search-path "${p}
 done
 
 excludes=""
-for p in "${exclude_paths[@]+''}"; do
-    excludes=$excludes" --exclude "$p
+for p in "${exclude_paths[@]}"; do
+    excludes=$excludes" --exclude '${p}'"
 done
 
 if [[ -z $excludes ]]; then
-    session=`fd $includes --exact-depth 1 --type d --follow | fzf --tmux`
+    session=$(eval "fd $includes --exact-depth 1 --type d --follow | fzf --tmux")
 else
-    session=`fd $includes $excludes --exact-depth 1 --type d --follow | fzf --tmux`
+    session=$(eval "fd $includes $excludes --exact-depth 1 --type d --follow | fzf --tmux")
 fi
 
 if [[ -z $session ]]; then
