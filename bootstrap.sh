@@ -76,6 +76,8 @@ if ! github_authenticated; then
     bw list items --search "Github SSH Key" 2>/dev/null | jq -r '.[] | .name' |\
         gum choose | xargs -I bw get item {} 2>/dev/null |\
         jq -r '.sshKey.privateKey' > $HOME/.ssh/github
+
+    chmod 600 ~/.ssh/github
 fi
 
 # Change shell to ZSH
