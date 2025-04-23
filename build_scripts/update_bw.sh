@@ -14,7 +14,10 @@ fi
 # Install Bitwarden CLI
 if ! command -v bw >/dev/null 2>&1; then
     _log "Installing Bitwarden CLI"
-    cd $LOCALBIN
+    if ! [[ -d $local_bin ]]; then
+        mkdir $local_bin
+    fi
+    cd $local_bin
     if [[ $OS == "mac" ]]; then
         wget "https://bitwarden.com/download/?app=cli&platform=macos" -O bw.zip
     else
@@ -23,5 +26,5 @@ if ! command -v bw >/dev/null 2>&1; then
     unzip bw.zip
     rm bw.zip
     chmod u+x bw
-    cd $DOTFILES
+    cd $dotfiles
 fi
