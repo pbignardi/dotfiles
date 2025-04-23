@@ -5,12 +5,19 @@
 
 source common.sh
 
-# Clone dotfiles repo
-_log "Stowing dotfiles"
+STOW_DIRS=(bins fzf kitty nvim oh-my-posh tmux wezterm zsh)
+
+# delete packages
+_log "Deleting existing dotfiles"
 cd $DOTFILES
-# stow required packages
-# TODO: define packages to stow for each system.
 for d in */; do
-    _info "Stowing $d"
+    _info "$d"
+    stow -D $d
+done
+
+# stow required packages
+_log "Creating symlinks"
+for d in $(echo ${STOW_DIRS[@]}); do
+    _info "$d"
     stow $d
 done

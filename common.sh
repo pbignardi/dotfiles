@@ -28,22 +28,22 @@ function _breakline() {
 
 function _info() {
     local message=$1
-    echo -e "${CYAN}[init: info]${NC} ${GRAY}${message}${NC}"
+    echo -e "${CYAN}>>>${NC} ${GRAY}${message}${NC}"
 }
 
 function _warn() {
     local message=$1
-    echo -e "${YELLOW}[init: warn]${NC} ${message}"
+    echo -e "${YELLOW}[warn]${NC} ${message}"
 }
 
 function _error() {
     local message=$1
-    echo -e "${RED}[init: error]${NC} ${message}"
+    echo -e "${RED}[error]${NC} ${message}"
 }
 
 function _log() {
     local message=$1
-    echo -e "${GREEN}[init: status]${NC} ${BOLD}${message}${RESETBOLD}"
+    echo -e "${GREEN}[log]${NC} ${BOLD}${message}${RESETBOLD}"
 }
 
 function identify_system() {
