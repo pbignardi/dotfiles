@@ -18,7 +18,7 @@ if ! command -v bw >/dev/null 2>&1; then
         mkdir $local_bin
     fi
     cd $local_bin
-    if [[ $OS == "mac" ]]; then
+    if [[ $(platform) == "mac" ]]; then
         wget "https://bitwarden.com/download/?app=cli&platform=macos" -O bw.zip
     else
         wget "https://bitwarden.com/download/?app=cli&platform=linux" -O bw.zip
