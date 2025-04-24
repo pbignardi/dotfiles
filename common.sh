@@ -130,3 +130,11 @@ function update_packages() {
         esac
     fi
 }
+
+function bw_login() {
+    bw_session=${BW_SESSION:-}
+    if [[ -z $bw_session ]]; then
+        _info "Login Bitwarden CLI"
+        export BW_SESSION=$(bw login --raw || bw unlock --raw)
+    fi
+}

@@ -26,6 +26,8 @@ _log "Setup Github SSH keys and authentication"
 if github_authenticated; then
     _info "SSH to Github already working"
 else
+    bw_login
+
     if [[ -f $HOME/.ssh/github ]]; then
         _warn "Moving existing ~/.ssh/github key to ~/.ssh/github.old"
         mv $HOME/.ssh/github $HOME/.ssh/github.old

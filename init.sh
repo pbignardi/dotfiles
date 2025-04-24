@@ -134,12 +134,6 @@ fi
 . _scripts/update_bw.sh
 
 # Setup Bitwarden CLI
-bw_session=${BW_SESSION:-}
-debug=${DEBUG:-}
-if [[ -z $bw_session ]] && [[ -z $debug ]]; then
-    _log "Setting up Bitwarden CLI"
-    export BW_SESSION=$(bw login --raw || bw unlock --raw)
-fi
 
 # Install nerd-fonts
 if [[ -z ${nerdfonts:-} ]]; then
