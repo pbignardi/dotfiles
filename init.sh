@@ -133,8 +133,6 @@ fi
 # Install or update Bitwarden CLI
 . _scripts/update_bw.sh
 
-# Setup Bitwarden CLI
-
 # Install nerd-fonts
 if [[ -z ${nerdfonts:-} ]]; then
     . _scripts/install_nerdfonts.sh
