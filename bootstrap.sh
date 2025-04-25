@@ -40,10 +40,9 @@ case "$(identify_system)" in
 esac
 
 # Install packages with build script
-. build_scripts.sh
-
-# Install or update Bitwarden CLI
-. update_bw.sh
+for s in $(ls build_scripts); do
+    . build_scripts/$s
+done
 
 # Change shell to ZSH
 if [[ $SHELL != *"zsh"* ]]; then
