@@ -3,7 +3,7 @@
 # Initialize a new system, automatically.
 # Paolo Bignardi - 2025
 
-source common.sh
+source utils.sh
 
 # Display init.sh info
 STYLE="\033[1;32m"
