@@ -43,9 +43,9 @@ fi
 
 # Install packages with platform package manager
 case "$(identify_system)" in
-    opensuse) . zypper.sh;;
-    fedora) . dnf.sh;;
-    arch) . pacman.sh;;
+    opensuse) . packages/zypper.sh;;
+    fedora) . packages/dnf.sh;;
+    arch) . packages/pacman.sh;;
 esac
 
 . build_scripts.sh
