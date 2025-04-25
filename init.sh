@@ -18,7 +18,7 @@ function print_logo() {
      /_/_/ /_/_/\__(_)____/_/ /_/
 
 EOF
-    echo -e "${STYLE}init.sh${NC} -- Initialize a new system, automatically"
+    echo -e "${STYLE}$0${NC} -- Initialize a new system, automatically"
     echo "version $VERSION"
     echo
 }
@@ -52,14 +52,6 @@ esac
 
 # Install or update Bitwarden CLI
 . update_bw.sh
-
-# Setting gitconfig global options
-_log "Setting .gitconfig file"
-git config --global core.editor "nvim"
-if ! [[ -z $name ]] && ! [[ -z $email ]]; then
-    git config --global user.name "$name"
-    git config --global user.email "$email"
-fi
 
 # Change shell to ZSH
 if [[ $SHELL != *"zsh"* ]]; then
