@@ -138,3 +138,7 @@ function bw_login() {
         export BW_SESSION=$(bw login --raw || bw unlock --raw)
     fi
 }
+
+function is_wsl() {
+    test $(which powershell.exe)
+}
