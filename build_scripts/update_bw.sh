@@ -15,7 +15,7 @@ fi
 if ! command -v bw >/dev/null 2>&1; then
     _log "Installing Bitwarden CLI"
     cd $LOCALBIN
-    if [[ $OS == "mac" ]]; then
+    if [[ $(identify_system) == "mac" ]]; then
         wget "https://bitwarden.com/download/?app=cli&platform=macos" -O bw.zip
     else
         wget "https://bitwarden.com/download/?app=cli&platform=linux" -O bw.zip
