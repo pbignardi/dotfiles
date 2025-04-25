@@ -3,7 +3,7 @@
 # Install or update Bitwarden CLI
 # Paolo Bignardi - 2025
 
-source common.sh
+source utils.sh
 
 # Delete Bitwarden if there are updates
 if command -v bw >/dev/null 2>&1 && ! $(bw update | grep "No update available" >/dev/null 2>&1); then

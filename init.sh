@@ -3,107 +3,55 @@
 # Initialize a new system, automatically.
 # Paolo Bignardi - 2025
 
+# Source common config and utils
 source utils.sh
 
-# Display init.sh info
-STYLE="\033[1;32m"
-RESET="\033[0m"
-echo '     _       _ __         __  '
-echo '    (_)___  (_) /_  _____/ /_ '
-echo '   / / __ \/ / __/ / ___/ __ \'
-echo '  / / / / / / /__ (__  ) / / /'
-echo ' /_/_/ /_/_/\__(_)____/_/ /_/ '
-echo
-echo -e "${STYLE}init.sh${NC} -- Initialize a new system, automatically"
-echo "version $VERSION"
-echo
+function print_logo() {
+    # Display init.sh info
+    STYLE="\033[1;32m"
+    RESET="\033[0m"
+    cat << "EOF"
+         _       _ __         __
+        (_)___  (_) /_  _____/ /_
+       / / __ \/ / __/ / ___/ __ \
+      / / / / / / /__ (__  ) / / /
+     /_/_/ /_/_/\__(_)____/_/ /_/
 
-# determine system
-OS=$(identify_system)
-if [[ -z ${OS:-} ]]; then
-    _error "Unsupported system"
-    exit 1
-else
-    _info "Identified OS: $OS"
-fi
+EOF
+    echo -e "${STYLE}init.sh${NC} -- Initialize a new system, automatically"
+    echo "version $VERSION"
+    echo
+}
 
-# Configure PATH
-if [[ ! -d $LOCALBIN ]]; then
-    mkdir -p $LOCALBIN
-fi
-export PATH=$LOCALBIN:$PATH
+# Clear and print logo
+clear
+print_logo
+
+# Determine system
+test "$(identify_system)" == "" && _error "Unsupported system" && exit 1
+_info "Identified OS: $(identify_system)"
 
 # Query for personal information
 if [[ -f .data.sh ]]; then
-    _log "Load configuration details"
-    _info "To clear configuration details, delete ${ITALIC}.data.sh${NOITALIC}"
+    _log "Load configuration details from ${ITALIC}.data.sh${NOITALIC}"
     source .data.sh
-else
-    _log "Enter configuration details"
-    echo "#!/usr/bin/env bash" >.data.sh
 fi
-
-# Ask for work/personal alternative
-if [[ -z ${work:-} ]]; then
-    read -p '=> Is this your work computer? (y/N) ' yn
-    case $yn in
-    [Yy]*) work=true ;;
-    *) work=false ;;
-    esac
-    echo "work=$work" >>.data.sh
-fi
-
-# Ask for WSL
-if [[ -z ${wsl:-} ]]; then
-    read -p '=> Is this a WSL instance? (y/N) ' yn
-    case $yn in
-    [Yy]*) wsl=true ;;
-    *) wsl=false ;;
-    esac
-    echo "wsl=$wsl" >>.data.sh
-fi
-
-# Ask if it is personal laptop
-if [[ -z ${personal_laptop:-} ]]; then
-    read -p '=> Is this your personal laptop? (y/N) ' yn
-    case $yn in
-    [Yy]*) personal_laptop=true ;;
-    *) personal_laptop=false ;;
-    esac
-
-    echo "personal_laptop=$personal_laptop" >>.data.sh
-fi
-
-# Ask for email address
-if [[ -z ${email:-} ]]; then
-    read -p '=> Enter email address: ' email
-    echo email=\"$email\" >>.data.sh
-fi
-
-# Ask for name
-if [[ -z ${name:-} ]]; then
-    read -p '=> Enter user name: ' name
-    echo name=\"$name\" >>.data.sh
-fi
-
-# Ask to install NerdFonts
-if [[ -z ${nerdfonts:-} ]]; then
-    read -p '=> Do you want to install Nerd Fonts? (y/N) ' yn
-    case $yn in
-    [Yy]*) nerdfonts=true ;;
-    *) nerdfonts=false ;;
-    esac
-
-    echo "nerdfonts=$nerdfonts" >>.data.sh
+if [[ -z ${email:-} ]] || [[ -z ${name:-} ]]; then
+    _error "Edit .data.sh file and re-run $0"
+    exit 1
 fi
 
 # Install packages with platform package manager
 case "$(identify_system)" in
-    opensuse) source zypper.sh;;
-    fedora) source dnf.sh;;
-    arch) source pacman.sh;;
+    opensuse) . zypper.sh;;
+    fedora) . dnf.sh;;
+    arch) . pacman.sh;;
 esac
 
+. build_scripts.sh
+
+# Install or update Bitwarden CLI
+. update_bw.sh
 
 # Setting gitconfig global options
 _log "Setting .gitconfig file"
@@ -120,9 +68,6 @@ if [[ $SHELL != *"zsh"* ]]; then
     _info "Change will take effect after logout"
 fi
 
-# Install or update Bitwarden CLI
-. _scripts/update_bw.sh
-
 # setup SSH
 . _scripts/setup_ssh.sh
 
@@ -130,4 +75,4 @@ fi
 . _scripts/pull_dotfiles.sh
 
 # Apply dotfiles
-. _scripts/stow_dotfiles.sh
+. create_symlinks.sh
