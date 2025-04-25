@@ -11,11 +11,12 @@ function print_logo() {
     STYLE="\033[1;32m"
     RESET="\033[0m"
     cat << "EOF"
-         _       _ __         __
-        (_)___  (_) /_  _____/ /_
-       / / __ \/ / __/ / ___/ __ \
-      / / / / / / /__ (__  ) / / /
-     /_/_/ /_/_/\__(_)____/_/ /_/
+    .           .      .                     .
+    |-. ,-. ,-. |- ,-. |- ,-. ,-. ,-.    ,-. |-.
+    | | | | | | |  `-. |  |   ,-| | |    `-. | |
+    ^-' `-' `-' `' `-' `' '   `-^ |-' :; `-' ' '
+                                  |
+                                  '
 
 EOF
     echo -e "${STYLE}$0${NC} -- Initialize a new system, automatically"
@@ -52,10 +53,10 @@ if [[ $SHELL != *"zsh"* ]]; then
 fi
 
 # setup SSH
-. _scripts/setup_ssh.sh
+. setup_ssh.sh
 
 # Clone dotfiles repo
-. _scripts/pull_dotfiles.sh
+. pull_dotfiles.sh
 
 # Apply dotfiles
 . create_symlinks.sh
