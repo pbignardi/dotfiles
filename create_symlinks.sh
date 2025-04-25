@@ -3,7 +3,7 @@
 # Stow the right dotfiles for the system
 # Paolo Bignardi - 2025
 
-source common.sh
+source utils.sh
 
 STOW_DIRS=(bins fzf kitty nvim oh-my-posh tmux wezterm zsh)
 
