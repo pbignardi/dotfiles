@@ -18,7 +18,7 @@ config.font = wezterm.font({
 	harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
 })
 -- config.font = wezterm.font("Hack")
-config.font_size = 14
+config.font_size = 13
 config.line_height = 1.1
 
 -- colorscheme configuration
