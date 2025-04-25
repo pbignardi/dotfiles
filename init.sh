@@ -97,23 +97,13 @@ if [[ -z ${nerdfonts:-} ]]; then
     echo "nerdfonts=$nerdfonts" >>.data.sh
 fi
 
-# Install homebrew on Mac
-if [[ $OS == "mac" ]] && ! command -v brew >/dev/null 2>&1; then
-    _log "Installing Homebrew"
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
+# Install packages with platform package manager
+case "$(identify_system)" in
+    opensuse) source zypper.sh;;
+    fedora) source dnf.sh;;
+    arch) source pacman.sh;;
+esac
 
-# Check if homebrew is on path
-if ! [[ $PATH == *"homebrew"* ]]; then
-    # add homebrew to path
-    export PATH=$PATH:/opt/homebrew/bin
-fi
-
-# Update system
-. _scripts/update_system.sh
-
-# Install packages
-. _scripts/install_packages.sh
 
 # Setting gitconfig global options
 _log "Setting .gitconfig file"
@@ -132,11 +122,6 @@ fi
 
 # Install or update Bitwarden CLI
 . _scripts/update_bw.sh
-
-# Install nerd-fonts
-if [[ -z ${nerdfonts:-} ]]; then
-    . _scripts/install_nerdfonts.sh
-fi
 
 # setup SSH
 . _scripts/setup_ssh.sh
