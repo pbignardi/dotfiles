@@ -3,7 +3,7 @@
 # Install nerd fonts by downloading from Github releases.
 # Paolo Bignardi - 2025
 
-source common.sh
+source utils.sh
 
 function font_install() {
     local specific_font=$2

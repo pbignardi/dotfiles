@@ -3,7 +3,7 @@
 # Install fonts manually (no NerdFont -- base font only).
 # Paolo Bignardi - 2025
 
-source common.sh
+source utils.sh
 
 # determine system
 OS=$(identify_system)
