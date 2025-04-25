@@ -3,7 +3,7 @@
 # Setup Github SSH keys
 # Paolo Bignardi - 2025
 
-source common.sh
+source utils.sh
 
 function github_authenticated() {
     # Attempt to ssh to GitHub
@@ -22,10 +22,8 @@ function github_authenticated() {
 }
 
 # currently copy private key from vault. future: use bitwarden ssh-agent, maybe
-_log "Setup Github SSH keys and authentication"
-if github_authenticated; then
-    _info "SSH to Github already working"
-else
+if ! github_authenticated; then
+    _log "Setup Github SSH keys and authentication"
     bw_login
 
     if [[ -f $HOME/.ssh/github ]]; then

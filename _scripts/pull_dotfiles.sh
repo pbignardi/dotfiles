@@ -3,7 +3,7 @@
 # Pull dotfiles from Github
 # Paolo Bignardi - 2025
 
-source common.sh
+source utils.sh
 
 # If there are changes in the repo, put out a warning and exit
 _log "Cloning dotfiles repository"

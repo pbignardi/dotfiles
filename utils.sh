@@ -8,7 +8,7 @@ LOCALBIN=$HOME/.local/bin
 LOCALSRC=$HOME/.src
 DOTFILES=$HOME/dotfiles
 USERNAME=pbignardi
-VERSION="1.1.0"
+VERSION="2.0.0"
 
 # Log stuff
 GREEN="\033[0;32m"
