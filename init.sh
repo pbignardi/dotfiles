@@ -31,16 +31,6 @@ print_logo
 test "$(identify_system)" == "" && _error "Unsupported system" && exit 1
 _info "Identified OS: $(identify_system)"
 
-# Query for personal information
-if [[ -f .data.sh ]]; then
-    _log "Load configuration details from ${ITALIC}.data.sh${NOITALIC}"
-    source .data.sh
-fi
-if [[ -z ${email:-} ]] || [[ -z ${name:-} ]]; then
-    _error "Edit .data.sh file and re-run $0"
-    exit 1
-fi
-
 # Install packages with platform package manager
 case "$(identify_system)" in
     opensuse) . packages/zypper.sh;;
@@ -48,6 +38,7 @@ case "$(identify_system)" in
     arch) . packages/pacman.sh;;
 esac
 
+# Install packages with build script
 . build_scripts.sh
 
 # Install or update Bitwarden CLI
