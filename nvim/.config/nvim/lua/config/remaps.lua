@@ -25,6 +25,7 @@ vim.keymap.set("n", "<leader>sf", fzflua.files, { desc = "Find file" })
 vim.keymap.set("n", "<leader>sh", fzflua.helptags, { desc = "Search in help" })
 vim.keymap.set("n", "<leader>/", fzflua.buffers, { desc = "Select currently open buffers" })
 vim.keymap.set("n", "<leader>tc", fzflua.colorschemes, { desc = "Select currently open buffers" })
+vim.keymap.set("n", "<leader>sr", fzflua.resume, { desc = "Resume search" })
 
 -- lsp
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Open Code Actions" })
