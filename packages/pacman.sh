@@ -39,6 +39,7 @@ is_wsl && return
 _log "Installing extra packages"
 sudo pacman -Syu --noconfirm $(cat << EndOfFile
 wezterm
+ttf-nerd-fonts-symbols-mono
 distrobox
 podman
 ttf-hack
