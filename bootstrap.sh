@@ -39,6 +39,9 @@ case "$(identify_system)" in
     arch) . packages/pacman.sh;;
 esac
 
+# Add ~/.local/bin to PATH
+export PATH=$PATH:$LOCALBIN
+
 # Install packages with build script
 for s in $(ls build_scripts); do
     . build_scripts/$s
