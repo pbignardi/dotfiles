@@ -60,5 +60,8 @@ fi
 # Clone dotfiles repo
 . pull_dotfiles.sh
 
+# Create directories
+. create_dirs.sh
+
 # Apply dotfiles
 . create_symlinks.sh
