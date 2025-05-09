@@ -30,8 +30,14 @@ bat
 btop
 zathura
 zathura-pdf-poppler
+reflector
 EndOfFile
 )
+
+
+_log "Use REFLECTOR to select best mirrors"
+sudo echo "--country France,Germany,Italy" >> /etc/xdg/reflector/reflector.conf
+sudo systemctl enable --now reflector
 
 # Only non-WSL packages
 is_wsl && return
