@@ -43,10 +43,13 @@ echo "--country France,Germany,Italy" | sudo tee -a /etc/xdg/reflector/reflector
 sudo systemctl enable --now reflector
 
 # Install paru
-git clone https://aur.archlinux.org/paru.git $LOCALSRC/paru
-cd paru
-makepkg -si
-cd $DOTFILES
+if ! command -v paru %2>/dev/null; then
+    _log "Install Paru"
+    git clone https://aur.archlinux.org/paru.git $LOCALSRC/paru
+    cd paru
+    makepkg -si
+    cd $DOTFILES
+fi
 
 # Only non-WSL packages
 is_wsl && return
