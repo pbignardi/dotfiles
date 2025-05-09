@@ -22,6 +22,7 @@ gum
 nodejs
 npm
 deno
+base-devel
 
 neovim
 fzf
@@ -40,6 +41,12 @@ EndOfFile
 _log "Use REFLECTOR to select best mirrors"
 echo "--country France,Germany,Italy" | sudo tee -a /etc/xdg/reflector/reflector.conf
 sudo systemctl enable --now reflector
+
+# Install paru
+git clone https://aur.archlinux.org/paru.git $LOCALSRC/paru
+cd paru
+makepkg -si
+cd $DOTFILES
 
 # Only non-WSL packages
 is_wsl && return
