@@ -1,3 +1,15 @@
+-- functions
+local toggle_files = function(...)
+	if not MiniFiles.close() then
+		MiniFiles.open(...)
+	end
+end
+
+local trim_trailspace = function()
+	vim.cmd(":%s/\r//ge")
+	require("mini.trailspace").trim()
+end
+
 -- misc
 vim.keymap.set("n", "<leader>x", ":.lua<CR>", { desc = "Run current Lua line" })
 vim.keymap.set("v", "<leader>x", ":lua<CR>", { desc = "Run current Lua selection" })
@@ -8,14 +20,10 @@ vim.keymap.set("n", "j", "v:count == 0? 'gj' : 'j'", { expr = true, silent = tru
 vim.keymap.set("n", "k", "v:count == 0? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
-vim.keymap.set("n", "<leader>ts", require("mini.trailspace").trim, { desc = "Trim trailing spaces" })
+
+vim.keymap.set("n", "<leader>ts", trim_trailspace, { desc = "Trim trailing spaces" })
 
 -- files
-local toggle_files = function(...)
-	if not MiniFiles.close() then
-		MiniFiles.open(...)
-	end
-end
 vim.keymap.set("n", "<leader>f", toggle_files, { desc = "Open file explorer" })
 
 -- fuzzy finder
