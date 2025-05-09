@@ -14,7 +14,7 @@ config.window_padding = {
 
 -- font configuration
 config.font = wezterm.font({
-	family = "Hack",
+	family = "SourceCode Pro",
 	harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
 })
 -- config.font = wezterm.font("Hack")
