@@ -5,7 +5,7 @@
 
 source utils.sh
 
-STOW_DIRS=(bins fzf nvim oh-my-posh tmux wezterm zsh git)
+STOW_DIRS=(bins fzf nvim oh-my-posh tmux wezterm zsh)
 
 # delete packages
 _log "Deleting existing dotfiles"
