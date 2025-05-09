@@ -13,45 +13,70 @@ After having tried `chezmoi` I figured it was probably easier to maintain a simp
 
 ## Bootstrap
 
-To automatically setup a new system, clone the repository and run the `init.sh` script with `bash`.
+To automatically setup a new system, clone the repository and run the `bootstrap.sh` script with `bash`.
 
 Clone the repo
-```sh
+```bash
 git clone https://github.com/pbignardi/dotfiles $HOME/dotfiles
 ```
 and run the setup script with
-```sh
-bash ~/dotfiles/init.sh
+```bash
+bash ~/dotfiles/bootstrap.sh
 ```
 
 > [!CAUTION]
-> The `init.sh` assumes a bare system, where almost nothing is installed.
+> The `bootstrap.sh` assumes a bare system, where almost nothing is installed.
 > If you are running it not on a new system, **make sure to backup all your dotfiles before proceeding**.
 
-## How does `init.sh` work?
+## How does `bootstrap.sh` work?
 
-The `init.sh` script, performs some basic setup, to automate some of the configuration steps that are required on each system.
+The `bootstrap.sh` script, performs some basic setup, to automate some of the configuration steps that are required on each system.
 Dotfiles are assumed to be stored in the `~/dotfiles` directory,
 and each program has its own Stow package.
 
-The `init.sh` script performs the following actions:
-- Preliminary steps (a few questions, determining the operating system, setting `PATH`, etc...)
-- *On Mac only* `brew` gets installed.
-- Installation of base dependencies (e.g. `git`, `jq`, etc...).
-- Installation (or update) of [Bitwarden](https://bitwarden.com) password manager (CLI).
-- Login into Bitwarden CLI and set temporary session key.
-- Installation of applications packages (e.g. `nvim`, `tmux`, `fzf`, etc...).
-- Build from source packages that are not found (or not up to date) in the conventional repositories.
-- Installation of Nerd fonts (JetBrainsMono and Recursive).
-- Change shell to `zsh`.
+The `bootstrap.sh` script performs the following actions:
+- Preliminary steps
+- For each system, configure the package manager and install the required packages
+    - On Arch, run `packages/pacman.sh`
+    - On Mac, run `packages/brew.sh`
+- Run scripts from `build_scripts/` directory
+    - Install [Bitwarden](https://bitwarden.com) password manager (CLI).
+    - Install `uv`
+    - Install `oh-my-posh`
+- Change shell to ZSH
 - Copy Github SSH keys from the Bitwarden vault into the `~/.ssh` directory **only if ssh to Github fails**.
-- Setting `~/.gitconfig` file.
+- Pull dotfiles from Github
 - Set SSH remote to dotfiles repo.
-- Clone and `stow` dotfiles.
+- Delete files that conflicts with `stow` packages
+- `stow` dotfiles.
 
-Some of the action performed by `init.sh` are separated into different scripts which `init.sh` call.
-For reference:
-- `install_nerdfonts.sh`: checks for installed Nerd Fonts and install the missing ones.
-- `pull_dotfiles.sh`: pulls new changes from the remote git repository.
-- `stow_dotfiles.sh`: symlinks all the required dotfiles.
-- `update_bw.sh`: checks for updates of Bitwarden CLI and installs them.
+## Extra: setup Archlinux WSL
+Thankfullly there is a way to use Linux on Windows, using WSL.
+Below I report some instructions on how to setup Archlinux on WSL, as instructed on [the ArchWiki](https://wiki.archlinux.org/title/Install_Arch_Linux_on_WSL).
+
+Installation is straightforward using
+```ps1
+wsl --install archlinux
+```
+
+Afterwards, install `sudo`, `sed` and create a user to avoid having to use root.
+```bash
+pacman -Syu sudo vi
+useradd -m -G wheel -s /bin/bash USERNAME
+```
+
+Allow the wheel group to use sudo
+```bash
+visudo
+```
+
+Modify `/etc/wsl.conf` and add
+```conf
+[user]
+default=USERNAME
+```
+
+Finally exit WSL and terminate it:
+```ps1
+wsl --terminate archlinux
+```
