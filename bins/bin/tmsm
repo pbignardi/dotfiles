@@ -8,6 +8,7 @@ else
     exit 1
 fi
 
+include_paths+=(~/projects ~/notes)
 includes=""
 for p in "${include_paths[@]}"; do
     includes=$includes" --search-path "${p}
