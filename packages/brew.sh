@@ -31,6 +31,8 @@ brew "fd"
 brew "ripgrep"
 brew "bat"
 brew "btop"
+brew "npm"
+brew "deno"
 
 brew "podman"
 
