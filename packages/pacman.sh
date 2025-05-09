@@ -20,6 +20,8 @@ gcc
 go
 gum
 nodejs
+npm
+deno
 
 neovim
 fzf
