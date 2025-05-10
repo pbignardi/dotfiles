@@ -2,6 +2,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/bin
 
+# Set systemd editor
+export SYSTEMD_EDITOR=nvim
+
 # setup ZSH PLUGINS
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-syntax-highlight/zsh-syntax-highlighting.zsh
