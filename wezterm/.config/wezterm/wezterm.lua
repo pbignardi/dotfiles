@@ -14,9 +14,15 @@ config.window_padding = {
 
 -- font configuration
 config.adjust_window_size_when_changing_font_size = false
-config.font = wezterm.font({
-	family = "SourceCode Pro",
-	harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+config.font = wezterm.font_with_fallback({
+	{
+		family = "SourceCode Pro",
+		harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+	},
+	{
+		family = "Source Code Pro",
+		harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+	},
 })
 config.font_size = 13
 config.line_height = 1.1
