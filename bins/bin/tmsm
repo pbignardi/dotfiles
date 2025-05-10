@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 # tmsc - TMux Session Creator
+# You can define dirs to include and to exclude by defining
+# `include_paths` and `exclude_paths` arrays in ~/.tmsm.conf.
+# By default ~, ~/projects and ~/notes are included dirs.
 
-if [[ -f $HOME/.tmsm.conf ]]; then
-    source $HOME/.tmsm.conf
-else
-    echo "tmsm: ~/.tmsm.conf: no such file or directory"
-    exit 1
-fi
+[[ -f $HOME/.tmsm.conf ]] && source $HOME/.tmsm.conf
 
-include_paths+=(~/projects ~/notes)
+include_paths+=(~/projects ~/notes ~)
 includes=""
 for p in "${include_paths[@]}"; do
     includes=$includes" --search-path "${p}
