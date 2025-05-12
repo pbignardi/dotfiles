@@ -22,7 +22,10 @@ gum
 nodejs
 npm
 deno
+curl
+wget
 base-devel
+base
 
 neovim
 fzf
