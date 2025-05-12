@@ -37,6 +37,7 @@ brew "btop"
 brew "npm"
 brew "deno"
 
+brew "bitwarden-cli"
 brew "podman"
 
 ## Casks

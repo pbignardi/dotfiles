@@ -68,4 +68,5 @@ distrobox
 podman
 ttf-hack
 adobe-source-code-pro-fonts
+bitwarden-cli
 EndOfFile
