@@ -40,9 +40,11 @@ reflector
 EndOfFile
 
 
-_log "Use REFLECTOR to select best mirrors"
-echo "--country France,Germany,Italy" | sudo tee -a /etc/xdg/reflector/reflector.conf
-sudo systemctl enable --now reflector
+if ! systemctl is-active --quiet reflector; then
+    _log "Use REFLECTOR to select best mirrors"
+    echo "--country France,Germany,Italy" | sudo tee -a /etc/xdg/reflector/reflector.conf
+    sudo systemctl enable --now reflector
+fi
 
 # Install paru
 if ! command -v paru %2>/dev/null; then
