@@ -10,7 +10,7 @@ sudo pacman -Syu --noconfirm
 
 # Core packages
 _log "Installing core packages"
-sudo pacman -Syu --noconfirm $(cat << EndOfFile
+sudo pacman -Syu --noconfirm --needed $(cat << EndOfFile
 git
 stow
 jq
@@ -55,7 +55,7 @@ fi
 is_wsl && return
 
 _log "Installing extra packages"
-sudo pacman -Syu --noconfirm $(cat << EndOfFile
+sudo pacman -Syu --noconfirm --needed $(cat << EndOfFile
 wezterm
 ttf-nerd-fonts-symbols-mono
 distrobox
