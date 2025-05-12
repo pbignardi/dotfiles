@@ -33,8 +33,8 @@ test "$(identify_system)" == "" && _error "Unsupported system" && exit 1
 _info "Identified OS: $(identify_system)"
 
 # create LOCALSRC, LOCALBIN
-! [[ -d $LOCALSRC ]] && mkdir $LOCALSRC
-! [[ -d $LOCALBIN ]] && mkdir $LOCALBIN
+! [[ -d $LOCALSRC ]] && mkdir -p $LOCALSRC
+! [[ -d $LOCALBIN ]] && mkdir -p $LOCALBIN
 
 # Install packages with platform package manager
 case "$(identify_system)" in
