@@ -32,6 +32,10 @@ print_logo
 test "$(identify_system)" == "" && _error "Unsupported system" && exit 1
 _info "Identified OS: $(identify_system)"
 
+# create LOCALSRC, LOCALBIN
+! [[ -d $LOCALSRC ]] && mkdir $LOCALSRC
+! [[ -d $LOCALBIN ]] && mkdir $LOCALBIN
+
 # Install packages with platform package manager
 case "$(identify_system)" in
     opensuse) . packages/zypper.sh;;
