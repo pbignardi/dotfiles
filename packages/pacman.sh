@@ -67,4 +67,5 @@ ttf-nerd-fonts-symbols-mono
 distrobox
 podman
 ttf-hack
+adobe-source-code-pro-fonts
 EndOfFile

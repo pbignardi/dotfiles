@@ -15,6 +15,7 @@ fi
 brew bundle --file=- << EndOfFile
 ## Core packages
 brew "wget"
+brew "curl"
 brew "git"
 brew "stow"
 brew "jq"
@@ -40,5 +41,6 @@ brew "podman"
 cask "skim"
 cask "wezterm"
 cask "font-hack"
+cask "font-source-code-pro"
 
 EndOfFile
