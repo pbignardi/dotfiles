@@ -10,7 +10,7 @@ sudo pacman -Syu --noconfirm
 
 # Core packages
 _log "Installing core packages"
-sudo pacman -Syu --noconfirm --needed $(cat << EndOfFile
+sudo pacman -Syu --noconfirm --needed - << EndOfFile
 git
 stow
 jq
@@ -35,7 +35,6 @@ zathura
 zathura-pdf-poppler
 reflector
 EndOfFile
-)
 
 
 _log "Use REFLECTOR to select best mirrors"
@@ -55,11 +54,10 @@ fi
 is_wsl && return
 
 _log "Installing extra packages"
-sudo pacman -Syu --noconfirm --needed $(cat << EndOfFile
+sudo pacman -Syu --noconfirm --needed - << EndOfFile
 wezterm
 ttf-nerd-fonts-symbols-mono
 distrobox
 podman
 ttf-hack
 EndOfFile
-)
