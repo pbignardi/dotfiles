@@ -41,6 +41,7 @@ case "$(identify_system)" in
     opensuse) . packages/zypper.sh;;
     fedora) . packages/dnf.sh;;
     arch) . packages/pacman.sh;;
+    mac) . packages/brew.sh;;
 esac
 
 # Add ~/.local/bin to PATH
