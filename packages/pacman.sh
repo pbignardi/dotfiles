@@ -49,10 +49,12 @@ fi
 # Install paru
 if ! command -v paru %2>/dev/null; then
     _log "Install Paru"
-    git clone https://aur.archlinux.org/paru.git $LOCALSRC/paru
-    cd paru
+    old_wd=$(pwd)
+    cd $LOCALSRC
+    git clone https://aur.archlinux.org/paru-bin.git paru-bin
+    cd paru-bin
     makepkg -si
-    cd $DOTFILES
+    cd $old_wd
 fi
 
 # Only non-WSL packages
