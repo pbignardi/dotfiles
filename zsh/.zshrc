@@ -41,7 +41,7 @@ bindkey -s "^f" "tmss\n"
 
 # Add Homebrew to PATH on MAC (in the future move to different STOW)
 if [[ $(uname -s) == "Darwin" ]]; then
-    export PATH=$PATH:/opt/homebrew/bin
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Import aliases
