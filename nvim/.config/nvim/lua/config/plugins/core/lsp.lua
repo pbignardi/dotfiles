@@ -10,6 +10,7 @@ local lsp_servers = {
 	julials = {},
 	clangd = {},
 	bashls = {},
+	jdtls = {},
 }
 
 return {
@@ -32,7 +33,10 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"folke/lazydev.nvim",
+			{
+				"folke/lazydev.nvim",
+				ft = { "lua" },
+			},
 		},
 		config = function()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
