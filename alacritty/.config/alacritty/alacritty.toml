@@ -13,8 +13,8 @@ dimensions.lines = 30
 option_as_alt = "Both"
 
 [font]
-size=15
-normal.family = "MesloLGM Nerd Font Mono"
+size=14
+normal.family = "MesloLGS Nerd Font Mono"
 normal.style = "Regular"
 
 [cursor]
