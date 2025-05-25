@@ -10,7 +10,7 @@ sudo pacman -Syu --noconfirm
 
 # Core packages
 _log "Installing core packages"
-sudo pacman -Syu --noconfirm --needed - << EndOfFile
+sudo pacman -Syu --noconfirm --needed - <<EndOfFile
 git
 stow
 jq
@@ -39,7 +39,6 @@ zathura-pdf-poppler
 reflector
 EndOfFile
 
-
 if ! systemctl is-active --quiet reflector; then
     _log "Use REFLECTOR to select best mirrors"
     echo "--country France,Germany,Italy" | sudo tee -a /etc/xdg/reflector/reflector.conf
@@ -47,7 +46,7 @@ if ! systemctl is-active --quiet reflector; then
 fi
 
 # Install paru
-if ! command -v paru %2>/dev/null; then
+if ! command -v paru %2 >/dev/null; then
     _log "Install Paru"
     old_wd=$(pwd)
     cd $LOCALSRC
@@ -61,12 +60,14 @@ fi
 is_wsl && return
 
 _log "Installing extra packages"
-sudo pacman -Syu --noconfirm --needed - << EndOfFile
+sudo pacman -Syu --noconfirm --needed - <<EndOfFile
+alacritty
 wezterm
 ttf-nerd-fonts-symbols-mono
+ttf-meslo-nerd
+ttf-hack
 distrobox
 podman
-ttf-hack
 adobe-source-code-pro-fonts
 bitwarden-cli
 EndOfFile
