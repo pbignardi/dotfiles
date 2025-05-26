@@ -12,15 +12,18 @@ config.window_padding = {
 	bottom = 0,
 }
 
+-- specify font-size on retina display
+wezterm.on("window-config-reloaded", function(window)
+	if wezterm.gui.screens().active.name == "Built-in Retina Display" then
+		window:set_config_overrides({
+			font_size = 14,
+		})
+	end
+end)
+
 -- font configuration
 config.adjust_window_size_when_changing_font_size = false
-config.font = wezterm.font({
-	family = "Source Code Pro",
-	weight = "Regular",
-	harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
-})
 config.font_size = 13
-config.line_height = 1.1
 
 -- colorscheme configuration
 config.color_scheme = "Chalk (base16)"
