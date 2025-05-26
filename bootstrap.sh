@@ -55,7 +55,7 @@ done
 # Change shell to ZSH
 if [[ $SHELL != *"zsh"* ]]; then
     _log "Changing shell to ZSH"
-    chsh -s $(which zsh) $USER
+    chsh -s /bin/zsh $USER
     _info "Change will take effect after logout"
 fi
 
