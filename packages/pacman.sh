@@ -62,13 +62,9 @@ is_wsl && return
 
 _log "Installing extra packages"
 sudo pacman -Syu --noconfirm --needed - <<EndOfFile
-alacritty
 wezterm
 ttf-nerd-fonts-symbols-mono
-ttf-meslo-nerd
-ttf-hack
 distrobox
 podman
-adobe-source-code-pro-fonts
 bitwarden-cli
 EndOfFile

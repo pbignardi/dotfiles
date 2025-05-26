@@ -43,9 +43,5 @@ brew "podman"
 ## Casks
 cask "skim"
 cask "wezterm"
-cask "alacritty"
-cask "font-hack"
-cask "font-source-code-pro"
-cask "font-meslo-lg-nerd-font"
 
 EndOfFile
