@@ -26,6 +26,7 @@ curl
 wget
 base-devel
 base
+openssh
 
 neovim
 fzf
