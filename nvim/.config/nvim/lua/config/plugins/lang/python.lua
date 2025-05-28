@@ -13,4 +13,11 @@ return {
 			{ "<leader>vs", vim.cmd.VenvSelect },
 		},
 	},
+	{
+		-- python debug adapter protocol
+		"mfussenegger/nvim-dap-python",
+		config = function()
+			require("dap-python").setup("uv")
+		end,
+	},
 }

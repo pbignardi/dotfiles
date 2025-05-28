@@ -1,5 +1,5 @@
 return {
-	{ "echasnovski/mini.starter", version = false },
+	"echasnovski/mini.starter",
 	version = false,
 	config = function()
 		-- starter

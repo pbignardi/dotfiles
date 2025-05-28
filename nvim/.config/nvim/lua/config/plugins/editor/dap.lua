@@ -9,16 +9,10 @@ return {
 		end,
 	},
 	{
-		"igorlfs/nvim-dap-view",
-		---@module 'dap-view'
-		---@type dapview.Config
-		opts = {},
-	},
-	-- python debug adapter protocol
-	{
-		"mfussenegger/nvim-dap-python",
-		config = function()
-			require("dap-python").setup("uv")
-		end,
+		"rcarriga/nvim-dap-ui",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"nvim-neotest/nvim-nio",
+		},
 	},
 }
