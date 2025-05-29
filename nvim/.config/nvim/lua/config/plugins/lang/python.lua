@@ -1,16 +1,18 @@
+local filetype = "python"
 return {
 	{
 		-- python venv selector
 		"linux-cultist/venv-selector.nvim",
 		dependencies = { "neovim/nvim-lspconfig" },
-		lazy = false,
 		branch = "regexp",
-		ft = { "python" },
-		config = function()
-			require("venv-selector").setup()
-		end,
+		ft = filetype,
+		opts = {
+			options = {
+				picker = "fzf-lua",
+			},
+		},
 		keys = {
-			{ "<leader>vs", vim.cmd.VenvSelect },
+			{ "<leader>vs", vim.cmd.VenvSelect, desc = "Select Python virtual environment", ft = filetype },
 		},
 	},
 	{

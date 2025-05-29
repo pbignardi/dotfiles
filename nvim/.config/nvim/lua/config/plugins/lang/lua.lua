@@ -1,7 +1,8 @@
+local filetype = { "lua" }
 return {
 	{
 		"folke/lazydev.nvim",
-		ft = "lua",
+		ft = filetype,
 		opts = {
 			library = {
 				"nvim-dap-ui",

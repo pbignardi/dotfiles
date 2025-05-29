@@ -1,6 +1,7 @@
+local filetype = { "java" }
 return {
 	"mfussenegger/nvim-jdtls",
-	ft = { "java" },
+	ft = filetype,
 	config = function()
 		local config = {
 			cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/jdtls") },
