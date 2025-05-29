@@ -45,20 +45,21 @@ return {
 				callback = function(ev)
 					local fzflua = require("fzf-lua")
 
-					local nsetkeymap = function(keys, func, desc)
-						vim.keymap.set("n", keys, func, { desc = desc, buffer = ev.buf })
+					local wk = require("which-key")
+					local lspkeymap = function(keys, func, desc)
+						wk.add({ keys, func, desc = desc, buffer = ev.buf, icon = { icon = "", color = "orange" } })
 					end
 
-					nsetkeymap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-					nsetkeymap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-					nsetkeymap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-					nsetkeymap("gr", fzflua.lsp_references, "[G]oto [R]eferences")
-					nsetkeymap("gI", fzflua.lsp_implementations, "[G]oto [I]mplementation")
-					nsetkeymap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-					nsetkeymap("<leader>ds", fzflua.lsp_document_symbols, "[D]ocument [S]ymbols")
-					nsetkeymap("<leader>ws", fzflua.lsp_workspace_symbols, "[W]orkspace [S]ymbols")
-					nsetkeymap("K", vim.lsp.buf.hover, "Hover Documentation")
-					nsetkeymap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
+					lspkeymap("<leader>rn", vim.lsp.buf.rename, "Rename")
+					lspkeymap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
+					lspkeymap("gd", vim.lsp.buf.definition, "Goto Definition")
+					lspkeymap("gr", fzflua.lsp_references, "Goto References")
+					lspkeymap("gI", fzflua.lsp_implementations, "Goto Implementation")
+					lspkeymap("<leader>D", vim.lsp.buf.type_definition, "Type Definition")
+					lspkeymap("<leader>ds", fzflua.lsp_document_symbols, "Document Symbols")
+					lspkeymap("<leader>ws", fzflua.lsp_workspace_symbols, "Workspace Symbols")
+					lspkeymap("K", vim.lsp.buf.hover, "Hover Documentation")
+					lspkeymap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 				end,
 			})
 		end,
