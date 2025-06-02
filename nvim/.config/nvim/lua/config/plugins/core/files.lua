@@ -1,3 +1,9 @@
+local toggle_files = function(...)
+	if not MiniFiles.close() then
+		MiniFiles.open(...)
+	end
+end
+
 return {
 	"echasnovski/mini.files",
 	version = false,
@@ -48,4 +54,7 @@ return {
 			end,
 		})
 	end,
+	keys = {
+		{ "<leader>f", toggle_files, desc = "Toggle file manager" },
+	},
 }

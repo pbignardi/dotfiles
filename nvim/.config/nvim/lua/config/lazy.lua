@@ -28,3 +28,5 @@ require("lazy").setup({
 		border = "rounded",
 	},
 })
+
+vim.keymap.set("n", "<leader>l", require("lazy").home, { desc = "Open Lazy" })

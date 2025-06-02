@@ -17,6 +17,9 @@ return {
 	-- Mason
 	{
 		"williamboman/mason.nvim",
+		dependencies = {
+			"williamboman/mason-lspconfig.nvim",
+		},
 		opts = {
 			ui = {
 				border = "rounded",
@@ -37,6 +40,7 @@ return {
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 			require("mason-lspconfig").setup({
+				automatic_enable = true,
 				ensure_installed = vim.tbl_keys(lsp_servers),
 			})
 
@@ -45,9 +49,8 @@ return {
 				callback = function(ev)
 					local fzflua = require("fzf-lua")
 
-					local wk = require("which-key")
 					local lspkeymap = function(keys, func, desc)
-						wk.add({ keys, func, desc = desc, buffer = ev.buf, icon = { icon = "", color = "orange" } })
+						vim.keymap.set("n", keys, func, { desc = desc, buffer = ev.buf })
 					end
 
 					lspkeymap("<leader>rn", vim.lsp.buf.rename, "Rename")
@@ -55,20 +58,13 @@ return {
 					lspkeymap("gd", vim.lsp.buf.definition, "Goto Definition")
 					lspkeymap("gr", fzflua.lsp_references, "Goto References")
 					lspkeymap("gI", fzflua.lsp_implementations, "Goto Implementation")
-					lspkeymap("<leader>D", vim.lsp.buf.type_definition, "Type Definition")
-					lspkeymap("<leader>ds", fzflua.lsp_document_symbols, "Document Symbols")
+					lspkeymap("gD", vim.lsp.buf.type_definition, "Type Definition")
+					lspkeymap("gs", fzflua.lsp_document_symbols, "Document Symbols")
 					lspkeymap("<leader>ws", fzflua.lsp_workspace_symbols, "Workspace Symbols")
 					lspkeymap("K", vim.lsp.buf.hover, "Hover Documentation")
 					lspkeymap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 				end,
 			})
-		end,
-	},
-	-- Mason-lspconfig
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({})
 		end,
 	},
 }

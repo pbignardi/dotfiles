@@ -1,3 +1,27 @@
+local fzf_files = function()
+	require("fzf-lua").files()
+end
+
+local fzf_grep = function()
+	require("fzf-lua").live_grep()
+end
+
+local fzf_help = function()
+	require("fzf-lua").helptags()
+end
+
+local fzf_buffers = function()
+	require("fzf-lua").buffers()
+end
+
+local fzf_colorschemes = function()
+	require("fzf-lua").colorschemes()
+end
+
+local fzf_resume = function()
+	require("fzf-lua").resume()
+end
+
 return {
 	-- fzf lua
 	{
@@ -6,13 +30,20 @@ return {
 		opts = {},
 		config = function(_, opts)
 			local fzflua = require("fzf-lua")
-			local actions = fzflua.actions
 
 			fzflua.setup(opts)
 			fzflua.register_ui_select()
 
-			return ops
+			return opts
 		end,
+		keys = {
+			{ "<leader>/", fzf_buffers, desc = "Open buffers" },
+			{ "<leader>sf", fzf_files, desc = "Files" },
+			{ "<leader>sg", fzf_grep, desc = "Grep" },
+			{ "<leader>sh", fzf_help, desc = "Help" },
+			{ "<leader>sc", fzf_colorschemes, desc = "Colorschemes" },
+			{ "<leader>sr", fzf_resume, desc = "Resume" },
+		},
 	},
 	-- Telescope
 	{

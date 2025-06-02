@@ -1,3 +1,8 @@
+local trim_trailspace = function()
+	vim.cmd(":%s/\r//ge")
+	require("mini.trailspace").trim()
+end
+
 return {
 	{
 		-- autogenerate open-close text objects
@@ -22,6 +27,9 @@ return {
 		config = function()
 			require("mini.trailspace").setup()
 		end,
+		keys = {
+			{ "<leader>ts", trim_trailspace, desc="Tim trailing spaces" },
+		},
 	},
 	{
 		-- define around/inner text objects
