@@ -12,56 +12,19 @@ config.window_padding = {
 	bottom = 0,
 }
 
-local monitor_specific_config = {
-	-- Built-in retina display on Mac
-	{
-		identify = function()
-			if wezterm.gui.screens().active.name == "Built-in Retina Display" then
-				return true
-			else
-				return false
-			end
-		end,
-		config = {
-			font_size = 14,
-		},
-	},
-	-- 2K ultrawide monitor
-	{
-		identify = function()
-			return wezterm.gui.screens().active.height == 1440 and wezterm.gui.screens().active.width == 3440
-		end,
-		config = {
-			font_size = 16,
-		},
-	},
-	-- 2k monitor
-	{
-		identify = function()
-			return wezterm.gui.screens().active.height == 1440 and wezterm.gui.screens().active.width == 2560
-		end,
-		config = {
-			font_size = 16,
-		},
-	},
-	-- 1080p monitor
-	{
-		identify = function()
-			return wezterm.gui.screens().active.width == 1080 and wezterm.gui.screens().active.width == 1920
-		end,
-		config = {
-			font_size = 15,
-		},
-	},
-}
+-- fontsize referenced on 96 DPI display
+local ref_fontsize = 13
+local ref_dpi = 96
 
--- specify font-size on retina display
+-- update font-size based on dpi settings
 wezterm.on("window-config-reloaded", function(window)
-	for _, monitor in ipairs(monitor_specific_config) do
-		if monitor.identify() then
-			window:set_config_overrides(monitor.config)
-		end
-	end
+	local active = wezterm.gui.screens().active
+	local dpi = active.effective_dpi
+	local fontsize = math.ceil(ref_fontsize * ref_dpi / dpi)
+
+	window:set_config_overrides({
+		font_size = fontsize,
+	})
 end)
 
 -- font configuration
