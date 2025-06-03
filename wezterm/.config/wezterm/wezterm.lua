@@ -39,7 +39,7 @@ local fontsize_setters = {
 }
 
 -- update font-size based on dpi settings
-wezterm.on("window-config-reloaded", fontsize_setters.line_nr)
+wezterm.on("window-config-reloaded", fontsize_setters.ref_dpi)
 
 -- font configuration
 config.adjust_window_size_when_changing_font_size = false
