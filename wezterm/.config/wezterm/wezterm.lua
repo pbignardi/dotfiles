@@ -14,15 +14,14 @@ config.window_padding = {
 
 local fontsize_setters = {
 	ref_dpi = function(window)
-		-- fontsize referenced on 96 DPI display
-		local ref_fs = 13
-		local ref_dpi = 96
+		-- fontsize referenced on 72 DPI display
+		local ref_fs = 18
 
 		local active = wezterm.gui.screens().active
 
 		-- compute font size based on the screen dpi
 		window:set_config_overrides({
-			font_size = math.ceil(ref_fs * active.effective_dpi / ref_dpi),
+			font_size = math.ceil(ref_fs * 72 / active.effective_dpi),
 		})
 	end,
 	line_nr = function(window)
