@@ -22,6 +22,10 @@ local fzf_resume = function()
 	require("fzf-lua").resume()
 end
 
+local fzf_builtin = function()
+	require("fzf-lua").builtin()
+end
+
 return {
 	-- fzf lua
 	{
@@ -43,6 +47,7 @@ return {
 			{ "<leader>sh", fzf_help, desc = "Help" },
 			{ "<leader>sc", fzf_colorschemes, desc = "Colorschemes" },
 			{ "<leader>sr", fzf_resume, desc = "Resume" },
+			{ "<leader>sb", fzf_builtin, desc = "Built-in" },
 		},
 	},
 	-- Telescope

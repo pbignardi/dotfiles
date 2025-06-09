@@ -31,6 +31,7 @@ return {
 				{ "<leader>sg", desc = "live grep", icon = "" },
 				{ "<leader>sh", desc = "helptags", icon = "" },
 				{ "<leader>sr", desc = "resume", icon = "" },
+				{ "<leader>sb", desc = "built-ins", icon = "" },
 			})
 
 			-- trouble
