@@ -1,6 +1,10 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+local is_high_density = function(screen)
+	return screen.effective_dpi >= 144
+end
+
 -- disable tab bar
 config.enable_tab_bar = false
 
@@ -15,13 +19,18 @@ config.window_padding = {
 local fontsize_setters = {
 	ref_dpi = function(window)
 		-- fontsize referenced on 72 DPI display
-		local ref_fs = 18
+		local ref_fs = 16
 
 		local active = wezterm.gui.screens().active
+		local dpi = active.effective_dpi
+
+		if is_high_density(active) then
+			dpi = dpi / 2
+		end
 
 		-- compute font size based on the screen dpi
 		window:set_config_overrides({
-			font_size = math.ceil(ref_fs * 72 / active.effective_dpi),
+			font_size = math.ceil(ref_fs * 72 / dpi),
 		})
 	end,
 	line_nr = function(window)
