@@ -796,6 +796,27 @@ hi(
 hi(0, "lualine_transitional_lualine_b_diagnostics_warn_normal_to_lualine_c_normal", { bg = "#343434", fg = "#171717" })
 hi(0, "lualine_transitional_lualine_b_normal_to_lualine_c_normal", { bg = "#343434", fg = "#171717" })
 
+hi(0, "RenderMarkdownH1", { fg = "#fb9fb1", bg = "#202020" })
+hi(0, "RenderMarkdownH2", { fg = "#6fc2ef", bg = "#202020" })
+hi(0, "RenderMarkdownH3", { fg = "#acc267", bg = "#202020" })
+hi(0, "RenderMarkdownH4", { fg = "#ddb26f", bg = "#202020" })
+hi(0, "RenderMarkdownH5", { fg = "#12cfc0", bg = "#202020" })
+hi(0, "RenderMarkdownH6", { fg = "#e1a3ee", bg = "#202020" })
+
+-- 3rd to last  element (with 10 midpoints)
+hi(0, "RenderMarkdownH1Bg", { fg = "#fb9fb1", bg = "#3F2E31" })
+hi(0, "RenderMarkdownH2Bg", { fg = "#6fc2ef", bg = "#25343D" })
+hi(0, "RenderMarkdownH3Bg", { fg = "#acc267", bg = "#303424" })
+hi(0, "RenderMarkdownH4Bg", { fg = "#ddb26f", bg = "#393225" })
+hi(0, "RenderMarkdownH5Bg", { fg = "#12cfc0", bg = "#143734" })
+hi(0, "RenderMarkdownH6Bg", { fg = "#e1a3ee", bg = "#3A2F3C" })
+
+hi(0, "RenderMarkdownQuote", { fg = "#b0b0b0", bg = "#151515" })
+
+hi(0, "RenderMarkdownTableHead", { fg = "#b0b0b0", bg = "#151515" })
+hi(0, "RenderMarkdownTableRow", { link = "RenderMarkdownTableHead" })
+hi(0, "RenderMarkdownTableFill", { link = "RenderMarkdownTableHead" })
+
 -- Terminal colors
 local g = vim.g
 
