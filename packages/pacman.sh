@@ -19,7 +19,6 @@ zsh
 gcc
 go
 gum
-nodejs
 npm
 deno
 curl
@@ -27,6 +26,7 @@ wget
 base-devel
 base
 openssh
+bitwarden-cli
 
 neovim
 fzf
@@ -66,5 +66,4 @@ wezterm
 ttf-nerd-fonts-symbols-mono
 distrobox
 podman
-bitwarden-cli
 EndOfFile
