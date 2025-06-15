@@ -7,7 +7,6 @@ local lsp_servers = {
 			telemetry = { enable = false },
 		},
 	},
-	julials = {},
 	clangd = {},
 	bashls = {},
 	jdtls = {},
@@ -43,6 +42,8 @@ return {
 				automatic_enable = true,
 				ensure_installed = vim.tbl_keys(lsp_servers),
 			})
+
+			require("lspconfig").julials.setup({})
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
