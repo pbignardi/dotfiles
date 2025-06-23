@@ -1,0 +1,71 @@
+local wezterm = require("wezterm")
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+local theme_name = "Chalk (base16)"
+local scheme = wezterm.color.get_builtin_schemes()[theme_name]
+
+-- tabline.setup({
+-- 	options = {
+-- 		icons_enabled = false,
+-- 		theme = theme_name,
+-- 		theme_overrides = {
+-- 			normal_mode = {
+-- 				a = { fg = scheme.ansi[6], bg = scheme.background },
+-- 				b = { fg = scheme.background, bg = scheme.ansi[5] },
+-- 				c = { fg = scheme.brights[1], bg = scheme.background },
+-- 			},
+-- 			copy_mode = {
+-- 				a = { fg = scheme.ansi[6], bg = scheme.background },
+-- 				b = { fg = scheme.background, bg = scheme.ansi[5] },
+-- 				c = { fg = scheme.brights[4], bg = scheme.background },
+-- 			},
+-- 			search_mode = {
+-- 				a = { fg = scheme.ansi[6], bg = scheme.background },
+-- 				b = { fg = scheme.background, bg = scheme.ansi[5] },
+-- 				c = { fg = scheme.brights[1], bg = scheme.background },
+-- 			},
+-- 			window_mode = {
+-- 				a = { fg = scheme.ansi[6], bg = scheme.background },
+-- 				b = { fg = scheme.background, bg = scheme.ansi[5] },
+-- 				c = { fg = scheme.brights[1], bg = scheme.background },
+-- 			},
+-- 			tab = {
+-- 				active = { fg = scheme.ansi[3], bg = scheme.background },
+-- 				inactive = { fg = "grey", bg = scheme.background },
+-- 			},
+-- 		},
+-- 		section_separators = {
+-- 			left = wezterm.nerdfonts.ple_upper_left_triangle,
+-- 			right = wezterm.nerdfonts.ple_lower_right_triangle,
+-- 		},
+-- 		component_separators = {
+-- 			left = "",
+-- 			right = "",
+-- 		},
+-- 		tab_separators = {
+-- 			left = " ",
+-- 			right = " ",
+-- 		},
+-- 	},
+-- 	sections = {
+-- 		tabline_a = {
+-- 			wezterm.nerdfonts.cod_terminal_tmux,
+-- 			"workspace",
+-- 		},
+-- 		tabline_b = {},
+-- 		tabline_c = { "" },
+-- 		tab_active = {
+-- 			wezterm.nerdfonts.cod_circle_small_filled,
+-- 			"process",
+-- 		},
+-- 		tab_inactive = {
+-- 			{ "index", padding = 0 },
+-- 			"process",
+-- 		},
+-- 		tabline_x = { "mode" },
+-- 		tabline_y = {
+-- 			wezterm.nerdfonts.cod_remote,
+-- 			"domain",
+-- 		},
+-- 		tabline_z = {},
+-- 	},
+-- })

@@ -1,12 +1,19 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
+config.keys = {}
 
 local is_high_density = function(screen)
 	return screen.effective_dpi >= 144
 end
 
--- disable tab bar
-config.enable_tab_bar = false
+-- configure tabline
+require("tabline")
+
+-- configure wezterm multiplexer
+require("mux").setup(config)
+
+-- setup sessionizer
+require("sessionizer").setup(config)
 
 -- disable window padding
 config.window_padding = {
