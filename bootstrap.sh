@@ -66,7 +66,9 @@ fi
 . pull_dotfiles.sh
 
 # Create directories
-. create_dirs.sh
+echo "==> Creating directories ~/projects and ~/notes"
+mkdir -p ~/projects
+mkdir -p ~/notes
 
 # Apply dotfiles
 . create_symlinks.sh
