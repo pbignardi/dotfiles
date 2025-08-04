@@ -94,6 +94,7 @@ fi
 if ! $USE_SECRECTS && $SETUPSSH; then
     # get bw public keys
     if isWsl; then
+        echo
     elif isMac; then
         bw get item "37124b4a-8174-4a42-b933-b29a00ea5511" | jq -r ".sshKey.publicKey" > ~/.ssh/github.pub
         chmod 644 ~/.ssh/github.pub
