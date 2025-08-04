@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Install packages using dnf
+# Install packages using apt
 # Paolo Bignardi - 2025
 
 ###################
@@ -13,29 +13,28 @@ packages=(
     "unzip"
     "zsh"
     "gcc"
-    "go"
-    "gum"
-    "nodejs-npm"
+    "golang"
+    "npm"
     "curl"
     "wget"
-    "openssh"
+    "openssh-client"
     "flatpak"
     "socat"
     "neovim"
     "fzf"
     "tmux"
-    "fd"
+    "fd-find"
     "ripgrep"
     "bat"
     "btop"
     "zathura"
     "zathura-pdf-poppler"
-    "google-noto-color-emoji-fonts"
 )
 uninstalled=()
 
+
 for pkg in "${packages[@]}"; do
-    if ! rpm -q "$pkg" &> /dev/null; then
+    if ! dpkg -s "$pkg" &> /dev/null; then
         uninstalled+=("$pkg")
     fi
 done
@@ -47,7 +46,7 @@ fi
 echo "==> Installing core packages"
 echo "${uninstalled[@]}"
 
-sudo dnf install -y "${uninstalled[@]}"
+sudo apt-get install -y "${uninstalled[@]}"
 
 isWsl && return
 
@@ -56,6 +55,7 @@ isWsl && return
 ####################
 
 packages=(
+    "fonts-noto-color-emoji"
     "distrobox"
     "podman"
 )
@@ -64,7 +64,7 @@ uninstalled=()
 packages+=("flatpak")
 
 for pkg in "${packages[@]}"; do
-    if ! rpm -q "$pkg" &> /dev/null; then
+    if ! dpkg -s "$pkg" &> /dev/null; then
         uninstalled+=("$pkg")
     fi
 done
@@ -76,10 +76,12 @@ fi
 echo "==> Installing extra packages"
 echo "${uninstalled[@]}"
 
-sudo dnf install -y "${uninstalled[@]}"
+sudo apt-get install -y "${uninstalled[@]}"
 
 # wezterm
-if [ ! -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezterm-nightly.repo ]; then
-    sudo dnf copr enable -y wezfurlong/wezterm-nightly
-    sudo dnf install -y wezterm
-fi
+curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
+
+sudo apt-get update
+sudo apt-get install -y wezterm

@@ -1,0 +1,8 @@
+[user]
+    name = Paolo Bignardi
+
+[core]
+    editor = nvim
+
+[pull]
+    rebase = false

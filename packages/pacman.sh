@@ -3,67 +3,98 @@
 # Install packages using pacman package manager
 # Paolo Bignardi - 2025
 
-source utils.sh
+###################
+## Core packages ##
+###################
+packages=(
+    "git"
+    "stow"
+    "jq"
+    "unzip"
+    "zsh"
+    "gcc"
+    "go"
+    "gum"
+    "npm"
+    "deno"
+    "curl"
+    "wget"
+    "base-devel"
+    "base"
+    "openssh"
+    "flatpak"
+    "socat"
+    "neovim"
+    "fzf"
+    "tmux"
+    "fd"
+    "ripgrep"
+    "bat"
+    "btop"
+    "reflector"
+)
+uninstalled=()
 
-_log "Refresh repositories"
-sudo pacman -Syu --noconfirm
+for pkg in "${packages[@]}"; do
+    if ! pacman -Q "$pkg" &> /dev/null; then
+        uninstalled+=("$pkg")
+    fi
+done
 
-# Core packages
-_log "Installing core packages"
-sudo pacman -Syu --noconfirm --needed - <<EndOfFile
-git
-stow
-jq
-unzip
-zsh
-gcc
-go
-gum
-npm
-deno
-curl
-wget
-base-devel
-base
-openssh
-bitwarden-cli
-
-neovim
-fzf
-tmux
-fd
-ripgrep
-bat
-btop
-zathura
-zathura-pdf-poppler
-reflector
-EndOfFile
+if [ ${#uninstalled[@]} -eq 0 ]; then
+    return
+fi
 
 if ! systemctl is-active --quiet reflector; then
-    _log "Use REFLECTOR to select best mirrors"
+    echo "==> Selecting best mirrors"
     echo "--country France,Germany,Italy" | sudo tee -a /etc/xdg/reflector/reflector.conf
     sudo systemctl enable --now reflector
 fi
 
-# Install paru
-if ! command -v paru %2 >/dev/null; then
-    _log "Install Paru"
+echo "==> Installing core packages"
+echo "${uninstalled[@]}"
+
+sudo pacman -Syu --noconfirm --needed "${uninstalled[@]}"
+
+# paru
+if ! command -v paru &>/dev/null; then
+    echo "==> Installing paru"
     old_wd=$(pwd)
-    cd $LOCALSRC
-    git clone https://aur.archlinux.org/paru-bin.git paru-bin
-    cd paru-bin
+    git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
+    cd /tmp/paru-bin
     makepkg -si
-    cd $old_wd
+    cd -
 fi
 
-# Only non-WSL packages
 is_wsl && return
 
-_log "Installing extra packages"
-sudo pacman -Syu --noconfirm --needed - <<EndOfFile
-wezterm
-ttf-nerd-fonts-symbols-mono
-distrobox
-podman
-EndOfFile
+####################
+## Extra packages ##
+####################
+
+packages=(
+    "wezterm"
+    "noto-fonts-emoji"
+    "distrobox"
+    "podman"
+    "zathura"
+    "zathura-pdf-poppler"
+)
+uninstalled=()
+
+packages+=("flatpak")
+
+for pkg in "${packages[@]}"; do
+    if ! pacman -Q "$pkg" &> /dev/null; then
+        uninstalled+=("$pkg")
+    fi
+done
+
+if [ ${#uninstalled[@]} -eq 0 ]; then
+    return
+fi
+
+echo "==> Installing extra packages"
+echo "${uninstalled[@]}"
+
+sudo pacman -Syu --noconfirm --needed "${uninstalled[@]}"

@@ -1,0 +1,9 @@
+[user]
+    name = Paolo Bignardi
+
+[core]
+    sshCommand = ssh.exe
+    editor = nvim
+
+[pull]
+    rebase = false

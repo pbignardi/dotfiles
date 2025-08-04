@@ -70,3 +70,5 @@ fi
 # Initialize juliaup
 export PATH=$PATH:$HOME/.juliaup/bin
 
+# source SSH configuration script
+source $HOME/.ssh/.setup-ssh.sh
