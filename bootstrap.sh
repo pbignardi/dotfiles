@@ -110,8 +110,7 @@ if [[ $USE_SECRETS == "y" ]] && ! git remote -v | grep "$SSH_REMOTE" &> /dev/nul
     echo "==> Adding origin git remote"
     git remote remove origin &> /dev/null
     git remote add origin $SSH_REMOTE
-    remote_exit_code=$?
-    if ! remote_exit_code; then
+    if ! $?; then
         echo "[!!] Error in git remote setup. Aborting."
         exit 1
     fi
