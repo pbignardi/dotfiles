@@ -80,18 +80,18 @@ fi
 # Setup Bitwarden CLI
 . install-bitwarden.sh
 
-if ! bw login --check; then
+if $USE_SECRETS && ! bw login --check; then
     echo "==> Loggin into Bitwarden CLI"
     bw login
 fi
 
-if $SETUPSSH; then
+if $USE_SECRETS && $SETUPSSH; then
     echo "==> Unlocking Bitwarden vault"
     export BW_SESSION=$(bw unlock --raw)
 fi
 
 # setup SSH
-if ! $USE_SECRECTS && $SETUPSSH; then
+if $USE_SECRECTS && $SETUPSSH; then
     # get bw public keys
     if isWsl; then
         echo
