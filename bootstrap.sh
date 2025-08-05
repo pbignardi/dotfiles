@@ -28,10 +28,12 @@ echo
 read -p "[??] Use secrets from Bitwarden on this machine? (y/N)" -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    USE_SECRECTS=true
+    reply=true
+    USE_SECRECTS=$([[ $reply -eq 1 ]])
     echo "[>>] Using personal computer profile"
 else
-    USE_SECRECTS=false
+    reply=false
+    USE_SECRECTS=$([[ $reply -eq 1 ]])
     echo "[>>] Using work laptop profile"
 fi
 
@@ -91,7 +93,7 @@ if $USE_SECRETS && $SETUPSSH; then
 fi
 
 # setup SSH
-if $USE_SECRECTS && $SETUPSSH; then
+if $USE_SECRETS && $SETUPSSH; then
     # get bw public keys
     if isWsl; then
         echo
@@ -107,7 +109,7 @@ fi
 
 # Clone dotfiles repo
 SSH_REMOTE="git@github.com:pbignardi/dotfiles.git"
-if $USE_SECRECTS && ! git remote -v | grep "$SSH_REMOTE" &> /dev/null; then
+if $USE_SECRETS && ! git remote -v | grep "$SSH_REMOTE" &> /dev/null; then
     echo "==> Adding origin git remote"
     git remote add origin $TARGET_REMOTE
     remote_exit_code=$?
