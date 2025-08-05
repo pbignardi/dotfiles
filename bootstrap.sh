@@ -72,7 +72,7 @@ fi
 # Change shell to ZSH
 if ! getent passwd $USER | grep zsh &> /dev/null; then
     echo "==> Changing shell to ZSH"
-    chsh -s /bin/zsh $USER
+    sudo chsh -s /bin/zsh $USER
     echo "[>>] Change will take effect after logout"
 fi
 
