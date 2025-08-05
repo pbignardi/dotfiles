@@ -108,6 +108,7 @@ fi
 SSH_REMOTE="git@github.com:pbignardi/dotfiles.git"
 if [[ $USE_SECRETS == "y" ]] && ! git remote -v | grep "$SSH_REMOTE" &> /dev/null; then
     echo "==> Adding origin git remote"
+    git remote remove origin &> /dev/null
     git remote add origin $SSH_REMOTE
     remote_exit_code=$?
     if ! remote_exit_code; then
