@@ -34,7 +34,7 @@ else
     reply=false
     echo "[>>] Using work laptop profile"
 fi
-test $reply -eq 1
+[[ $reply -eq 1 ]]
 USE_SECRECTS=$?
 SETUPSSH=false
 
