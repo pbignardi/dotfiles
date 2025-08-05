@@ -16,6 +16,10 @@ isFlatpakInstalled() {
     flatpak list --app --columns=application | grep -qx "$app_id"
 }
 
+# enable flathub remote
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# select uninstalled packages
 for pkg in "${packages[@]}"; do
     if ! isFlatpakInstalled "$pkg"; then
         uninstalled+=("$pkg")
@@ -30,5 +34,5 @@ echo "==> Installing flatpaks"
 echo "${uninstalled[@]}"
 
 for pkg in "${uninstalled[@]}"; do
-    flatpak install -y "$pkg"
+    flatpak install flathub -y "$pkg"
 done
