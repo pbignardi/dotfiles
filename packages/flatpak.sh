@@ -17,7 +17,7 @@ isFlatpakInstalled() {
 }
 
 # enable flathub remote
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo --user
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 # select uninstalled packages
 for pkg in "${packages[@]}"; do
