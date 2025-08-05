@@ -71,7 +71,7 @@ if ! command -v oh-my-posh >/dev/null 2>&1; then
 fi
 
 # Change shell to ZSH
-if getent passwd $USER | grep zsh &> /dev/null; then
+if ! getent passwd $USER | grep zsh &> /dev/null; then
     echo "==> Changing shell to ZSH"
     chsh -s /bin/zsh $USER
     echo "[>>] Change will take effect after logout"
