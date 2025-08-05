@@ -3,7 +3,7 @@
 # Initialize a new system, automatically.
 # Paolo Bignardi - 2025
 
-VERSION="2.0.0"
+VERSION="2.0.1"
 # Source common config and utils
 source utils.sh
 clear
@@ -66,7 +66,7 @@ export PATH=$PATH:$LOCALBIN
 # Install oh-my-posh
 if ! command -v oh-my-posh >/dev/null 2>&1; then
     echo "==> Installing oh-my-posh"
-    curl -s https://ohmyposh.dev/install.sh | bash -s
+    curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
 fi
 
 # Change shell to ZSH
@@ -118,6 +118,7 @@ if [[ $USE_SECRETS == "y" ]] && ! git remote -v | grep "$SSH_REMOTE" &> /dev/nul
 fi
 echo "==> Pulling changes from remote"
 git pull
+git submodule update --init --recursive
 
 # Create directories
 echo "==> Creating directories ~/projects and ~/notes"
