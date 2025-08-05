@@ -66,7 +66,7 @@ if ! command -v paru &>/dev/null; then
     cd -
 fi
 
-is_wsl && return
+isWsl && return
 
 ####################
 ## Extra packages ##
