@@ -5,15 +5,26 @@ The setup is based on `stow` to manage the configuation files
 and simple `bash` scripts to automate the setup.
 
 ## Bootstrap
+To setup these dotfiles, there are two options:
 
-To automatically setup a new system, clone the repository and run the `bootstrap.sh` script with `bash`.
+1. Using a the convenience script `init.sh`. This is fully automatic, but requires either `wget` or `curl`.
+1. Manually cloning the repo.
 
-Clone the repo
+### Option 1: `init.sh` script
+If `curl` is available run
 ```bash
-git clone https://github.com/pbignardi/dotfiles $HOME/dotfiles
+curl -s https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/v2/init.sh | bash
 ```
-and run the setup script with
+If `wget` is available run
 ```bash
+wget -qO- https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/v2/init.sh | bash
+```
+
+### Option 2: Clone repo
+If `git` is already installed, clone the repository and run the `bootstrap.sh` script with `bash`.
+
+```bash
+git clone -b v2 https://github.com/pbignardi/dotfiles $HOME/dotfiles
 bash ~/dotfiles/bootstrap.sh
 ```
 
