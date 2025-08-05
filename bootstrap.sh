@@ -28,14 +28,12 @@ echo
 read -p "[??] Use secrets from Bitwarden on this machine? (y/N)" -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    reply=true
+    USE_SECRETS="y"
     echo "[>>] Using personal computer profile"
 else
-    reply=false
+    USE_SECRETS="n"
     echo "[>>] Using work laptop profile"
 fi
-[[ $reply -eq 1 ]]
-USE_SECRECTS=$?
 SETUPSSH=false
 
 # create ~/.local/bin
@@ -81,18 +79,18 @@ fi
 # Setup Bitwarden CLI
 . install-bitwarden.sh
 
-if $USE_SECRETS && ! bw login --check; then
+if [[ $USE_SECRETS == "y" ]] && ! bw login --check; then
     echo "==> Loggin into Bitwarden CLI"
     bw login
 fi
 
-if $USE_SECRETS && $SETUPSSH; then
+if [[ $USE_SECRETS == "y" ]] && $SETUPSSH; then
     echo "==> Unlocking Bitwarden vault"
     export BW_SESSION=$(bw unlock --raw)
 fi
 
 # setup SSH
-if $USE_SECRETS && $SETUPSSH; then
+if [[ $USE_SECRETS == "y" ]] && $SETUPSSH; then
     # get bw public keys
     if isWsl; then
         echo
@@ -108,7 +106,7 @@ fi
 
 # Clone dotfiles repo
 SSH_REMOTE="git@github.com:pbignardi/dotfiles.git"
-if $USE_SECRETS && ! git remote -v | grep "$SSH_REMOTE" &> /dev/null; then
+if [[ $USE_SECRETS == "y" ]] && ! git remote -v | grep "$SSH_REMOTE" &> /dev/null; then
     echo "==> Adding origin git remote"
     git remote add origin $TARGET_REMOTE
     remote_exit_code=$?
