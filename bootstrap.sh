@@ -29,14 +29,13 @@ read -p "[??] Use secrets from Bitwarden on this machine? (y/N)" -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     reply=true
-    USE_SECRECTS=$([[ $reply -eq 1 ]])
     echo "[>>] Using personal computer profile"
 else
     reply=false
-    USE_SECRECTS=$([[ $reply -eq 1 ]])
     echo "[>>] Using work laptop profile"
 fi
-
+test $reply -eq 1
+USE_SECRECTS=$?
 SETUPSSH=false
 
 # create ~/.local/bin
