@@ -3,7 +3,7 @@
 # Initialize a new system, automatically.
 # Paolo Bignardi - 2025
 
-VERSION="2.0.1"
+VERSION="2.1.0"
 # Source common config and utils
 source utils.sh
 clear
