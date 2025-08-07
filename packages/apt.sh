@@ -20,7 +20,6 @@ packages=(
     "openssh-client"
     "flatpak"
     "socat"
-    "neovim"
     "fzf"
     "tmux"
     "fd-find"
@@ -47,6 +46,17 @@ echo "==> Installing core packages"
 echo "${uninstalled[@]}"
 
 sudo apt-get install -y "${uninstalled[@]}"
+
+# Install neovim from source
+if ! command -v neovim &> /dev/null; then
+    echo "==> Installing neovim from source"
+    # dependencies
+    sudo apt-get install ninja-build gettext cmake unzip curl
+    git clone -b stable https://github.com/neovim/neovim /tmp/neovim
+    cd /tmp/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
+    sudo make install
+    cd -
+fi
 
 isWsl && return
 
