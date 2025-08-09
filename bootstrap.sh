@@ -134,6 +134,7 @@ stow -D oh-my-posh
 stow -D tmux
 stow -D wezterm
 stow -D zsh
+stow -D ssh
 isWsl && stow -D wsl || stow -D unix
 
 # stow required packages
@@ -145,6 +146,7 @@ stow oh-my-posh
 stow tmux
 stow wezterm
 stow zsh
+stow ssh
 isWsl && stow wsl || stow unix
 
 # copy config files for windows for wsl
