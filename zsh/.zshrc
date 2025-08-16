@@ -51,7 +51,7 @@ source $HOME/.zsh_aliases
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/oneminimal.toml)"
 
 # source fzf theme
-source $HOME/.config/fzf/fzf-chalk.conf
+source $HOME/.config/fzf/theme.conf
 export FZF_DEFAULT_COMMAND='fd'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
