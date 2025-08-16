@@ -2,3 +2,5 @@
 **/tmux/plugins
 **/lazy-lock.json
 .data.sh
+*known_hosts*
+.gitconfig

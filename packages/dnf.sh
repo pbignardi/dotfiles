@@ -1,49 +1,85 @@
 #!/usr/bin/env bash
 
-# Install packages using zypper package manager
+# Install packages using dnf
 # Paolo Bignardi - 2025
 
-source utils.sh
-
-_log "Refresh repositories"
-sudo dnf upgrade
-
-# Core packages
-_log "Installing core packages"
-sudo dnf install -y $(cat << EndOfFile
-git
-stow
-jq
-unzip
-zsh
-gcc
-go
-gum
-nodejs
-
-neovim
-fzf
-tmux
-fd-find
-ripgrep
-bat
-btop
-zathura
-zathura-pdf-poppler
-EndOfFile
+###################
+## Core packages ##
+###################
+packages=(
+    "git"
+    "stow"
+    "jq"
+    "unzip"
+    "zsh"
+    "gcc"
+    "golang"
+    "gum"
+    "nodejs-npm"
+    "curl"
+    "wget1"
+    "openssh"
+    "flatpak"
+    "socat"
+    "neovim"
+    "fzf"
+    "tmux"
+    "fd-find"
+    "ripgrep"
+    "bat"
+    "btop"
+    "zathura"
+    "zathura-pdf-poppler"
+    "google-noto-color-emoji-fonts"
 )
+uninstalled=()
 
-# Only non-WSL packages
-is_wsl && return
+for pkg in "${packages[@]}"; do
+    if ! rpm -q "$pkg" &> /dev/null; then
+        uninstalled+=("$pkg")
+    fi
+done
 
-_log "Installing extra packages"
+if [ ${#uninstalled[@]} -eq 0 ]; then
+    return
+fi
 
-sudo dnf copr enable wezfurlong/wezterm-nightly
-sudo dnf install -y wezterm
+echo "==> Installing core packages"
+echo "${uninstalled[@]}"
 
-sudo dnf install -y $(cat << EndOfFile
-distrobox
-podman
-source-foundry-hack-fonts
-EndOfFile
+sudo dnf install -y "${uninstalled[@]}"
+
+isWsl && return
+
+####################
+## Extra packages ##
+####################
+
+packages=(
+    "distrobox"
+    "podman"
 )
+uninstalled=()
+
+packages+=("flatpak")
+
+for pkg in "${packages[@]}"; do
+    if ! rpm -q "$pkg" &> /dev/null; then
+        uninstalled+=("$pkg")
+    fi
+done
+
+if [ ${#uninstalled[@]} -eq 0 ]; then
+    return
+fi
+
+echo "==> Installing extra packages"
+echo "${uninstalled[@]}"
+
+sudo dnf install -y "${uninstalled[@]}"
+
+# wezterm
+if [ ! -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezterm-nightly.repo ]; then
+    sudo dnf copr enable -y wezfurlong/wezterm-nightly
+    sudo dnf install -y wezterm
+fi

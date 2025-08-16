@@ -54,7 +54,9 @@ config.adjust_window_size_when_changing_font_size = false
 config.font_size = 13
 
 -- colorscheme configuration
-config.color_scheme = "Chalk (base16)"
+local color_scheme_name = "Chalk"
+config.color_schemes = require("colorschemes").init(color_scheme_name)
+config.color_scheme = color_scheme_name
 
 -- specify wsl on windows
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
