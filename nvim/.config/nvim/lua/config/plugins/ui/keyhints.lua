@@ -39,6 +39,24 @@ return {
 			wk.add({
 				{ "<leader>x", group = "diagnostics", icon = trouble_icon },
 			})
+
+			-- iron
+			local repl_icon = { icon = "", hl = "WhichKeyIconYellow", name = "repl" }
+			wk.add({
+				{ "<leader>i", group = "repl", icon = repl_icon },
+				{ "<space>ir", desc = "toggle_repl" },
+				{ "<space>ih", desc = "toggle horizontal repl" },
+				{ "<space>iv", desc = "toggle vertical repl" },
+				{ "<space>iR", desc = "restart repl" },
+				{ "<space>is", desc = "run selected" },
+				{ "<space>if", desc = "run file" },
+				{ "<space>il", desc = "run line" },
+				{ "<space>ib", desc = "run block" },
+				{ "<space>im", desc = "run block and move" },
+				{ "<space>iC", desc = "send interrupt" },
+				{ "<space>iq", desc = "exit" },
+				{ "<space>iL", desc = "clear" },
+			})
 		end,
 	},
 }
