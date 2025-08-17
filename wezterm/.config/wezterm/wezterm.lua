@@ -55,7 +55,7 @@ config.font_size = 13
 
 -- colorscheme configuration
 local custom_colorschemes = require("colorschemes")
-custom_colorschemes.set_custom_colorscheme(config, "OneDark")
+custom_colorschemes.set_custom_colorscheme(config, "Chalk")
 
 -- specify wsl on windows
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
