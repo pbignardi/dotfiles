@@ -17,6 +17,9 @@ return {
 		config = function()
 			local opts = {
 				preset = "helix",
+				icons = {
+					mappings = false,
+				},
 			}
 			require("which-key").setup(opts)
 
@@ -49,6 +52,7 @@ return {
 				{ "<space>iv", desc = "toggle vertical repl" },
 				{ "<space>iR", desc = "restart repl" },
 				{ "<space>is", desc = "run selected" },
+				{ mode = "v", "<space>is", desc = "run selected" },
 				{ "<space>if", desc = "run file" },
 				{ "<space>il", desc = "run line" },
 				{ "<space>ib", desc = "run block" },
