@@ -32,7 +32,7 @@ M.color_schemes = {
 	},
 	["OneDark"] = {
 		config = function()
-			local cs = wezterm.color.get_builtin_schemes()["OneDark (Gogh)"]
+			local cs = wezterm.color.get_builtin_schemes()["OneDark (base16)"]
 			local background = "#232326"
 			cs.ansi[1] = background
 			cs.background = background
