@@ -26,6 +26,7 @@ packages=(
     "ripgrep"
     "bat"
     "btop"
+    "eza"
     "zathura"
     "zathura-pdf-poppler"
 )

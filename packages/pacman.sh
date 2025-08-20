@@ -30,6 +30,7 @@ packages=(
     "fd"
     "ripgrep"
     "bat"
+    "eza"
     "btop"
     "reflector"
 )

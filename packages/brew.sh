@@ -37,6 +37,7 @@ brew "bat"
 brew "btop"
 brew "npm"
 brew "deno"
+brew "eza"
 
 brew "bitwarden-cli"
 brew "podman"

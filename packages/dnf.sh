@@ -28,6 +28,7 @@ packages=(
     "ripgrep"
     "bat"
     "btop"
+    "eza"
     "zathura"
     "zathura-pdf-poppler"
     "google-noto-color-emoji-fonts"
