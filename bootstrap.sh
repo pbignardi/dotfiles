@@ -149,11 +149,14 @@ stow zsh
 stow ssh
 isWsl && stow wsl || stow unix
 
-# copy config files for windows for wsl
-# wezterm.lua --> %APPDATA%/.config/wezterm/
-# .ssh/ --> %USERPROFILE&/.ssh/
 if isWsl; then
-    # TODO
-    USERPROFILE=$(powershell.exe -NoProfile -Command "\$env:USERPROFILE" | tr -d '\r')
-    APPDATA=$(powershell.exe -NoProfile -Command "\$env:APPDATA" | tr -d '\r')
+# .ssh/ --> %USERPROFILE&/.ssh/
+    USERNAME=$(powershell.exe -NoProfile -Command "\$env:USERPROFILE" | tr -d '\r' | tr '\\' '/' | xargs -- basename)
+    APPDATA="/mnt/c/Users/$USERNAME/AppData/Roaming"
+
+    # copy wezterm configuration
+    cp -r wezterm/.config/wezterm "/mnt/c/Users/$USERNAME/.config/"
+
+    # copy ssh configuration
+    cp -r wsl/.ssh/ "/mnt/c/Users/$USERNAME/"
 fi
