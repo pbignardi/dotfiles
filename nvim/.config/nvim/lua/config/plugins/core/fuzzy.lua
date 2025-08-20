@@ -31,7 +31,14 @@ return {
 	{
 		"ibhagwan/fzf-lua",
 		enabled = true,
-		opts = {},
+		opts = {
+			fzf_colors = {
+				["fg"] = { "fg", "CursorLine" },
+				["bg"] = { "bg", "Normal" },
+				["hl"] = { "fg", "String" },
+				["gutter"] = "-1",
+			},
+		},
 		config = function(_, opts)
 			local fzflua = require("fzf-lua")
 
