@@ -110,17 +110,15 @@ if [[ $USE_SECRETS == "y" ]] && $SETUPSSH; then
     bw get item "bf9c1cc4-651b-4747-8335-b32101618396" | jq -r ".sshKey.publicKey" > ~/.ssh/raspberry.pub
 fi
 
-# Clone dotfiles repo
+# Set dotfiles repo origin
 SSH_REMOTE="git@github.com:pbignardi/dotfiles.git"
-if [[ $USE_SECRETS == "y" ]] && ! git remote -v | grep "$SSH_REMOTE" &> /dev/null; then
-    echo "==> Adding origin git remote"
-    git remote remove origin &> /dev/null
-    git remote add origin $SSH_REMOTE
+if git remote -v | grep origin &> /dev/null; then
+    echo "==> Setting origin git remote"
+    git remote set-url origin $SSH_REMOTE &>/dev/null
     if [[ $? -ne 0 ]]; then
         echo "[!!] Error in git remote setup. Aborting."
         exit 1
     fi
-    git remote -v
 fi
 
 # Create directories
