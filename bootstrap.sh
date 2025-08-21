@@ -69,6 +69,12 @@ if ! command -v oh-my-posh >/dev/null 2>&1; then
     curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
 fi
 
+# Install uv
+if ! command -v uv &>/dev/null; then
+    echo "==> Installing uv"
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
 # Change shell to ZSH
 if ! getent passwd $USER | grep zsh &> /dev/null; then
     echo "==> Changing shell to ZSH"
