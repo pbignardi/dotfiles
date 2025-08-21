@@ -116,9 +116,6 @@ if [[ $USE_SECRETS == "y" ]] && ! git remote -v | grep "$SSH_REMOTE" &> /dev/nul
     fi
     git remote -v
 fi
-echo "==> Pulling changes from remote"
-git pull
-git submodule update --init --recursive
 
 # Create directories
 echo "==> Creating directories ~/projects and ~/notes"
