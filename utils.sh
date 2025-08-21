@@ -15,7 +15,7 @@ function isDebian() {
         return 1
     fi
     source /etc/os-release
-    test $ID == "debian"
+    test $ID == "debian" || test $ID == "ubuntu"
 }
 
 function isArchlinux() {

@@ -58,9 +58,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # setup fzf
 eval "$(fzf --zsh)"
 
-# setup bitwarden autocompletion
-eval "$(bw completion --shell zsh); compdef _bw bw;"
-
 # setup pyenv and pyenv-virtualenv
 if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"

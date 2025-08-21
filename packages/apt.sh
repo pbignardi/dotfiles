@@ -26,6 +26,7 @@ packages=(
     "ripgrep"
     "bat"
     "btop"
+    "eza"
     "zathura"
     "zathura-pdf-poppler"
 )
@@ -48,7 +49,7 @@ echo "${uninstalled[@]}"
 sudo apt-get install -y "${uninstalled[@]}"
 
 # Install neovim from source
-if ! command -v neovim &> /dev/null; then
+if ! command -v nvim &> /dev/null; then
     echo "==> Installing neovim from source"
     # dependencies
     sudo apt-get install -y ninja-build gettext cmake unzip curl
