@@ -59,7 +59,7 @@ custom_colorschemes.set_custom_colorscheme(config, "OneDark")
 
 -- specify wsl on windows
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	config.default_domain = "WSL:archlinux"
+	config.default_domain = "WSL:Debian"
 end
 
 return config
