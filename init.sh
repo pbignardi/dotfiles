@@ -2,7 +2,7 @@
 
 # Initialise system to launch bootstrap.sh
 
-BRANCH="v2"
+BRANCH="main"
 
 # retrieve utils.sh file
 _tmp_utils="/tmp/utils.sh"
