@@ -58,6 +58,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # setup fzf
 eval "$(fzf --zsh)"
 
+# setup zoxide
+eval "$(zoxide init zsh)"
+
 # setup pyenv and pyenv-virtualenv
 if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"
