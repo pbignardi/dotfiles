@@ -26,6 +26,10 @@ local fzf_builtin = function()
 	require("fzf-lua").builtin()
 end
 
+local fzf_git_diff = function ()
+    require('fzf-lua').git_diff()
+end
+
 return {
 	-- fzf lua
 	{
@@ -55,6 +59,7 @@ return {
 			{ "<leader>sc", fzf_colorschemes, desc = "Colorschemes" },
 			{ "<leader>sr", fzf_resume, desc = "Resume" },
 			{ "<leader>sb", fzf_builtin, desc = "Built-in" },
+			{ "<leader>sd", fzf_git_diff, desc = "Built-in" },
 		},
 	},
 	-- Telescope

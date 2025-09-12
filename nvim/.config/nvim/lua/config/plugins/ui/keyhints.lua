@@ -18,7 +18,7 @@ return {
 			local opts = {
 				preset = "helix",
 				icons = {
-					mappings = false,
+					mappings = true,
 				},
 			}
 			require("which-key").setup(opts)
@@ -35,6 +35,7 @@ return {
 				{ "<leader>sh", desc = "helptags", icon = "" },
 				{ "<leader>sr", desc = "resume", icon = "" },
 				{ "<leader>sb", desc = "built-ins", icon = "" },
+				{ "<leader>sd", desc = "project diffs", icon = "" },
 			})
 
 			-- trouble
