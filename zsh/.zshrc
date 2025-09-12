@@ -36,8 +36,6 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # Keybinds
 bindkey "^p" history-search-backward
 bindkey "^n" history-search-forward
-bindkey -s "^b" "tmsm\n"
-bindkey -s "^f" "tmss\n"
 
 # Add Homebrew to PATH on MAC (in the future move to different STOW)
 if [[ $(uname -s) == "Darwin" ]]; then
@@ -60,6 +58,12 @@ eval "$(fzf --zsh)"
 
 # setup zoxide
 eval "$(zoxide init zsh)"
+
+# setup xum sessionizer
+# eval "$(xum zsh)"
+bindkey -s "^b" "xum create^M"
+bindkey -s "^f" "xum switch^M"
+
 
 # setup pyenv and pyenv-virtualenv
 if command -v pyenv >/dev/null 2>&1; then
