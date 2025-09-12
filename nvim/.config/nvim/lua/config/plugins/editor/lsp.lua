@@ -43,7 +43,15 @@ return {
 				ensure_installed = vim.tbl_keys(lsp_servers),
 			})
 
-			require("lspconfig").julials.setup({})
+			require("lspconfig").julials.setup({
+                on_new_config = function(new_config, _)
+                    local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
+                    if (vim.uv.fs_stat(julia) or {}).type == "file" then
+                        vim.notify("Hello!")
+                        new_config.cmd[1] = julia
+                    end
+                end
+            })
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
