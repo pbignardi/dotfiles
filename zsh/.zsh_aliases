@@ -1,4 +1,4 @@
-alias ll='eza -l'
+alias ll='eza -l --icons'
 alias la='eza -A'
 alias l='eza'
 alias ls='eza'
