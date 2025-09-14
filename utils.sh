@@ -31,7 +31,7 @@ function isMac() {
 }
 
 function isWsl() {
-    test powershell.exe &> /dev/null
+    command -v powershell.exe &> /dev/null
 }
 
 function isLinux() {

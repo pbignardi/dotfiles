@@ -28,28 +28,26 @@ packages=(
     "btop"
     "eza"
     "zathura"
+    "zoxide"
     "zathura-pdf-poppler"
 )
 uninstalled=()
 
-
 for pkg in "${packages[@]}"; do
-    if ! dpkg -s "$pkg" &> /dev/null; then
+    if ! dpkg -s "$pkg" &>/dev/null; then
         uninstalled+=("$pkg")
     fi
 done
 
-if [ ${#uninstalled[@]} -eq 0 ]; then
-    return
+if ! [ ${#uninstalled[@]} -eq 0 ]; then
+    echo "==> Installing core packages"
+    echo "${uninstalled[@]}"
+
+    sudo apt-get install -y "${uninstalled[@]}"
 fi
 
-echo "==> Installing core packages"
-echo "${uninstalled[@]}"
-
-sudo apt-get install -y "${uninstalled[@]}"
-
 # Install neovim from source
-if ! command -v nvim &> /dev/null; then
+if ! command -v nvim &>/dev/null; then
     echo "==> Installing neovim from source"
     # dependencies
     sudo apt-get install -y ninja-build gettext cmake unzip curl
@@ -59,7 +57,9 @@ if ! command -v nvim &> /dev/null; then
     cd -
 fi
 
-isWsl && return
+if isWsl; then
+    return
+fi
 
 ####################
 ## Extra packages ##
@@ -75,24 +75,31 @@ uninstalled=()
 packages+=("flatpak")
 
 for pkg in "${packages[@]}"; do
-    if ! dpkg -s "$pkg" &> /dev/null; then
+    if ! dpkg -s "$pkg" &>/dev/null; then
         uninstalled+=("$pkg")
     fi
 done
 
 if [ ${#uninstalled[@]} -eq 0 ]; then
-    return
+    echo "==> Installing extra packages"
+    echo "${uninstalled[@]}"
+
+    sudo apt-get install -y "${uninstalled[@]}"
 fi
 
-echo "==> Installing extra packages"
-echo "${uninstalled[@]}"
-
-sudo apt-get install -y "${uninstalled[@]}"
-
 # wezterm
-curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
-echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
-sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
+if ! command -v wezterm &>/dev/null; then
+    curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+    echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+    sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
 
-sudo apt-get update
-sudo apt-get install -y wezterm
+    sudo apt-get update
+    sudo apt-get install -y wezterm
+fi
+
+# set fdfind to fd
+if command -v fdfind &>/dev/null; then
+    if ! command -v fd &>/dev/null; then
+        ln -s $(which fdfind) $HOME/.local/bin/fd
+    fi
+fi

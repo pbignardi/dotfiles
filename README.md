@@ -13,19 +13,20 @@ To setup these dotfiles, there are two options:
 ### Option 1: `init.sh` script
 If `curl` is available run
 ```bash
-curl -s https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/v2/init.sh | bash
+curl -s https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/main/init.sh | bash
 ```
 If `wget` is available run
 ```bash
-wget -qO- https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/v2/init.sh | bash
+wget -qO- https://raw.githubusercontent.com/pbignardi/dotfiles/refs/heads/main/init.sh | bash
 ```
 
 ### Option 2: Clone repo
 If `git` is already installed, clone the repository and run the `bootstrap.sh` script with `bash`.
 
 ```bash
-git clone -b v2 https://github.com/pbignardi/dotfiles $HOME/dotfiles
-bash ~/dotfiles/bootstrap.sh
+git clone https://github.com/pbignardi/dotfiles $HOME/dotfiles
+cd dotfiles
+bash bootstrap.sh
 ```
 
 ## What does `bootstrap.sh` do?

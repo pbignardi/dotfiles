@@ -4,3 +4,4 @@
 .data.sh
 *known_hosts*
 .gitconfig
+.gitconfig.local

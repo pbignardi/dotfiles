@@ -6,12 +6,33 @@
 VERSION="2.1.0"
 # Source common config and utils
 source utils.sh
-clear
+
+usage() {
+    echo "usage: bootstrap.sh [OPTIONS]"
+    echo "OPTIONS:
+        -u      update config
+        -w      work config flag
+    "
+}
+
+UPDATE=false
+WORK=false
+while getopts "uw" o; do
+    case "${o}" in
+    u) UPDATE=true ;;
+    w) WORK=true ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
 
 # Display init.sh info
+clear
 STYLE="\033[1;32m"
 RESET="\033[0m"
-cat << "EOF"
+cat <<"EOF"
     .           .      .                     .
     |-. ,-. ,-. |- ,-. |- ,-. ,-. ,-.    ,-. |-.
     | | | | | | |  `-. |  |   ,-| | |    `-. | |
@@ -24,17 +45,12 @@ echo -e "${STYLE}$0${RESET} -- Initialize a new system, automatically"
 echo "version $VERSION"
 echo
 
-# Ask if its work laptop
-read -p "[??] Use secrets from Bitwarden on this machine? (y/N)" -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    USE_SECRETS="y"
-    echo "[>>] Using personal computer profile"
-else
-    USE_SECRETS="n"
+if [ "$WORK" == "true" ]; then
     echo "[>>] Using work laptop profile"
+else
+    echo "[>>] Using personal computer profile"
 fi
-SETUPSSH=false
+echo
 
 # create ~/.local/bin
 mkdir -p ~/.local/bin
@@ -61,7 +77,7 @@ if isWsl; then
 fi
 
 # Add ~/.local/bin to PATH
-export PATH=$PATH:$LOCALBIN
+export PATH=$PATH:$HOME/.local/bin
 
 # Install oh-my-posh
 if ! command -v oh-my-posh >/dev/null 2>&1; then
@@ -76,55 +92,52 @@ if ! command -v uv &>/dev/null; then
 fi
 
 # Change shell to ZSH
-if ! getent passwd $USER | grep zsh &> /dev/null; then
+if ! getent passwd $USER | grep zsh &>/dev/null; then
     echo "==> Changing shell to ZSH"
     sudo chsh -s /bin/zsh $USER
     echo "[>>] Change will take effect after logout"
 fi
 
 # Setup Bitwarden CLI
-. install-bitwarden.sh
+if [ "$UPDATE" == "false" ]; then
+    . install-bitwarden.sh
 
-if [[ $USE_SECRETS == "y" ]] && ! bw login --check; then
-    echo "==> Loggin into Bitwarden CLI"
-    bw login
-fi
+    if ! bw login --check; then
+        echo "==> Loggin into Bitwarden CLI"
+        bw login
+    fi
 
-if [[ $USE_SECRETS == "y" ]] && $SETUPSSH; then
     echo "==> Unlocking Bitwarden vault"
     export BW_SESSION=$(bw unlock --raw)
-fi
 
-# setup SSH
-if [[ $USE_SECRETS == "y" ]] && $SETUPSSH; then
-    # get bw public keys
-    if isWsl; then
-        echo
-    elif isMac; then
-        bw get item "37124b4a-8174-4a42-b933-b29a00ea5511" | jq -r ".sshKey.publicKey" > ~/.ssh/github.pub
+    if [ "$WORK" == "true"]; then
+        bw get item "8028ff0c-64ea-42f7-83f0-b29b008ca35d" | jq -r ".sshKey.publicKey" >~/.ssh/github.pub
         chmod 644 ~/.ssh/github.pub
     else
-        bw get item "b0f6c361-c3d3-4156-abf6-b29b008a74d5" | jq -r ".sshKey.publicKey" > ~/.ssh/github.pub
+        bw get item "b0f6c361-c3d3-4156-abf6-b29b008a74d5" | jq -r ".sshKey.publicKey" >~/.ssh/github.pub
+        bw get item "bf9c1cc4-651b-4747-8335-b32101618396" | jq -r ".sshKey.publicKey" >~/.ssh/raspberry.pub
         chmod 644 ~/.ssh/github.pub
+        chmod 644 ~/.ssh/raspberry.pub
     fi
-    bw get item "bf9c1cc4-651b-4747-8335-b32101618396" | jq -r ".sshKey.publicKey" > ~/.ssh/raspberry.pub
-fi
 
-# Set dotfiles repo origin
-SSH_REMOTE="git@github.com:pbignardi/dotfiles.git"
-if git remote -v | grep origin &> /dev/null; then
-    echo "==> Setting origin git remote"
-    git remote set-url origin $SSH_REMOTE &>/dev/null
-    if [[ $? -ne 0 ]]; then
-        echo "[!!] Error in git remote setup. Aborting."
-        exit 1
+    # Set dotfiles repo origin
+    SSH_REMOTE="git@github.com:pbignardi/dotfiles.git"
+    if git remote -v | grep origin &>/dev/null; then
+        echo "==> Setting origin git remote"
+        git remote set-url origin $SSH_REMOTE &>/dev/null
+        if [[ $? -ne 0 ]]; then
+            echo "[!!] Error in git remote setup. Aborting."
+            exit 1
+        fi
     fi
 fi
 
 # Create directories
-echo "==> Creating directories ~/projects and ~/notes"
-mkdir -p ~/projects
-mkdir -p ~/notes
+if [ "$UPDATE" == "false" ]; then
+    echo "==> Creating directories ~/projects and ~/notes"
+    mkdir -p ~/projects
+    mkdir -p ~/notes
+fi
 
 # Delete stow packages
 echo "==> Deleting existing dotfiles"
@@ -136,7 +149,8 @@ stow -D tmux
 stow -D wezterm
 stow -D zsh
 stow -D ssh
-isWsl && stow -D wsl || stow -D unix
+stow -D unix
+stow -D wsl
 
 # stow required packages
 echo "==> Creating symlinks"
@@ -148,10 +162,17 @@ stow tmux
 stow wezterm
 stow zsh
 stow ssh
-isWsl && stow wsl || stow unix
+stow unix
+if isWsl; then
+    stow wsl --adopt
+    git restore wsl
+else
+    stow unix --adopt
+    git restore unix
+fi
 
 if isWsl; then
-# .ssh/ --> %USERPROFILE&/.ssh/
+    # .ssh/ --> %USERPROFILE&/.ssh/
     USERNAME=$(powershell.exe -NoProfile -Command "\$env:USERPROFILE" | tr -d '\r' | tr '\\' '/' | xargs -- basename)
     APPDATA="/mnt/c/Users/$USERNAME/AppData/Roaming"
 
@@ -161,3 +182,5 @@ if isWsl; then
     # copy ssh configuration
     cp -r wsl/.ssh/ "/mnt/c/Users/$USERNAME/"
 fi
+
+echo "[!!] Remember to fill .gitconfig.local with info"
