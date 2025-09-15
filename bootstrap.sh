@@ -110,7 +110,7 @@ if [ "$UPDATE" == "false" ]; then
     echo "==> Unlocking Bitwarden vault"
     export BW_SESSION=$(bw unlock --raw)
 
-    if [ "$WORK" == "true"]; then
+    if [ "$WORK" == "true" ]; then
         bw get item "8028ff0c-64ea-42f7-83f0-b29b008ca35d" | jq -r ".sshKey.publicKey" >~/.ssh/github.pub
         chmod 644 ~/.ssh/github.pub
     else
