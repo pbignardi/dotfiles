@@ -26,13 +26,11 @@ for pkg in "${packages[@]}"; do
     fi
 done
 
-if [ ${#uninstalled[@]} -eq 0 ]; then
-    return
+if [ ${#uninstalled[@]} -gt 0 ]; then
+    echo "==> Installing flatpaks"
+    echo "${uninstalled[@]}"
+
+    for pkg in "${uninstalled[@]}"; do
+        flatpak install flathub -y "$pkg"
+    done
 fi
-
-echo "==> Installing flatpaks"
-echo "${uninstalled[@]}"
-
-for pkg in "${uninstalled[@]}"; do
-    flatpak install flathub -y "$pkg"
-done
