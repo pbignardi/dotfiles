@@ -147,6 +147,12 @@ if [ "$UPDATE" == "false" ]; then
     mkdir -p ~/notes
 fi
 
+# Update submodules
+if [ "$UPDATE" == "false" ]; then
+    echo "==> Pull submodules"
+    git submodule update --init
+fi
+
 # Delete stow packages
 echo "==> Deleting existing dotfiles"
 stow -D bins
