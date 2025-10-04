@@ -10,6 +10,13 @@ local lsp_servers = {
 	clangd = {},
 	bashls = {},
 	jdtls = {},
+	ruff = {},
+	prettier = {},
+	prettierd = {},
+	stylua = {},
+	shfmt = {},
+	emmet_language_server = {},
+	typescript_language_server = {},
 }
 
 return {
