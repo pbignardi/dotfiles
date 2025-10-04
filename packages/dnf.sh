@@ -7,6 +7,7 @@
 ## Core packages ##
 ###################
 packages=(
+    "fastfetch"
     "git"
     "stow"
     "jq"

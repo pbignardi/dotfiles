@@ -17,6 +17,7 @@ echo "==> Installing packages"
 # Install packages using `brew bundle`
 brew bundle --file=- << EndOfFile
 ## Core packages
+brew "fastfetch"
 brew "wget"
 brew "curl"
 brew "git"
