@@ -76,3 +76,9 @@ export PATH=$PATH:$HOME/.juliaup/bin
 
 # source SSH configuration script
 source $HOME/.ssh/.setup-ssh.sh
+
+# run fastfetch
+if command -v fastfetch &> /dev/null; then
+    echo
+    fastfetch
+fi
