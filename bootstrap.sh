@@ -165,6 +165,7 @@ stow -D zsh
 stow -D ssh
 stow -D unix
 stow -D wsl
+stow -D fastfetch
 
 # stow required packages
 echo "==> Creating symlinks"
@@ -177,6 +178,7 @@ stow wezterm
 stow zsh
 stow ssh
 stow unix
+stow fastfetch
 if isWsl; then
     stow wsl --adopt
     git restore wsl
