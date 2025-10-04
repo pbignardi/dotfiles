@@ -17,41 +17,52 @@ config.window_padding = {
 }
 
 local fontsize_setters = {
-	ref_dpi = function(window)
-		-- fontsize referenced on 72 DPI display
-		local ref_fs = 16
-
-		local active = wezterm.gui.screens().active
-		local dpi = active.effective_dpi
-
-		if is_high_density(active) then
-			dpi = dpi / 2
+	ref_dpi = function(target)
+		if target == nil then
+			target = 16
 		end
+		return function(window)
+			-- fontsize referenced on 72 DPI display
+			local ref_fs = target
 
-		-- compute font size based on the screen dpi
-		window:set_config_overrides({
-			font_size = math.ceil(ref_fs * 72 / dpi),
-		})
+			local active = wezterm.gui.screens().active
+			local dpi = active.effective_dpi
+
+			if is_high_density(active) then
+				dpi = dpi / 2
+			end
+
+			-- compute font size based on the screen dpi
+			window:set_config_overrides({
+				font_size = math.ceil(ref_fs * 72 / dpi),
+			})
+		end
 	end,
-	line_nr = function(window)
-		-- compute fontsize so that fixed number of lines are visible
-		local target_linenr = 70
+	line_nr = function(target)
+		if target == nil then
+			target = 70
+		end
+		return function(window)
+			-- compute fontsize so that fixed number of lines are visible
+			local target_linenr = target
 
-		local active = wezterm.gui.screens().active
-		local line_height = active.height / target_linenr
+			local active = wezterm.gui.screens().active
+			local line_height = active.height / target_linenr
 
-		window:set_config_overrides({
-			font_size = math.ceil(line_height * 72 / active.effective_dpi),
-		})
+			window:set_config_overrides({
+				font_size = math.ceil(line_height * 72 / active.effective_dpi),
+			})
+		end
 	end,
 }
 
 -- update font-size based on dpi settings
-wezterm.on("window-config-reloaded", fontsize_setters.ref_dpi)
+wezterm.on("window-config-reloaded", fontsize_setters.ref_dpi(17))
 
 -- font configuration
 config.adjust_window_size_when_changing_font_size = false
 config.font_size = 13
+config.font = wezterm.font("IosevkaTerm Nerd Font")
 
 -- colorscheme configuration
 local custom_colorschemes = require("colorschemes")
