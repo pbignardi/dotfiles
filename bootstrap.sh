@@ -166,6 +166,8 @@ stow -D ssh
 stow -D unix
 stow -D wsl
 stow -D fastfetch
+stow -D lsd
+stow -D batcat
 
 # stow required packages
 echo "==> Creating symlinks"
@@ -179,6 +181,8 @@ stow zsh
 stow ssh
 stow unix
 stow fastfetch
+stow lsd
+stow batcat
 if isWsl; then
     stow wsl --adopt
     git restore wsl

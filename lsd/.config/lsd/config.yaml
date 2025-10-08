@@ -1,0 +1,12 @@
+blocks:
+  - permission
+  - user
+  - size
+  - date
+  - name
+
+color:
+  theme: custom
+
+date: '+%d %b %H:%M'
+layout: grid

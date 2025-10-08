@@ -32,6 +32,8 @@ packages=(
     "ripgrep"
     "bat"
     "eza"
+    "lsd"
+    "vivid"
     "btop"
     "reflector"
 )
