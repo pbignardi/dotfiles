@@ -59,9 +59,6 @@ eval "$(fzf --zsh)"
 # setup zoxide
 eval "$(zoxide init zsh)"
 
-# setup batcat
-eval "$(batcat --completion zsh)"
-
 # use vivid for LS_COLORS
 export LS_COLORS="$(vivid generate one-dark)"
 
