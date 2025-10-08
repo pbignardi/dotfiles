@@ -19,7 +19,6 @@ final_space = true
 [[blocks]]
     type = 'prompt'
     alignment = 'left'
-    newline = true
 
     [[blocks.segments]]
         template = ' {{.Venv}}'
@@ -28,6 +27,14 @@ final_space = true
         trailing_diamond = ''
         leading_diamond = ''
         type = 'python'
+        style = 'diamond'
+
+    [[blocks.segments]]
+        foreground = 'white'
+        background = '#444444'
+        trailing_diamond = ''
+        leading_diamond = ''
+        type = 'os'
         style = 'diamond'
 
     [[blocks.segments]]
@@ -41,7 +48,7 @@ final_space = true
         style = 'plain'
         type = 'path'
         foreground = 'darkGray'
-        template = "  {{.Path}}"
+        template = " {{.Path}}"
 
         [blocks.segments.properties]
         style = 'folder'
