@@ -107,3 +107,10 @@ if command -v fdfind &>/dev/null; then
         ln -s $(which fdfind) $HOME/.local/bin/fd
     fi
 fi
+
+# set batcat to bat
+if command -v batcat &>/dev/null; then
+    if ! command -v bat &>/dev/null; then
+        ln -s $(which batcat) $HOME/.local/bin/bat
+    fi
+fi
