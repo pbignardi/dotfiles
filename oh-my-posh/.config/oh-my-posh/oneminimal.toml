@@ -6,7 +6,7 @@ final_space = true
     gray = "#666666"
 
 [transient_prompt]
-    template = '{{ .PWD }}> '
+    template = '{{ .PWD }} <b><red>>>></> '
     foreground = "p:gray"
     background = "transparent"
 
@@ -27,14 +27,6 @@ final_space = true
         trailing_diamond = ''
         leading_diamond = ''
         type = 'python'
-        style = 'diamond'
-
-    [[blocks.segments]]
-        foreground = 'white'
-        background = '#444444'
-        trailing_diamond = ''
-        leading_diamond = ''
-        type = 'os'
         style = 'diamond'
 
     [[blocks.segments]]
