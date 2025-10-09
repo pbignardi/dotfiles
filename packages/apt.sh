@@ -110,7 +110,7 @@ fi
 
 # set batcat to bat
 if command -v batcat &>/dev/null; then
-    if ! command -v fd &>/dev/null; then
+    if ! command -v bat &>/dev/null; then
         ln -s $(which batcat) $HOME/.local/bin/bat
     fi
 fi
