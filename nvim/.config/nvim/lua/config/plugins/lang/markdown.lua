@@ -15,7 +15,6 @@ return {
 				left_pad = 1,
 			},
 			heading = {
-				style = "block",
 				width = "block",
 				position = "inline",
 				left_pad = 2,
