@@ -62,6 +62,8 @@ elif isFedora; then
     . packages/dnf.sh
 elif isArchlinux; then
     . packages/pacman.sh
+elif isOpensuse; then
+    . packages/zypper.sh
 elif isMac; then
     . packages/brew.sh
 fi

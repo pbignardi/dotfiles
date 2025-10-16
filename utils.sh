@@ -10,6 +10,14 @@ function isFedora() {
     test $ID == "fedora"
 }
 
+function isOpensuse() {
+    if ! [[ -f /etc/os-release ]]; then
+        return 1
+    fi
+    source /etc/os-release
+    test $ID == "opensuse" || test $ID == "tumbleweed" || test $ID == "opensuse-tumbleweed"
+}
+
 function isDebian() {
     if ! [[ -f /etc/os-release ]]; then
         return 1
