@@ -7,6 +7,7 @@
 ## Core packages ##
 ###################
 packages=(
+    "cargo"
     "fastfetch"
     "git"
     "stow"
@@ -78,4 +79,9 @@ if [ ${#uninstalled[@]} -eq 0 ]; then
     echo "${uninstalled[@]}"
 
     sudo zypper in -y "${uninstalled[@]}"
+fi
+
+# install vivid by building with cargo
+if ! command -v vivid &>/dev/null; then
+    cargo install vivid
 fi
