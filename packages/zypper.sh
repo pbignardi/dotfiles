@@ -7,6 +7,8 @@
 ## Core packages ##
 ###################
 packages=(
+    "make"
+    "tar"
     "cargo"
     "fastfetch"
     "git"
@@ -33,7 +35,6 @@ packages=(
     "lsd"
     "zoxide"
     "neovim"
-    "wezterm"
 )
 uninstalled=()
 
@@ -50,6 +51,13 @@ if ! [ ${#uninstalled[@]} -eq 0 ]; then
     sudo zypper in -y "${uninstalled[@]}"
 fi
 
+
+# install vivid by building with cargo
+if ! command -v vivid &>/dev/null; then
+    cargo install vivid
+fi
+
+
 if isWsl; then
     return
 fi
@@ -62,6 +70,7 @@ packages=(
     "fonts-noto-color-emoji"
     "distrobox"
     "podman"
+    "wezterm"
 )
 uninstalled=()
 
@@ -78,9 +87,4 @@ if [ ${#uninstalled[@]} -eq 0 ]; then
     echo "${uninstalled[@]}"
 
     sudo zypper in -y "${uninstalled[@]}"
-fi
-
-# install vivid by building with cargo
-if ! command -v vivid &>/dev/null; then
-    cargo install vivid
 fi

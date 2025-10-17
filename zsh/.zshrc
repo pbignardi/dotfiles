@@ -42,6 +42,10 @@ if [[ $(uname -s) == "Darwin" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+if command -v cargo &>/dev/null; then
+    export PATH=$PATH:$HOME/.cargo/bin
+fi
+
 # Import aliases
 source $HOME/.zsh_aliases
 
@@ -85,3 +89,10 @@ if command -v fastfetch &> /dev/null; then
     echo
     fastfetch
 fi
+
+# bun completions
+[ -s "/home/paolo/.bun/_bun" ] && source "/home/paolo/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
