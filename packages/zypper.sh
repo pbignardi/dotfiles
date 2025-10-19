@@ -67,14 +67,12 @@ fi
 ####################
 
 packages=(
-    "fonts-noto-color-emoji"
     "distrobox"
     "podman"
     "wezterm"
 )
 uninstalled=()
 
-packages+=("flatpak")
 
 for pkg in "${packages[@]}"; do
     if ! rpm -q "$pkg" &>/dev/null; then
@@ -82,9 +80,15 @@ for pkg in "${packages[@]}"; do
     fi
 done
 
-if [ ${#uninstalled[@]} -eq 0 ]; then
-    echo "==> Installing extra packages"
-    echo "${uninstalled[@]}"
+echo "i'm where you want"
+echo "${uninstalled[@]}"
+echo "${#uninstalled[@]}"
 
-    sudo zypper in -y "${uninstalled[@]}"
+if [ ${#uninstalled[@]} -eq 0 ]; then
+    return
 fi
+
+echo "==> Installing extra packages"
+echo "${uninstalled[@]}"
+
+sudo zypper in -y "${uninstalled[@]}"
