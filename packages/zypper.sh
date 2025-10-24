@@ -80,10 +80,6 @@ for pkg in "${packages[@]}"; do
     fi
 done
 
-echo "i'm where you want"
-echo "${uninstalled[@]}"
-echo "${#uninstalled[@]}"
-
 if [ ${#uninstalled[@]} -eq 0 ]; then
     return
 fi
