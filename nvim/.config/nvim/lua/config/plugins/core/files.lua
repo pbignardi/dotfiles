@@ -7,9 +7,16 @@ end
 return {
 	"echasnovski/mini.files",
 	version = false,
-	opts = {},
-	config = function()
-		require("mini.files").setup()
+	lazy = false,
+	opts = {
+		windows = {
+			preview = true,
+			width_focus = 30,
+			width_preview = 30,
+		},
+	},
+	config = function(_, opts)
+		require("mini.files").setup(opts)
 
 		local map_split = function(buf_id, lhs, direction)
 			local rhs = function()
