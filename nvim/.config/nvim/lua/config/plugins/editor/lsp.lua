@@ -1,4 +1,5 @@
 local fzflua = require("fzf-lua")
+local icons = require("config.icons")
 
 return {
 	{
@@ -9,6 +10,24 @@ return {
 			"saghen/blink.cmp",
 		},
 		opts = {
+			diagnostics = {
+				underline = true,
+				update_in_insert = false,
+				virtual_text = {
+					spacing = 4,
+					source = "if_many",
+					prefix = "●",
+				},
+				severity_sort = true,
+				signs = {
+					text = {
+						[vim.diagnostic.severity.ERROR] = icons.error,
+						[vim.diagnostic.severity.WARN] = icons.warn,
+						[vim.diagnostic.severity.HINT] = icons.hint,
+						[vim.diagnostic.severity.INFO] = icons.info,
+					},
+				},
+			},
 			servers = {
 				gopls = {},
 				lua_ls = {
@@ -39,6 +58,9 @@ return {
             },
 		},
 		config = function(_, opts)
+			-- set diagnostics
+			vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+
 			-- custom lsp setups
 			vim.lsp.config["julials"] = {
 				on_new_config = function(new_config, _)

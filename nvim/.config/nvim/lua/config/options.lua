@@ -27,6 +27,5 @@ vim.o.termguicolors = true
 
 vim.o.colorcolumn = "80"
 vim.o.cursorline = true
-vim.api.nvim_set_hl(0, "CursorLine", { ctermbg = 6, cterm = { underline = true }, underline = true })
 
 vim.o.scrolloff = 8
