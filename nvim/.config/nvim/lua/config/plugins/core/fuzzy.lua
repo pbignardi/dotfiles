@@ -40,7 +40,7 @@ return {
 				["fg"] = { "fg", "CursorLine" },
 				["bg"] = { "bg", "Normal" },
 				["hl"] = { "fg", "String" },
-				["gutter"] = "-1",
+				["gutter"] = { "bg", "Normal" },
 			},
 		},
 		config = function(_, opts)
