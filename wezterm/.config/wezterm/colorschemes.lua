@@ -1,8 +1,6 @@
 local wezterm = require("wezterm")
 local M = {}
 
-local generators = {}
-
 -- functions
 local function darken_black(color_scheme)
 	color_scheme.brights[1] = color_scheme.ansi[1]
@@ -72,7 +70,7 @@ M.color_schemes = {
 	["Gruvbox Material"] = {
 		config = function()
 			local cs = wezterm.color.get_builtin_schemes()["Gruvbox Material (Gogh)"]
-			return cs
+			return darken_black(cs)
 		end,
 	},
 	["Srcery"] = {
