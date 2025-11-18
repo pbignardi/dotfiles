@@ -1,51 +1,67 @@
-local lsp_servers = {
-	gopls = {},
-	pyright = {},
-	lua_ls = {
-		Lua = {
-			workspace = { checkThirdParty = false },
-			telemetry = { enable = false },
-		},
-	},
-	clangd = {},
-	bashls = {},
-	jdtls = {},
-	ruff = {},
-	emmet_language_server = {},
-	ts_ls = {},
-}
+local fzflua = require("fzf-lua")
+local icons = require("config.icons")
 
 return {
-	-- Mason
-	{
-		"williamboman/mason.nvim",
-		dependencies = {
-			"williamboman/mason-lspconfig.nvim",
-		},
-		opts = {
-			ui = {
-				border = "rounded",
-				height = 0.7,
-				icons = {
-					package_installed = "",
-					package_pending = "󱖙",
-					package_uninstalled = "",
-				},
-			},
-		},
-	},
-	-- Nvim configuration
 	{
 		"neovim/nvim-lspconfig",
-		config = function()
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = true },
+			{ "mason-org/mason-lspconfig.nvim", opts = true },
+			"saghen/blink.cmp",
+		},
+		opts = {
+			diagnostics = {
+				underline = true,
+				update_in_insert = false,
+				virtual_text = {
+					spacing = 4,
+					source = "if_many",
+					prefix = "●",
+				},
+				severity_sort = true,
+				signs = {
+					text = {
+						[vim.diagnostic.severity.ERROR] = icons.error,
+						[vim.diagnostic.severity.WARN] = icons.warn,
+						[vim.diagnostic.severity.HINT] = icons.hint,
+						[vim.diagnostic.severity.INFO] = icons.info,
+					},
+				},
+			},
+			servers = {
+				gopls = {},
+				lua_ls = {
+					Lua = {
+						workspace = { checkThirdParty = false },
+						telemetry = { enable = false },
+					},
+				},
+				clangd = {},
+				bashls = {},
+				jdtls = {},
+				ruff = {},
+				emmet_language_server = {},
+				ts_ls = {},
+			},
+            --stylua: ignore
+            keys = {
+                { "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
+                { "gr", fzflua.lsp_references, desc = "References", has = "references"},
+                { "gI", fzflua.lsp_implementations, desc = "Goto Implementation", has = "implementation"},
+                { "gy", fzflua.lsp_typedefs, desc = "Goto T[y]pe Definition", has = "typeDefinition" },
+                { "gD", fzflua.lsp_declarations, desc = "Goto Declaration", has = "declaration"},
+                { "K", function() return vim.lsp.buf.hover() end, desc = "Hover", has = "hover"},
+                { "gK", function() return vim.lsp.buf.signature_help() end, desc = "Signature Help", has = "signatureHelp" },
+                { "<c-k>", function() return vim.lsp.buf.signature_help() end, mode = "i", desc = "Signature Help", has = "signatureHelp" },
+                { "<leader>ca", fzflua.lsp_code_actions, desc = "Code Action", has = "codeAction" },
+                { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
+            },
+		},
+		config = function(_, opts)
+			-- set diagnostics
+			vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
-			require("mason-lspconfig").setup({
-				automatic_enable = true,
-				ensure_installed = vim.tbl_keys(lsp_servers),
-			})
-
+			-- custom lsp setups
 			vim.lsp.config["julials"] = {
 				on_new_config = function(new_config, _)
 					local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
@@ -56,25 +72,29 @@ return {
 				end,
 			}
 
+			-- setup lsp with mason-lspconfig
+			require("mason-lspconfig").setup({
+				automatic_enable = true,
+				ensure_installed = vim.tbl_keys(opts.servers),
+			})
+
+			-- set custom lsp keymaps
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 				callback = function(ev)
-					local fzflua = require("fzf-lua")
+					local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
-					local lspkeymap = function(keys, func, desc)
-						vim.keymap.set("n", keys, func, { desc = desc, buffer = ev.buf })
+					for _, entry in ipairs(opts.keys) do
+						local mode = entry.mode or "n"
+						assert(type(mode) == "string", "mode must be a string")
+
+						if entry.has ~= nil and client:supports_method("textDocument/" .. entry.has) then
+							vim.keymap.set(mode, entry[1], entry[2], { desc = entry.desc, buffer = ev.buf })
+						end
+						if entry.has == nil then
+							vim.keymap.set(mode, entry[1], entry[2], { desc = entry.desc, buffer = ev.buf })
+						end
 					end
-
-					lspkeymap("<leader>rn", vim.lsp.buf.rename, "Rename")
-					lspkeymap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
-					lspkeymap("gd", vim.lsp.buf.definition, "Goto Definition")
-					lspkeymap("gr", fzflua.lsp_references, "Goto References")
-					lspkeymap("gI", fzflua.lsp_implementations, "Goto Implementation")
-					lspkeymap("gD", vim.lsp.buf.type_definition, "Type Definition")
-					lspkeymap("gs", fzflua.lsp_document_symbols, "Document Symbols")
-					lspkeymap("<leader>ws", fzflua.lsp_workspace_symbols, "Workspace Symbols")
-					lspkeymap("K", vim.lsp.buf.hover, "Hover Documentation")
-					lspkeymap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 				end,
 			})
 		end,

@@ -1,8 +1,6 @@
 local wezterm = require("wezterm")
 local M = {}
 
-local generators = {}
-
 -- functions
 local function darken_black(color_scheme)
 	color_scheme.brights[1] = color_scheme.ansi[1]
@@ -24,10 +22,40 @@ M.color_schemes = {
 			return cs
 		end,
 	},
-	["XCodeHC"] = {
+	["XCodeDarkHC"] = {
 		config = function()
-			local cs = wezterm.color.get_builtin_schemes()["XCode Dusk"]
-			return cs
+			local colors = {
+				foreground = "#ffffff",
+				background = "#1f1f24",
+				cursor_bg = "#ffffff",
+				cursor_fg = "#1f1f24",
+				cursor_border = "#ffffff",
+				selection_fg = "#ffffff",
+				selection_bg = "#43454b",
+				scrollbar_thumb = "#222222",
+				split = "#444444",
+				ansi = {
+					"#1f1f24",
+					"#ff8a7a",
+					"#83c9bc",
+					"#d9c668",
+					"#4ec4e6",
+					"#ff85b8",
+					"#cda1ff",
+					"#ffffff",
+				},
+				brights = {
+					"#838991",
+					"#ff8a7a",
+					"#b1faeb",
+					"#ffa14f",
+					"#6bdfff",
+					"#ff85b8",
+					"#e5cfff",
+					"#ffffff",
+				},
+			}
+			return colors
 		end,
 	},
 	["OneDark"] = {
@@ -42,7 +70,7 @@ M.color_schemes = {
 	["Gruvbox Material"] = {
 		config = function()
 			local cs = wezterm.color.get_builtin_schemes()["Gruvbox Material (Gogh)"]
-			return cs
+			return darken_black(cs)
 		end,
 	},
 	["Srcery"] = {

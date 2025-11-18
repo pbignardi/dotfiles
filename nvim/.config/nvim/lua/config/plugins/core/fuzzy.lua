@@ -26,8 +26,8 @@ local fzf_builtin = function()
 	require("fzf-lua").builtin()
 end
 
-local fzf_git_diff = function ()
-    require('fzf-lua').git_diff()
+local fzf_git_diff = function()
+	require("fzf-lua").git_diff()
 end
 
 return {
@@ -40,7 +40,7 @@ return {
 				["fg"] = { "fg", "CursorLine" },
 				["bg"] = { "bg", "Normal" },
 				["hl"] = { "fg", "String" },
-				["gutter"] = "-1",
+				["gutter"] = { "bg", "Normal" },
 			},
 		},
 		config = function(_, opts)

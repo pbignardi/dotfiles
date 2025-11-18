@@ -8,6 +8,7 @@ local icons = {
 	info = "",
 	hint = "",
 	lsp = "󰙅",
+	diagnostic = "",
 }
 
 return icons

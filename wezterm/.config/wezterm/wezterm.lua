@@ -62,11 +62,11 @@ wezterm.on("window-config-reloaded", fontsize_setters.ref_dpi(17))
 -- font configuration
 config.adjust_window_size_when_changing_font_size = false
 config.font_size = 13
-config.font = wezterm.font("IosevkaTerm Nerd Font")
+config.font = wezterm.font("FiraMono Nerd Font")
 
 -- colorscheme configuration
 local custom_colorschemes = require("colorschemes")
-custom_colorschemes.set_custom_colorscheme(config, "OneDark")
+custom_colorschemes.set_custom_colorscheme(config, "XCodeDarkHC")
 
 -- specify wsl on windows
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then

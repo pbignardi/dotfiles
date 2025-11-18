@@ -170,6 +170,7 @@ stow -D wsl
 stow -D fastfetch
 stow -D lsd
 stow -D batcat
+stow -D vivid
 
 # stow required packages
 echo "==> Creating symlinks"
@@ -181,10 +182,10 @@ stow tmux
 stow wezterm
 stow zsh
 stow ssh
-stow unix
 stow fastfetch
 stow lsd
 stow batcat
+stow vivid
 if isWsl; then
     stow wsl --adopt
     git restore wsl

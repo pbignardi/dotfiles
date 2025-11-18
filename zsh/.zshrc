@@ -64,7 +64,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
 # use vivid for LS_COLORS
-export LS_COLORS="$(vivid generate one-dark)"
+export LS_COLORS="$(vivid generate $HOME/.config/vivid/themes/xcodehc.yaml)"
 
 # setup xum sessionizer
 # eval "$(xum zsh)"
