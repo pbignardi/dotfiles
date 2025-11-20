@@ -1,7 +1,7 @@
 return {
 	"sainnhe/gruvbox-material",
 	"scottmckendry/cyberdream.nvim",
-	"srcery-colors/srcery-vim",
+	{ "rose-pine/neovim", as = "rose-pine" },
 	"sainnhe/sonokai",
 	"lunacookies/vim-colors-xcode",
 	"dasupradyumna/midnight.nvim",

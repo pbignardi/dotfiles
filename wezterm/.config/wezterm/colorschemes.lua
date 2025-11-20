@@ -9,6 +9,12 @@ local function darken_black(color_scheme)
 end
 
 M.color_schemes = {
+	["Rose-Pine"] = {
+		config = function()
+			local cs = wezterm.color.get_builtin_schemes()["rose-pine"]
+			return cs
+		end,
+	},
 	["Chalk"] = {
 		config = function()
 			local cs = wezterm.color.get_builtin_schemes()["Chalk (base16)"]

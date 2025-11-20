@@ -66,7 +66,7 @@ config.font = wezterm.font("FiraMono Nerd Font")
 
 -- colorscheme configuration
 local custom_colorschemes = require("colorschemes")
-custom_colorschemes.set_custom_colorscheme(config, "XCodeDarkHC")
+custom_colorschemes.set_custom_colorscheme(config, "Rose-Pine")
 
 -- specify wsl on windows
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
