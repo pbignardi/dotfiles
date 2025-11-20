@@ -13,8 +13,25 @@ return {
 					jsonc = { "prettierd", "prettier", stop_after_first = true },
 					go = { "gofmt" },
 					tex = {},
-					julia = { lsp_format = "prefer" },
+					julia = { "runic", lsp_format = "fallback" },
 					sh = { "shfmt" },
+					c = { "clang-format" },
+					cpp = { "clang-format" },
+					h = { "clang-format" },
+				},
+				formatters = {
+					runic = {
+						command = "julia",
+						args = {
+							"--project=@runic",
+							"--startup-file=no",
+							"-e",
+							"using Runic; exit(Runic.main(ARGS))",
+						},
+					},
+				},
+				default_format_opts = {
+					timeout_ms = 10000,
 				},
 			})
 
