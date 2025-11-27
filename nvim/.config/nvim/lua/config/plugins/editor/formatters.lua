@@ -11,6 +11,7 @@ return {
 					html = { "prettierd", "prettier", stop_after_first = true },
 					json = { "prettierd", "prettier", stop_after_first = true },
 					jsonc = { "prettierd", "prettier", stop_after_first = true },
+					css = { "prettierd", "prettier", stop_after_first = true },
 					go = { "gofmt" },
 					tex = {},
 					julia = { "runic", lsp_format = "fallback" },

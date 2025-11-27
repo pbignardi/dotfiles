@@ -42,6 +42,7 @@ return {
 				ruff = {},
 				emmet_language_server = {},
 				ts_ls = {},
+                pyrefly = {}
 			},
             --stylua: ignore
             keys = {
