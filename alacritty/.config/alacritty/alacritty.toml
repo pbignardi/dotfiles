@@ -1,11 +1,9 @@
 [general]
 import = [
-    "~/.config/alacritty/themes/chalk.toml"
+    "~/.config/alacritty/themes/rose-pine.toml"
 ]
 live_config_reload = true
 
-[env]
-TERM = "xterm-256color"
 
 [window]
 dimensions.columns = 100
@@ -14,7 +12,7 @@ option_as_alt = "Both"
 
 [font]
 size=13
-normal.family = "JetBrainsMono Nerd Font"
+normal.family = "Hack Nerd Font"
 normal.style = "Regular"
 
 [cursor]
