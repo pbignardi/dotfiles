@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 appdata_local = Path(os.getenv("LOCALAPPDATA")).resolve()
+appdata_roaming = Path(os.getenv("APPDATA")).resolve()
 userprofile = Path(os.getenv("USERPROFILE")).resolve()
 
 if not platform.system() == "Windows":
@@ -12,16 +13,21 @@ if not platform.system() == "Windows":
     sys.exit(0)
 
 
-source_to_dest = {
-    Path() / "nvim" / ".config" / "nvim": appdata_local / "nvim",
-    Path() / "wezterm" / ".config" / "wezterm": appdata_local / "wezterm",
-    Path() / "oh-my-posh" / ".config" / "oh-my-posh": userprofile
-    / ".config"
-    / "ohmyposh",
+sources = {
+    "nvim": Path() / "nvim" / ".config" / "nvim",
+    "wezterm": Path() / "wezterm" / ".config" / "wezterm",
+    "ohmyposh": Path() / "oh-my-posh" / ".config" / "oh-my-posh",
+    "alacritty": Path() / "alacritty" / ".config" / "alacritty",
 }
 
-source = Path() / "nvim" / ".config" / "nvim"
-dest = source_to_dest[source]
+dests = {
+    "nvim": appdata_local / "nvim",
+    "wezterm": appdata_local / "wezterm",
+    "ohmyposh": userprofile / ".config" / "ohmyposh",
+    "alacritty": appdata_roaming / "alacritty",
+}
+
+source_to_dest = {s: d for s, d in zip(sources.values(), dests.values())}
 
 for source, dest in source_to_dest.items():
     if dest.exists() and dest.is_dir() and not dest.is_symlink():
