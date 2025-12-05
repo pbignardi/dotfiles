@@ -170,7 +170,6 @@ stow -D wsl
 stow -D fastfetch
 stow -D lsd
 stow -D batcat
-stow -D vivid
 
 # stow required packages
 echo "==> Creating symlinks"
@@ -185,7 +184,6 @@ stow ssh
 stow fastfetch
 stow lsd
 stow batcat
-stow vivid
 if isWsl; then
     stow wsl --adopt
     git restore wsl
@@ -198,9 +196,6 @@ if isWsl; then
     # .ssh/ --> %USERPROFILE&/.ssh/
     USERNAME=$(powershell.exe -NoProfile -Command "\$env:USERPROFILE" | tr -d '\r' | tr '\\' '/' | xargs -- basename)
     APPDATA="/mnt/c/Users/$USERNAME/AppData/Roaming"
-
-    # copy wezterm configuration
-    cp -r wezterm/.config/wezterm "/mnt/c/Users/$USERNAME/.config/"
 
     # copy ssh configuration
     cp -r wsl/.ssh/ "/mnt/c/Users/$USERNAME/"

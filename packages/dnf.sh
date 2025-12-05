@@ -37,7 +37,7 @@ packages=(
 uninstalled=()
 
 for pkg in "${packages[@]}"; do
-    if ! rpm -q "$pkg" &> /dev/null; then
+    if ! rpm -q "$pkg" &>/dev/null; then
         uninstalled+=("$pkg")
     fi
 done
@@ -66,7 +66,7 @@ uninstalled=()
 packages+=("flatpak")
 
 for pkg in "${packages[@]}"; do
-    if ! rpm -q "$pkg" &> /dev/null; then
+    if ! rpm -q "$pkg" &>/dev/null; then
         uninstalled+=("$pkg")
     fi
 done

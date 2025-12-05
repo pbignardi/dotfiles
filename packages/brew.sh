@@ -40,7 +40,6 @@ brew "npm"
 brew "deno"
 brew "eza"
 brew "lsd"
-brew "vivid"
 brew "zoxide"
 
 brew "bitwarden-cli"

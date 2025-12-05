@@ -63,8 +63,8 @@ eval "$(fzf --zsh)"
 # setup zoxide
 eval "$(zoxide init zsh)"
 
-# use vivid for LS_COLORS
-export LS_COLORS="$(vivid generate rose-pine)"
+# source colors
+source $HOME/.zsh_colors
 
 # setup xum sessionizer
 # eval "$(xum zsh)"

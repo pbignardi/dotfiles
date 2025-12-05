@@ -33,7 +33,6 @@ packages=(
     "bat"
     "eza"
     "lsd"
-    "vivid"
     "btop"
     "reflector"
 )

@@ -30,7 +30,6 @@ packages=(
     "btop"
     "eza"
     "lsd"
-    "vivid"
     "zathura"
     "zoxide"
     "zathura-pdf-poppler"

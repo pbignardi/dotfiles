@@ -1,38 +1,38 @@
-user: yellow
-group: dark_yellow
+user: dark_red          # love
+group: dark_yellow      # gold
 permission:
-  read: dark_green
-  write: dark_yellow
-  exec: dark_red
-  exec-sticky: 5
-  no-access: 245
-  octal: 6
-  acl: dark_cyan
-  context: cyan
+  read: dark_cyan        # foam
+  write: dark_magenta    # iris
+  exec: dark_magenta     # rose
+  exec-sticky: dark_yellow # gold
+  no-access: grey        # muted
+  octal: dark_grey       # subtle
+  acl: cyan              # pine
+  context: dark_grey     # overlay
 date:
-  hour-old: blue
-  day-old: cyan
-  older: green
+  hour-old: white        # text
+  day-old: dark_cyan     # foam
+  older: dark_grey       # subtle
 size:
-  none: magenta
-  small: magenta
-  medium: magenta
-  large: red
+  none: grey             # muted
+  small: dark_cyan       # pine
+  medium: cyan           # foam
+  large: magenta         # iris
 inode:
-  valid: 13
-  invalid: 245
+  valid: cyan            # foam
+  invalid: grey          # muted
 links:
-  valid: 13
-  invalid: 245
-tree-edge: 245
+  valid: white           # text
+  invalid: grey          # muted
+tree-edge: grey          # muted
 git-status:
-  default: 245
-  unmodified: 245
-  ignored: 245
-  new-in-index: dark_green
-  new-in-workdir: dark_green
-  typechange: dark_yellow
-  deleted: dark_red
-  renamed: dark_green
-  modified: dark_yellow
-  conflicted: dark_red
+  default: grey          # muted
+  unmodified: dark_grey  # subtle
+  ignored: grey          # muted
+  new-in-index: dark_cyan # foam
+  new-in-workdir: dark_cyan # foam
+  typechange: dark_yellow # gold
+  deleted: dark_red      # love
+  renamed: dark_cyan     # pine
+  modified: dark_magenta # rose
+  conflicted: dark_red   # love
