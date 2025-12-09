@@ -16,7 +16,7 @@ packages=(
     "gcc"
     "golang"
     "gum"
-    "nodejs-npm"
+    "nodejs"
     "curl"
     "wget1"
     "openssh"
@@ -28,8 +28,8 @@ packages=(
     "fd-find"
     "ripgrep"
     "bat"
-    "btop"
-    "eza"
+    "zoxide"
+    "lsd"
     "zathura"
     "zathura-pdf-poppler"
     "google-noto-color-emoji-fonts"
@@ -49,7 +49,7 @@ fi
 echo "==> Installing core packages"
 echo "${uninstalled[@]}"
 
-sudo dnf install -y "${uninstalled[@]}"
+sudo dnf install -y --skip-unavailable "${uninstalled[@]}"
 
 isWsl && return
 
@@ -78,7 +78,7 @@ fi
 echo "==> Installing extra packages"
 echo "${uninstalled[@]}"
 
-sudo dnf install -y "${uninstalled[@]}"
+sudo dnf install -y --skip-unavailable "${uninstalled[@]}"
 
 # wezterm
 if [ ! -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezterm-nightly.repo ]; then
