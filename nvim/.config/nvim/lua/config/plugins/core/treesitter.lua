@@ -4,24 +4,24 @@ return {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		"nvim-treesitter/nvim-treesitter-context",
 	},
+    branch = "master",
 	build = ":TSUpdate",
 	config = function()
 		local configs = require("nvim-treesitter.configs")
 		configs.setup({
 			modules = {},
-			sync_install = true,
 			ignore_install = { "latex" },
 			ensure_installed = {
 				"c",
 				"cpp",
-				"go",
 				"lua",
 				"python",
-				"rust",
 				"javascript",
 				"typescript",
 				"vimdoc",
 				"vim",
+                "julia",
+                "bash",
 			},
 			auto_install = true,
 			highlight = { enable = true },
