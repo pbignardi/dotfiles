@@ -64,6 +64,64 @@ M.color_schemes = {
 			return colors
 		end,
 	},
+	["Oneminimal"] = {
+		config = function()
+			local colors = {
+				foreground = "#b3b3b3",
+				background = "#121212",
+				ansi = {
+					"#121212",
+					"#f29695",
+					"#b1bc66",
+					"#cfb059",
+					"#44c8d5",
+					"#df98cf",
+					"#6fc99b",
+					"#b3b3b3",
+				},
+				brights = {
+					"#3e3e3e",
+					"#f29695",
+					"#b1bc66",
+					"#cfb059",
+					"#44c8d5",
+					"#df98cf",
+					"#6fc99b",
+					"#dedede",
+				},
+			}
+            return colors
+		end,
+	},
+    ["Oneminimal_Light"] = {
+		config = function()
+			local colors = {
+				foreground = "#b3b3b3",
+				background = "#121212",
+				ansi = {
+					"#121212",
+					"#f5aaa9",
+					"#bfc983",
+					"#d8be79",
+					"#94c6fa",
+					"#fbb9ec",
+					"#97e7bd",
+					"#d2d2d2",
+				},
+				brights = {
+					"#444444",
+					"#f5aaa9",
+					"#bfc983",
+					"#d8be79",
+					"#94c6fa",
+					"#fbb9ec",
+					"#97e7bd",
+					"#d2d2d2",
+				},
+			}
+            return colors
+		end,
+	},
 	["OneDark"] = {
 		config = function()
 			local cs = wezterm.color.get_builtin_schemes()["OneDark (base16)"]
