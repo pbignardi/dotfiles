@@ -1,6 +1,7 @@
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/.cargo/bin
 
 # Set systemd editor
 export SYSTEMD_EDITOR=nvim
