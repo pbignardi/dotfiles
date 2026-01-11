@@ -11,8 +11,7 @@ dimensions.lines = 30
 option_as_alt = "Both"
 
 [font]
-size=13
-normal.family = "Hack Nerd Font"
+normal.family = "CaskaydiaCove NF"
 normal.style = "Regular"
 
 [cursor]
