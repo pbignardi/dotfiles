@@ -1,6 +1,6 @@
 [general]
 import = [
-    "./themes/rose-pine.toml"
+    "./themes/monokai_pro.toml"
 ]
 live_config_reload = true
 
