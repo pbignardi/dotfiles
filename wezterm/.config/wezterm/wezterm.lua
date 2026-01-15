@@ -66,16 +66,17 @@ config.keys = {
 config.bold_brightens_ansi_colors = false
 
 wezterm.on("update-status", function(window, pane)
-	-- Make it italic and underlined
+	local domain = wezterm.nerdfonts.cod_remote .. " " .. pane:get_domain_name()
+	local ws = wezterm.nerdfonts.cod_terminal_tmux .. " " .. wezterm.mux.get_active_workspace() -- Make it italic and underlined
 	window:set_right_status(wezterm.format({
 		-- display the current domain
 		{ Foreground = { AnsiColor = "White" } },
-		{ Text = " " .. pane:get_domain_name() .. " " },
+		{ Text = " " .. domain .. " " },
 		-- display the current workspace
+		{ Background = { AnsiColor = "Olive" } },
 		{ Attribute = { Intensity = "Bold" } },
-		{ Background = { AnsiColor = "Yellow" } },
 		{ Foreground = { AnsiColor = "Black" } },
-		{ Text = " " .. wezterm.mux.get_active_workspace() .. " " },
+		{ Text = " " .. ws .. " " },
 	}))
 end)
 
