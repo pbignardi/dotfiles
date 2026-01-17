@@ -1,4 +1,5 @@
 return {
     'echasnovski/mini.bracketed',
-    version = false
+    version = false,
+    vscode = true
 }

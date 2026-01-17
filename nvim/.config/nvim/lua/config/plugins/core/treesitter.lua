@@ -6,6 +6,7 @@ return {
 	},
     branch = "master",
 	build = ":TSUpdate",
+    vscode = true,
 	config = function()
 		local configs = require("nvim-treesitter.configs")
 		configs.setup({

@@ -22,6 +22,7 @@ require("lazy").setup({
 		{ import = "config.plugins.lang" },
 		{ import = "config.plugins.ui" },
 		{ import = "config.plugins.editor" },
+		{ import = "config.plugins.extra" },
 	},
 	change_detection = { notify = false },
 	ui = {
