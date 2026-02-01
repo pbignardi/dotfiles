@@ -5,6 +5,7 @@ end
 local enabled = {
 	"lazy.nvim",
 	"mini.ai",
+    "mini.trailspace",
 	"mini.comment",
 	"mini.move",
 	"mini.pairs",
