@@ -21,8 +21,8 @@ sources = {
 }
 
 dests = {
-    "nvim": appdata_local / "nvim",
-    "wezterm": appdata_local / "wezterm",
+    "nvim": userprofile / ".config" / "nvim",
+    "wezterm": userprofile/ ".config" / "wezterm",
     "ohmyposh": userprofile / ".config" / "ohmyposh",
     "alacritty": appdata_roaming / "alacritty",
 }
