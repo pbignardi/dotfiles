@@ -46,7 +46,7 @@ return {
 		config = function(_, opts)
 			local fzflua = require("fzf-lua")
 
-			fzflua.setup(opts)
+			fzflua.setup({ "max-perf" })
 			fzflua.register_ui_select()
 
 			return opts
@@ -66,7 +66,6 @@ return {
 	{
 		"nvim-telescope/telescope.nvim",
 		enabled = false,
-		tag = "0.1.8",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	-- Telescope UI Select
