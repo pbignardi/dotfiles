@@ -1,40 +1,42 @@
-local fzf_files = function()
-	require("fzf-lua").files()
+local fuzzy_files = function()
+	require("mini.pick").builtin.files({
+		tool = "fallback",
+	})
 end
 
-local fzf_grep = function()
-	require("fzf-lua").live_grep()
+local fuzzy_grep = function()
+	require("mini.pick").builtin.grep_live()
 end
 
-local fzf_help = function()
-	require("fzf-lua").helptags()
+local fuzzy_help = function()
+	require("mini.pick").builtin.help()
 end
 
-local fzf_buffers = function()
-	require("fzf-lua").buffers()
+local fuzzy_buffers = function()
+	require("mini.pick").builtin.buffers()
 end
 
-local fzf_colorschemes = function()
-	require("fzf-lua").colorschemes()
+local fuzzy_colorschemes = function()
+	require("mini.extra").pickers.colorschemes()
 end
 
-local fzf_resume = function()
-	require("fzf-lua").resume()
+local fuzzy_resume = function()
+	require("mini.pick").builtin.resume()
 end
 
-local fzf_builtin = function()
-	require("fzf-lua").builtin()
+local fuzzy_builtin = function()
+	require("mini.pick").builtin.builtin()
 end
 
-local fzf_git_diff = function()
-	require("fzf-lua").git_diff()
+local fuzzy_gitdiff = function()
+	require("mini.extra").pickers.git_hunks()
 end
 
 return {
 	-- fzf lua
 	{
 		"ibhagwan/fzf-lua",
-		enabled = true,
+		enabled = false,
 		opts = {
 			fzf_colors = {
 				["fg"] = { "fg", "CursorLine" },
@@ -52,37 +54,36 @@ return {
 			return opts
 		end,
 		keys = {
-			{ "<leader>/", fzf_buffers, desc = "Open buffers" },
-			{ "<leader>sf", fzf_files, desc = "Files" },
-			{ "<leader>sg", fzf_grep, desc = "Grep" },
-			{ "<leader>sh", fzf_help, desc = "Help" },
-			{ "<leader>sc", fzf_colorschemes, desc = "Colorschemes" },
-			{ "<leader>sr", fzf_resume, desc = "Resume" },
-			{ "<leader>sb", fzf_builtin, desc = "Built-in" },
-			{ "<leader>sd", fzf_git_diff, desc = "Built-in" },
+			{ "<leader>/", fuzzy_buffers, desc = "Open buffers" },
+			{ "<leader>sf", fuzzy_files, desc = "Files" },
+			{ "<leader>sg", fuzzy_grep, desc = "Grep" },
+			{ "<leader>sh", fuzzy_help, desc = "Help" },
+			{ "<leader>sc", fuzzy_colorschemes, desc = "Colorschemes" },
+			{ "<leader>sr", fuzzy_resume, desc = "Resume" },
+			{ "<leader>sb", fuzzy_builtin, desc = "Built-in" },
+			{ "<leader>sd", fuzzy_gitdiff, desc = "Built-in" },
 		},
 	},
-	-- Telescope
 	{
-		"nvim-telescope/telescope.nvim",
-		enabled = false,
-		tag = "0.1.8",
-		dependencies = { "nvim-lua/plenary.nvim" },
-	},
-	-- Telescope UI Select
-	{
-		"nvim-telescope/telescope-ui-select.nvim",
-		enabled = false,
-		opts = {},
-		config = function()
-			require("telescope").setup({
-				pickers = {
-					colorscheme = {
-						enable_preview = true,
-					},
-				},
-			})
-			require("telescope").load_extension("ui-select")
+		"nvim-mini/mini.pick",
+		enabled = true,
+		version = false,
+		opts = true,
+		config = function(_, opts)
+			require("mini.pick").setup(opts)
+			vim.ui.select = function(items, options, on_choice)
+				local start_opts = { window = { config = { width = vim.o.columns } } }
+				return MiniPick.ui_select(items, options, on_choice, start_opts)
+			end
 		end,
+		keys = {
+			{ "<leader>/", fuzzy_buffers, desc = "Open buffers" },
+			{ "<leader>sf", fuzzy_files, desc = "Files" },
+			{ "<leader>sg", fuzzy_grep, desc = "Grep" },
+			{ "<leader>sh", fuzzy_help, desc = "Help" },
+			{ "<leader>sc", fuzzy_colorschemes, desc = "Colorschemes" },
+			{ "<leader>sr", fuzzy_resume, desc = "Resume" },
+			{ "<leader>sd", fuzzy_gitdiff, desc = "Built-in" },
+		},
 	},
 }
