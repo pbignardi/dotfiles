@@ -22,6 +22,19 @@ return {
 			completion = { documentation = { auto_show = false } },
 			fuzzy = { implementation = "prefer_rust_with_warning" },
 			signature = { enabled = true },
+			sources = {
+				default = { "lsp", "path", "snippets", "buffer" },
+				per_filetype = {
+					lua = { "lazydev" },
+				},
+				providers = {
+					lazydev = {
+						name = "LazyDev",
+						module = "lazydev.integrations.blink",
+						score_offset = 100,
+					},
+				},
+			},
 		},
 	},
 }
