@@ -28,6 +28,20 @@ require("lazy").setup({
 	ui = {
 		border = "rounded",
 	},
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"gzip",
+				"matchit",
+				"matchparen",
+				"netrwPlugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+			},
+		},
+	},
 })
 
 vim.keymap.set("n", "<leader>l", require("lazy").home, { desc = "Open Lazy" })

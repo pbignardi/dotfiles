@@ -5,6 +5,11 @@ end
 
 return {
 	{
+		"nvim-mini/mini.extra",
+		version = false,
+		opts = {},
+	},
+	{
 		-- autogenerate open-close text objects
 		"echasnovski/mini.pairs",
 		version = false,

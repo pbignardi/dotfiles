@@ -1,5 +1,14 @@
-local fzflua = require("fzf-lua")
 local icons = require("config.icons")
+
+local lsp_diagnostic = function()
+	require("mini.extra").pickers.diagnostic()
+end
+
+local lsp_view = function(scope)
+	return function()
+		require("mini.extra").lsp({ scope = scope })
+	end
+end
 
 return {
 	{
@@ -47,14 +56,14 @@ return {
             --stylua: ignore
             keys = {
                 { "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
-                { "gr", fzflua.lsp_references, desc = "References", has = "references"},
-                { "gI", fzflua.lsp_implementations, desc = "Goto Implementation", has = "implementation"},
-                { "gy", fzflua.lsp_typedefs, desc = "Goto T[y]pe Definition", has = "typeDefinition" },
-                { "gD", fzflua.lsp_declarations, desc = "Goto Declaration", has = "declaration"},
+                { "gr", lsp_view('references'), desc = "References", has = "references"},
+                { "gI", lsp_view('implementations'), desc = "Goto Implementation", has = "implementation"},
+                { "gy", lsp_view('type_definitions'), desc = "Goto T[y]pe Definition", has = "typeDefinition" },
+                { "gD", lsp_view('declarations'), desc = "Goto Declaration", has = "declaration"},
                 { "K", function() return vim.lsp.buf.hover() end, desc = "Hover", has = "hover"},
                 { "gK", function() return vim.lsp.buf.signature_help() end, desc = "Signature Help", has = "signatureHelp" },
                 { "<c-k>", function() return vim.lsp.buf.signature_help() end, mode = "i", desc = "Signature Help", has = "signatureHelp" },
-                { "<leader>ca", fzflua.lsp_code_actions, desc = "Code Action", has = "codeAction" },
+                { "<leader>ca", lsp_diagnostic, desc = "Code Action", has = "codeAction" },
                 { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
             },
 		},
