@@ -1,66 +1,116 @@
+local required = {
+	"c",
+	"cpp",
+	"lua",
+	"python",
+	"javascript",
+	"typescript",
+	"vimdoc",
+	"vim",
+	"julia",
+	"bash",
+}
+
+local function goto_next_start(tobj)
+	return function()
+		require("nvim-treesitter-textobjects.move").goto_next_start(tobj, "textobjects")
+	end
+end
+
+local function goto_prv_start(tobj)
+	return function()
+		require("nvim-treesitter-textobjects.move").goto_previous_start(tobj, "textobjects")
+	end
+end
+
+local function goto_next_end(tobj)
+	return function()
+		require("nvim-treesitter-textobjects.move").goto_next_end(tobj, "textobjects")
+	end
+end
+
+local function goto_prv_end(tobj)
+	return function()
+		require("nvim-treesitter-textobjects.move").goto_previous_end(tobj, "textobjects")
+	end
+end
+
 return {
-	"nvim-treesitter/nvim-treesitter",
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		"nvim-treesitter/nvim-treesitter-context",
+	{
+		"nvim-treesitter/nvim-treesitter",
+		lazy = false,
+		build = ":TSUpdate",
+		config = function()
+			-- install required parsers
+			require("nvim-treesitter").install(required)
+		end,
 	},
-    branch = "master",
-	build = ":TSUpdate",
-    vscode = true,
-	config = function()
-		local configs = require("nvim-treesitter.configs")
-		configs.setup({
-			modules = {},
-			ignore_install = { "latex" },
-			ensure_installed = {
-				"c",
-				"cpp",
-				"lua",
-				"python",
-				"javascript",
-				"typescript",
-				"vimdoc",
-				"vim",
-                "julia",
-                "bash",
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		init = function()
+			-- Disable entire built-in ftplugin mappings to avoid conflicts.
+			-- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
+			vim.g.no_plugin_maps = true
+
+			-- Or, disable per filetype (add as you like)
+			-- vim.g.no_python_maps = true
+			-- vim.g.no_ruby_maps = true
+			-- vim.g.no_rust_maps = true
+			-- vim.g.no_go_maps = true
+		end,
+		keys = {
+			{
+				"]f",
+				goto_next_start("@function.outer"),
+				mode = { "n", "x", "o" },
+				desc = "Jump to next function (start)",
 			},
-			auto_install = true,
-			highlight = { enable = true },
-			indent = { enable = true },
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<c-space>",
-					node_incremental = "<c-space>",
-					scope_incremental = false,
-					node_decremental = "<bs>",
-				},
+			{ "]c", goto_next_start("@class.outer"), mode = { "n", "x", "o" }, desc = "Jump to next class (start)" },
+			{
+				"]a",
+				goto_next_start("@parameter.inner"),
+				mode = { "n", "x", "o" },
+				desc = "Jump to next parameter (start)",
 			},
-			textobjects = {
-				move = {
-					enable = true,
-					goto_next_start = {
-						["]f"] = "@function.outer",
-						["]c"] = "@class.outer",
-						["]a"] = "@parameter.inner",
-					},
-					goto_next_end = {
-						["]F"] = "@function.outer",
-						["]C"] = "@class.outer",
-						["]A"] = "@parameter.inner",
-					},
-					goto_previous_start = {
-						["[f"] = "@function.outer",
-						["[c"] = "@class.outer",
-						["[a"] = "@parameter.inner",
-					},
-					goto_previous_end = {
-						["[F"] = "@function.outer",
-						["[C"] = "@class.outer",
-						["[A"] = "@parameter.inner",
-					},
-				},
+			{ "]F", goto_next_end("@function.outer"), mode = { "n", "x", "o" }, desc = "Jump to next function (end)" },
+			{ "]C", goto_next_end("@class.outer"), mode = { "n", "x", "o" }, desc = "Jump to next class (end)" },
+			{
+				"]A",
+				goto_next_end("@parameter.inner"),
+				mode = { "n", "x", "o" },
+				desc = "Jump to next parameter (end)",
 			},
-		})
-	end,
+			{
+				"[f",
+				goto_prv_start("@function.outer"),
+				mode = { "n", "x", "o" },
+				desc = "Jump to previous function (start)",
+			},
+			{ "[c", goto_prv_start("@class.outer"), mode = { "n", "x", "o" }, desc = "Jump to previous class (start)" },
+			{
+				"[a",
+				goto_prv_start("@parameter.inner"),
+				mode = { "n", "x", "o" },
+				desc = "Jump to previous parameter (start)",
+			},
+			{
+				"[F",
+				goto_prv_end("@function.outer"),
+				mode = { "n", "x", "o" },
+				desc = "Jump to previous function (end)",
+			},
+			{ "[C", goto_prv_end("@class.outer"), mode = { "n", "x", "o" }, desc = "Jump to previous class (end)" },
+			{
+				"[A",
+				goto_prv_end("@parameter.inner"),
+				mode = { "n", "x", "o" },
+				desc = "Jump to previous parameter (end)",
+			},
+		},
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		opts = true,
+	},
 }
