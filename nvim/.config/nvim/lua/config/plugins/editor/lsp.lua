@@ -6,7 +6,7 @@ end
 
 local lsp_view = function(scope)
 	return function()
-		require("mini.extra").lsp({ scope = scope })
+		require("mini.extra").pickers.lsp({ scope = scope })
 	end
 end
 
@@ -51,7 +51,7 @@ return {
 				ruff = {},
 				emmet_language_server = {},
 				ts_ls = {},
-                pyrefly = {}
+				pyrefly = {},
 			},
             --stylua: ignore
             keys = {
