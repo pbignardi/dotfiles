@@ -1,7 +1,0 @@
-require("config.options")
-require("config.icons")
-require("config.lazy")
-require("config.remaps")
-require("config.colorscheme")
-require("config.filetypes")
-require("config.autocmds")
