@@ -20,3 +20,4 @@ vim.o.termguicolors = true
 vim.o.colorcolumn = "80"
 vim.o.cursorline = true
 vim.o.scrolloff = 8
+vim.o.winborder = "rounded"
