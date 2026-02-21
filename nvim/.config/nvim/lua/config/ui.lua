@@ -30,26 +30,17 @@ require("mini.pick").setup {
     end,
   },
 }
-
-local find_files = function()
-  MiniPick.builtin.files { tool = "fd " }
-end
-
-local find_gitfiles = function()
-  MiniPick.builtin.files { tool = "git" }
-end
-
-local find_buffers = function()
-  MiniPick.builtin.buffers { mappings = buffer_mappings }
-end
+require("snacks").setup {
+  picker = { enabled = true },
+}
 
 MiniDeps.later(function()
-  vim.keymap.set("n", "<leader>p", find_gitfiles, { desc = "Search project files" })
-  vim.keymap.set("n", "<leader>/", MiniPick.builtin.buffers, { desc = "Search open buffers" })
-  vim.keymap.set("n", "<leader>sh", MiniPick.builtin.help, { desc = "Search helptags" })
-  vim.keymap.set("n", "<leader>sf", find_files, { desc = "Search files (all)" })
-  vim.keymap.set("n", "<leader>sc", MiniExtra.pickers.colorschemes, { desc = "Search colorschemes" })
-  vim.keymap.set("n", "<leader>sg", MiniPick.builtin.grep_live, { desc = "Live grep" })
+  vim.keymap.set("n", "<leader>p", Snacks.picker.git_files, { desc = "Search project files" })
+  vim.keymap.set("n", "<leader>/", Snacks.picker.buffers, { desc = "Search open buffers" })
+  vim.keymap.set("n", "<leader>sh", Snacks.picker.help, { desc = "Search helptags" })
+  vim.keymap.set("n", "<leader>sf", Snacks.picker.files, { desc = "Search files (all)" })
+  vim.keymap.set("n", "<leader>sc", Snacks.picker.colorschemes, { desc = "Search colorschemes" })
+  vim.keymap.set("n", "<leader>sg", Snacks.picker.grep, { desc = "Live grep" })
 end)
 
 -- statusline
@@ -112,4 +103,4 @@ local opts = {
 require("mini.notify").setup()
 
 -- set colorscheme
-vim.cmd.colorscheme "jellybeans-mono"
+vim.cmd.colorscheme "nordfox"

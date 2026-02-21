@@ -15,10 +15,11 @@ if not vim.loop.fs_stat(mini_path) then
   vim.cmd 'echo "Installed `mini.nvim`" | redraw'
 end
 
--- Set up 'mini.deps' (customize to your liking)
+-- enable mini.deps
 require("mini.deps").setup { path = { package = path_package } }
 
-MiniDeps.add { source = "WTFox/jellybeans.nvim" }
+-- install external plugins
+MiniDeps.add { source = "EdenEast/nightfox.nvim" }
 MiniDeps.add {
   source = "nvim-treesitter/nvim-treesitter",
   hooks = {
@@ -34,6 +35,8 @@ MiniDeps.add { source = "mason-org/mason-lspconfig.nvim" }
 MiniDeps.add { source = "neovim/nvim-lspconfig" }
 MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 MiniDeps.add { source = "stevearc/conform.nvim" }
+MiniDeps.add { source = "folke/snacks.nvim" }
+MiniDeps.add { source = "folke/lazydev.nvim" }
 
 -- REQUIRE CONFIGS
 require "config.basics"
