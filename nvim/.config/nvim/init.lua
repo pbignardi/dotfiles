@@ -33,10 +33,7 @@ MiniDeps.add { source = "nvim-treesitter/nvim-treesitter-context" }
 MiniDeps.add { source = "mason-org/mason.nvim" }
 MiniDeps.add { source = "mason-org/mason-lspconfig.nvim" }
 MiniDeps.add { source = "neovim/nvim-lspconfig" }
-MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 MiniDeps.add { source = "stevearc/conform.nvim" }
-MiniDeps.add { source = "folke/snacks.nvim" }
-MiniDeps.add { source = "folke/lazydev.nvim" }
 
 -- REQUIRE CONFIGS
 require "config.basics"
@@ -47,8 +44,6 @@ require "config.ui"
 require "config.lspconfig"
 require "config.completions"
 require "config.formatters"
-
-vim.lsp.enable "lua_ls"
 
 -- set custom lsp keymaps
 -- local lsp_keymaps = {

@@ -21,3 +21,4 @@ vim.o.colorcolumn = "80"
 vim.o.cursorline = true
 vim.o.scrolloff = 8
 vim.o.winborder = "rounded"
+vim.opt.completeopt = { "menuone", "noinsert" }

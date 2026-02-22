@@ -30,17 +30,21 @@ require("mini.pick").setup {
     end,
   },
 }
-require("snacks").setup {
-  picker = { enabled = true },
-}
+
+local workspace_diagnostics = function()
+  MiniExtra.pickers.diagnostic { scope = "all" }
+end
 
 MiniDeps.later(function()
-  vim.keymap.set("n", "<leader>p", Snacks.picker.git_files, { desc = "Search project files" })
-  vim.keymap.set("n", "<leader>/", Snacks.picker.buffers, { desc = "Search open buffers" })
-  vim.keymap.set("n", "<leader>sh", Snacks.picker.help, { desc = "Search helptags" })
-  vim.keymap.set("n", "<leader>sf", Snacks.picker.files, { desc = "Search files (all)" })
-  vim.keymap.set("n", "<leader>sc", Snacks.picker.colorschemes, { desc = "Search colorschemes" })
-  vim.keymap.set("n", "<leader>sg", Snacks.picker.grep, { desc = "Live grep" })
+  vim.keymap.set("n", "<leader>p", MiniExtra.pickers.git_files, { desc = "Search project files" })
+  vim.keymap.set("n", "<leader>/", MiniPick.builtin.buffers, { desc = "Search open buffers" })
+  vim.keymap.set("n", "<leader>sh", MiniPick.builtin.help, { desc = "Search helptags" })
+  vim.keymap.set("n", "<leader>sf", MiniPick.builtin.files, { desc = "Search files (all)" })
+  vim.keymap.set("n", "<leader>sc", MiniExtra.pickers.colorschemes, { desc = "Search colorschemes" })
+  vim.keymap.set("n", "<leader>sg", MiniPick.builtin.grep_live, { desc = "Live grep" })
+  vim.keymap.set("n", "<leader>sd", MiniExtra.pickers.git_hunks, { desc = "Search git hunks" })
+  vim.keymap.set("n", "<leader>df", MiniExtra.pickers.diagnostic, { desc = "File diagnostics" })
+  vim.keymap.set("n", "<leader>dw", workspace_diagnostics, { desc = "Workspace diagnostics" })
 end)
 
 -- statusline
@@ -80,27 +84,29 @@ require("mini.indentscope").setup {
 }
 
 -- notify
-local opts = {
+require("mini.notify").setup {
   content = {
     format = function(notif)
-      local content = ""
-      if notif.level == "INFO" then
-        content = content .. "  Info - "
-      elseif notif.level == "ERROR" then
-        content = content .. "  Error - "
-      elseif notif.level == "WARN" then
-        content = content .. "  Warning - "
-      elseif notif.level == "DEBUG" then
-        content = content .. "  Debug - "
-      else
-        content = ""
-      end
+      local content_level = {
+        INFO = "  Info - ",
+        ERROR = "  Error - ",
+        WARN = "  Warning - ",
+        DEBUG = "  Debug - ",
+      }
+      local content = content_level[notif.level] or ""
       return content .. notif.msg .. " "
     end,
   },
+  window = {
+    config = {
+      border = "rounded",
+    },
+    max_width_share = 0.4,
+  },
 }
 
-require("mini.notify").setup()
+-- starter
+require("mini.starter").setup {}
 
 -- set colorscheme
-vim.cmd.colorscheme "nordfox"
+vim.cmd.colorscheme "miniautumn"
