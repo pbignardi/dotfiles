@@ -105,8 +105,5 @@ require("mini.notify").setup {
   },
 }
 
--- starter
-require("mini.starter").setup {}
-
 -- set colorscheme
 vim.cmd.colorscheme "miniautumn"

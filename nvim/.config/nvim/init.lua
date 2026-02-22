@@ -44,6 +44,7 @@ require "config.ui"
 require "config.lspconfig"
 require "config.completions"
 require "config.formatters"
+require "config.starter"
 
 -- set custom lsp keymaps
 -- local lsp_keymaps = {
