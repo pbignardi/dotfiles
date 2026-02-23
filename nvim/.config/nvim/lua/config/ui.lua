@@ -48,7 +48,33 @@ MiniDeps.later(function()
 end)
 
 -- statusline
-require("mini.statusline").setup()
+local statusline = require "mini.statusline"
+local active_statusbar = function()
+  local mode, mode_hl = statusline.section_mode {}
+  local git = statusline.section_git {}
+  local diff = statusline.section_diff {}
+  local diagnostics = statusline.section_diagnostics {}
+  local lsp = statusline.section_lsp {}
+  local filename = "󰈙 " .. vim.fn.expand "%:t"
+  local location = statusline.section_location {}
+  return statusline.combine_groups {
+    { hl = mode_hl, strings = { string.upper(mode) } },
+    { hl = "MiniStatuslineFilename", strings = { filename } },
+    { hl = "MiniStatuslineDevInfo", strings = { git } },
+    { hl = "MiniStatuslineInactive", strings = { diff } },
+    "%<",
+    { hl = "MiniStatuslineInactive", strings = {} },
+    "%=",
+    { hl = "MiniStatuslineInactive", strings = { diagnostics, lsp } },
+    { hl = mode_hl, strings = { location } },
+  }
+end
+
+statusline.setup {
+  content = {
+    active = active_statusbar,
+  },
+}
 
 -- tabline
 require("mini.tabline").setup {
@@ -106,4 +132,7 @@ require("mini.notify").setup {
 }
 
 -- set colorscheme
-vim.cmd.colorscheme "miniautumn"
+require("onedark").setup {
+  style = "warmer",
+}
+vim.cmd.colorscheme "onedark"

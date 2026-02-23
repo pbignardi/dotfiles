@@ -19,7 +19,8 @@ end
 require("mini.deps").setup { path = { package = path_package } }
 
 -- install external plugins
-MiniDeps.add { source = "EdenEast/nightfox.nvim" }
+MiniDeps.add { source = "projekt0n/github-nvim-theme" }
+MiniDeps.add { source = "navarasu/onedark.nvim" }
 MiniDeps.add {
   source = "nvim-treesitter/nvim-treesitter",
   hooks = {
@@ -34,6 +35,7 @@ MiniDeps.add { source = "mason-org/mason.nvim" }
 MiniDeps.add { source = "mason-org/mason-lspconfig.nvim" }
 MiniDeps.add { source = "neovim/nvim-lspconfig" }
 MiniDeps.add { source = "stevearc/conform.nvim" }
+MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 
 -- REQUIRE CONFIGS
 require "config.basics"
@@ -66,14 +68,5 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   callback = function(args)
     require("conform").format { bufnr = args.buf, async = true }
-  end,
-})
-
--- highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", {
-  desc = "Highlight when yanking text",
-  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
   end,
 })
