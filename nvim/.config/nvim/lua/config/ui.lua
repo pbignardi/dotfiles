@@ -53,10 +53,13 @@ local active_statusbar = function()
   local mode, mode_hl = statusline.section_mode {}
   local git = statusline.section_git {}
   local diff = statusline.section_diff {}
+  if not string.find(diff, "%d") then
+    diff = ""
+  end
   local diagnostics = statusline.section_diagnostics {}
   local lsp = statusline.section_lsp {}
   local filename = "󰈙 " .. vim.fn.expand "%:t"
-  local location = statusline.section_location {}
+  local location = statusline.section_location { trunc_width = 1000 }
   return statusline.combine_groups {
     { hl = mode_hl, strings = { string.upper(mode) } },
     { hl = "MiniStatuslineFilename", strings = { filename } },
@@ -66,7 +69,7 @@ local active_statusbar = function()
     { hl = "MiniStatuslineInactive", strings = {} },
     "%=",
     { hl = "MiniStatuslineInactive", strings = { diagnostics, lsp } },
-    { hl = mode_hl, strings = { location } },
+    { hl = "MiniStatuslineDevInfo", strings = { location } },
   }
 end
 
