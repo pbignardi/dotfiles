@@ -1,48 +1,32 @@
 -- basic plugins setup
 
-local now, later = MiniDeps.now, MiniDeps.later
-
 -- mini.basics
-now(function()
-  require("mini.basics").setup()
-end)
+MiniDeps.now(require("mini.basics").setup)
 
 -- mini.ai
-now(function()
-  require("mini.ai").setup()
-end)
+MiniDeps.now(require("mini.ai").setup)
 
 -- mini.surround
-now(function()
-  require("mini.surround").setup()
-end)
+MiniDeps.now(require("mini.surround").setup)
 
 -- mini.pairs
-now(function()
-  require("mini.pairs").setup()
-end)
+MiniDeps.now(require("mini.pairs").setup)
 
 -- mini.icons
-now(function()
-  require("mini.icons").setup()
-end)
+MiniDeps.now(require("mini.icons").setup)
 
 -- mini.comment
-now(function()
-  require("mini.comment").setup()
-end)
+MiniDeps.now(require("mini.comment").setup)
 
 -- mini.trailspace
-now(function()
-  require("mini.trailspace").setup()
-end)
+MiniDeps.now(require("mini.trailspace").setup)
 
-later(function()
+MiniDeps.later(function()
   vim.keymap.set("n", "<leader>ts", require("mini.trailspace").trim, { desc = "Trim trailing spaces" })
 end)
 
 -- mini.git
-now(function()
+MiniDeps.now(function()
   require("mini.git").setup {}
   local format_summary = function(data)
     -- Utilize buffer-local table summary

@@ -1,7 +1,18 @@
 -- LSPCONFIG SETUP
 
 -- setup mason asynchronously
-require("mason").setup()
+MiniDeps.now(function()
+  require("mason").setup {
+    ui = {
+      icons = {
+        package_installed = "✓",
+        package_pending = "➜",
+        package_uninstalled = "✗",
+      },
+      width = 0.65,
+    },
+  }
+end)
 
 MiniDeps.later(function()
   require("mason-lspconfig").setup {
@@ -12,4 +23,4 @@ MiniDeps.later(function()
   }
 end)
 
--- configure keymaps
+-- configure keymaps TODO

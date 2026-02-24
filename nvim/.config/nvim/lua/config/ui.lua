@@ -2,7 +2,7 @@
 -- file explorer, fuzzy finder, tabline, etc...
 
 -- file explorer
-require("mini.files").setup()
+MiniDeps.now(require("mini.files").setup)
 
 MiniDeps.later(function()
   local toggleFiles = function()
@@ -14,22 +14,24 @@ MiniDeps.later(function()
 end)
 
 -- fuzzy finder
-require("mini.extra").setup()
-require("mini.pick").setup {
-  window = {
-    config = function()
-      local width = math.floor(0.6 * vim.o.columns)
-      local height = math.floor(0.6 * vim.o.lines)
-      return {
-        anchor = "NW",
-        height = height,
-        width = width,
-        row = math.floor(0.5 * (vim.o.lines - height)),
-        col = math.floor(0.5 * (vim.o.columns - width)),
-      }
-    end,
-  },
-}
+MiniDeps.now(require("mini.extra").setup)
+MiniDeps.now(function()
+  require("mini.pick").setup {
+    window = {
+      config = function()
+        local width = math.floor(0.6 * vim.o.columns)
+        local height = math.floor(0.6 * vim.o.lines)
+        return {
+          anchor = "NW",
+          height = height,
+          width = width,
+          row = math.floor(0.5 * (vim.o.lines - height)),
+          col = math.floor(0.5 * (vim.o.columns - width)),
+        }
+      end,
+    },
+  }
+end)
 
 local workspace_diagnostics = function()
   MiniExtra.pickers.diagnostic { scope = "all" }
@@ -73,69 +75,82 @@ local active_statusbar = function()
   }
 end
 
-statusline.setup {
-  content = {
-    active = active_statusbar,
-  },
-}
+MiniDeps.now(function()
+  require("mini.statusline").setup {
+    content = {
+      active = active_statusbar,
+    },
+  }
+end)
 
 -- tabline
-require("mini.tabline").setup {
-  set_vim_settings = false,
-}
+MiniDeps.later(function()
+  require("mini.tabline").setup {
+    set_vim_settings = false,
+  }
+end)
 
 -- diff
-require("mini.diff").setup {
-  view = {
-    style = "sign",
-    signs = { add = "+", change = "~", delete = "-" },
-  },
-}
+MiniDeps.later(function()
+  require("mini.diff").setup {
+    view = {
+      style = "sign",
+      signs = { add = "+", change = "~", delete = "-" },
+    },
+  }
+end)
 
 -- git
-require("mini.git").setup()
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "MiniGitUpdated",
-  callback = function(data)
-    local summary = vim.b[data.buf].minigit_summary
-    vim.b[data.buf].minigit_summary_string = summary.head_name or ""
-  end,
-})
+MiniDeps.later(function()
+  require("mini.git").setup()
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniGitUpdated",
+    callback = function(data)
+      local summary = vim.b[data.buf].minigit_summary
+      vim.b[data.buf].minigit_summary_string = summary.head_name or ""
+    end,
+  })
+end)
 
 -- indentscope
-require("mini.indentscope").setup {
-  delay = 20,
-  draw = {
-    animation = require("mini.indentscope").gen_animation.none(),
-  },
-  symbol = "▏",
-}
+MiniDeps.later(function()
+  require("mini.indentscope").setup {
+    delay = 20,
+    draw = {
+      animation = require("mini.indentscope").gen_animation.none(),
+    },
+    symbol = "▏",
+  }
+end)
 
 -- notify
-require("mini.notify").setup {
-  content = {
-    format = function(notif)
-      local content_level = {
-        INFO = "  Info - ",
-        ERROR = "  Error - ",
-        WARN = "  Warning - ",
-        DEBUG = "  Debug - ",
-      }
-      local content = content_level[notif.level] or ""
-      return content .. notif.msg .. " "
-    end,
-  },
-  window = {
-    config = {
-      border = "rounded",
+MiniDeps.later(function()
+  require("mini.notify").setup {
+    content = {
+      format = function(notif)
+        local content_level = {
+          INFO = "  Info - ",
+          ERROR = "  Error - ",
+          WARN = "  Warning - ",
+          DEBUG = "  Debug - ",
+        }
+        local content = content_level[notif.level] or ""
+        return content .. notif.msg .. " "
+      end,
     },
-    max_width_share = 0.4,
-  },
-}
+    window = {
+      config = {
+        border = "rounded",
+      },
+      max_width_share = 0.4,
+    },
+  }
+end)
 
 -- set colorscheme
-require("onedark").setup {
-  style = "warmer",
-}
-vim.cmd.colorscheme "onedark"
+MiniDeps.now(function()
+  require("onedark").setup {
+    style = "warmer",
+  }
+  vim.cmd.colorscheme "onedark"
+end)

@@ -20,5 +20,9 @@ vim.o.termguicolors = true
 vim.o.colorcolumn = "80"
 vim.o.cursorline = true
 vim.o.scrolloff = 8
+vim.o.sidescrolloff = 20
 vim.o.winborder = "rounded"
-vim.opt.completeopt = { "menuone", "noinsert" }
+vim.o.completeopt = "menuone,noinsert"
+
+-- gui options
+vim.o.guifont = "CaskaydiaCove Nerd Font:h13"

@@ -1,17 +1,19 @@
 -- TREESITTER SETUP
 -- Configure treesitter, textobjects and context
 
-require("nvim-treesitter").setup()
-require("treesitter-context").setup()
-require("nvim-treesitter-textobjects").setup {
-  move = {
-    set_jumps = true,
-  },
-  select = {
-    lookahead = true,
-  },
-}
-vim.g.no_plugin_maps = true
+MiniDeps.now(require("nvim-treesitter").setup)
+MiniDeps.now(require("treesitter-context").setup)
+MiniDeps.now(function()
+  require("nvim-treesitter-textobjects").setup {
+    move = {
+      set_jumps = true,
+    },
+    select = {
+      lookahead = true,
+    },
+  }
+  vim.g.no_plugin_maps = true
+end)
 
 -- configure tree-sitter main plugin
 local ensure_installed = {
