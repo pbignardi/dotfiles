@@ -38,15 +38,21 @@ MiniDeps.add { source = "stevearc/conform.nvim" }
 MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 
 -- REQUIRE CONFIGS
-require "config.basics"
-require "config.mappings"
-require "config.options"
-require "config.treesitter"
-require "config.ui"
-require "config.lspconfig"
-require "config.completions"
-require "config.formatters"
-require "config.starter"
+local require_now = function(module)
+  MiniDeps.now(function()
+    require(module)
+  end)
+end
+
+require_now "config.basics"
+require_now "config.mappings"
+require_now "config.options"
+require_now "config.treesitter"
+require_now "config.ui"
+require_now "config.lspconfig"
+require_now "config.completions"
+require_now "config.formatters"
+require_now "config.starter"
 
 -- set custom lsp keymaps
 -- local lsp_keymaps = {
