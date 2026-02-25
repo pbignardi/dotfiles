@@ -37,26 +37,18 @@ MiniDeps.add { source = "neovim/nvim-lspconfig" }
 MiniDeps.add { source = "stevearc/conform.nvim" }
 MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 
--- REQUIRE CONFIGS
+-- common config
 require "config.basics"
 require "config.mappings"
 require "config.options"
 require "config.treesitter"
+
+-- non-vscode config
+if vim.g.vscode then
+  return
+end
 require "config.ui"
 require "config.lspconfig"
 require "config.completions"
 require "config.formatters"
 require "config.starter"
-
--- set custom lsp keymaps
--- local lsp_keymaps = {
---     { "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
---     { "gr", lsp_view('references'), desc = "References", has = "references"},
---     { "gI", lsp_view('implementations'), desc = "Goto Implementation", has = "implementation"},
---     { "gy", lsp_view('type_definitions'), desc = "Goto T[y]pe Definition", has = "typeDefinition" },
---     { "gD", lsp_view('declarations'), desc = "Goto Declaration", has = "declaration"},
---     { "K", function() return vim.lsp.buf.hover() end, desc = "Hover", has = "hover"},
---     { "<c-k>", function() return vim.lsp.buf.signature_help() end, mode = "i", desc = "Signature Help", has = "signatureHelp" },
---     { "<leader>ca", lsp_diagnostic, desc = "Code Action", has = "codeAction" },
---     { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
--- }

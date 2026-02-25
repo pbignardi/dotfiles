@@ -33,6 +33,13 @@ MiniDeps.now(function()
   }
 end)
 
+MiniDeps.later(function()
+  vim.ui.select = function(items, opts, on_choice)
+    local start_opts = { window = { config = { width = vim.o.columns } } }
+    return MiniPick.ui_select(items, opts, on_choice, start_opts)
+  end
+end)
+
 local workspace_diagnostics = function()
   MiniExtra.pickers.diagnostic { scope = "all" }
 end
@@ -58,8 +65,12 @@ local active_statusbar = function()
   if not string.find(diff, "%d") then
     diff = ""
   end
-  local diagnostics = statusline.section_diagnostics {}
-  local lsp = statusline.section_lsp {}
+
+  local diagnostics = statusline.section_diagnostics {
+    signs = { ERROR = " ", WARN = " ", INFO = " ", HINT = " " },
+    icon = "",
+  }
+  local lsp = statusline.section_lsp { icon = " LSP" }
   local filename = "󰈙 " .. vim.fn.expand "%:t"
   local location = statusline.section_location { trunc_width = 1000 }
   return statusline.combine_groups {
@@ -70,7 +81,9 @@ local active_statusbar = function()
     "%<",
     { hl = "MiniStatuslineInactive", strings = {} },
     "%=",
-    { hl = "MiniStatuslineInactive", strings = { diagnostics, lsp } },
+    { hl = "MiniStatuslineInactive", strings = { diagnostics } },
+    "%<",
+    { hl = "MiniStatuslineInactive", strings = { lsp } },
     { hl = "MiniStatuslineDevInfo", strings = { location } },
   }
 end
@@ -147,10 +160,12 @@ MiniDeps.later(function()
   }
 end)
 
+-- set a colorscheme
+
 -- set colorscheme
 MiniDeps.now(function()
   require("onedark").setup {
     style = "warmer",
   }
-  vim.cmd.colorscheme "onedark"
+  vim.cmd.colorscheme "github_dark_colorblind"
 end)

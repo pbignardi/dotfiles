@@ -1,0 +1,7 @@
+return {
+  settings = {
+    MATLAB = {
+      installPath = "C:/Program Files/MATLAB/R2025b/",
+    },
+  },
+}
