@@ -1,12 +1,12 @@
 -- LSPCONFIG SETUP
 
-local lsp_by_ft = {
+_G.lsp_by_ft = {
   lua = { "lua_ls" },
   python = { "pyrefly" },
   matlab = { "matlab_ls" },
 }
 
-local formatters_by_filetype = {
+_G.formatter_by_ft = {
   lua = { "stylua" },
   python = { "ruff" },
 }
@@ -26,34 +26,25 @@ MiniDeps.now(function()
 end)
 
 MiniDeps.later(function()
-  -- combine ft tools
-  local required_tools = {}
+  -- assemble the ensure_installed table
+  local required = {}
 
-  for _, lsps in pairs(lsp_by_ft) do
-    required_tools = vim.tbl_extend("force", required_tools, lsps)
-  end
-
-  for _, formatters in pairs(formatters_by_filetype) do
-    required_tools = vim.tbl_extend("force", required_tools, formatters)
-  end
-
-  -- replicate mason-lspconfig
-  local missing_tools = {}
-  local specs = require("mason-registry").get_all_package_specs()
-
-  for _, s in ipairs(specs) do
-    local lspconfig_name = vim.tbl_get(s, "neovim", "lspconfig")
-    if lspconfig_name and vim.tbl_contains(required_tools, lspconfig_name) then
-      table.insert(missing_tools, lspconfig_name)
+  for _, pkgs in pairs(_G.lsp_by_ft) do
+    for _, pkg in ipairs(pkgs) do
+      table.insert(required, pkg)
     end
   end
 
-  -- install stuff
-  if #missing_tools > 0 then
-    for _, tool in ipairs(missing_tools) do
-      vim.cmd("MasonInstall " .. tool)
+  for _, pkgs in pairs(_G.formatter_by_ft) do
+    for _, pkg in ipairs(pkgs) do
+      table.insert(required, pkg)
     end
   end
+
+  require("mason-lspconfig").setup {
+    automatic_enable = false,
+    ensure_installed = required,
+  }
 end)
 
 -- set custom lsp keymaps
