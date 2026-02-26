@@ -1,13 +1,24 @@
 -- LSPCONFIG SETUP
 
+local lsp_by_ft = {
+  lua = { "lua_ls" },
+  python = { "pyrefly" },
+  matlab = { "matlab_ls" },
+}
+
+local formatters_by_filetype = {
+  lua = { "stylua" },
+  python = { "ruff" },
+}
+
 -- setup mason asynchronously
 MiniDeps.now(function()
   require("mason").setup {
     ui = {
       icons = {
-        package_installed = "✓",
-        package_pending = "➜",
-        package_uninstalled = "✗",
+        package_installed = "",
+        package_pending = "",
+        package_uninstalled = "",
       },
       width = 0.65,
     },
@@ -15,14 +26,34 @@ MiniDeps.now(function()
 end)
 
 MiniDeps.later(function()
-  require("mason-lspconfig").setup {
-    ensure_installed = {
-      "stylua",
-      "lua_ls",
-      "matlab_ls",
-      "jdtls",
-    },
-  }
+  -- combine ft tools
+  local required_tools = {}
+
+  for _, lsps in pairs(lsp_by_ft) do
+    required_tools = vim.tbl_extend("force", required_tools, lsps)
+  end
+
+  for _, formatters in pairs(formatters_by_filetype) do
+    required_tools = vim.tbl_extend("force", required_tools, formatters)
+  end
+
+  -- replicate mason-lspconfig
+  local missing_tools = {}
+  local specs = require("mason-registry").get_all_package_specs()
+
+  for _, s in ipairs(specs) do
+    local lspconfig_name = vim.tbl_get(s, "neovim", "lspconfig")
+    if lspconfig_name and vim.tbl_contains(required_tools, lspconfig_name) then
+      table.insert(missing_tools, lspconfig_name)
+    end
+  end
+
+  -- install stuff
+  if #missing_tools > 0 then
+    for _, tool in ipairs(missing_tools) do
+      vim.cmd("MasonInstall " .. tool)
+    end
+  end
 end)
 
 -- set custom lsp keymaps
