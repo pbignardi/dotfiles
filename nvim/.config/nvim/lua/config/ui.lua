@@ -114,6 +114,13 @@ MiniDeps.later(function()
 end)
 
 -- git
+local git_log_cmd = [[Git log --pretty=format:\%h\ \%as\ │\ \%s --topo-order]]
+local git_keymaps = {
+  { "n", "gl", "<Cmd>" .. git_log_cmd .. "<CR>", "Log" },
+  { "n", "go", "<Cmd>lua MiniDiff.toggle_overlay()<CR>", "Toggle overlay" },
+  { "x", "gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at selection" },
+}
+
 MiniDeps.later(function()
   require("mini.git").setup()
   vim.api.nvim_create_autocmd("User", {
@@ -123,6 +130,10 @@ MiniDeps.later(function()
       vim.b[data.buf].minigit_summary_string = summary.head_name or ""
     end,
   })
+
+  for _, kmap in ipairs(git_keymaps) do
+    vim.keymap.set(kmap[1], kmap[2], kmap[3], { desc = kmap[4] })
+  end
 end)
 
 -- indentscope
