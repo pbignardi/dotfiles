@@ -70,6 +70,6 @@ MiniDeps.later(function()
     local rhs = kmap[3]
     local opts = kmap[4]
 
-    vim.keymap.set(mode, lhs, rhs, { desc = "LSP" .. opts.desc })
+    vim.keymap.set(mode, lhs, rhs, { desc = "LSP " .. opts.desc })
   end
 end)
