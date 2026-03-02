@@ -10,7 +10,7 @@ MiniDeps.later(function()
       MiniFiles.open()
     end
   end
-  vim.keymap.set("n", "<leader>f", toggleFiles, { desc = "File explorer" })
+  vim.keymap.set("n", "<leader>e", toggleFiles, { desc = "File explorer" })
 end)
 
 -- fuzzy finder
@@ -45,13 +45,13 @@ local file_diagnostic = function()
 end
 
 MiniDeps.later(function()
-  vim.keymap.set("n", "<leader>p", MiniExtra.pickers.git_files, { desc = "Search project files" })
-  vim.keymap.set("n", "<leader>/", MiniPick.builtin.buffers, { desc = "Search open buffers" })
-  vim.keymap.set("n", "<leader>sh", MiniPick.builtin.help, { desc = "Search helptags" })
-  vim.keymap.set("n", "<leader>sf", MiniPick.builtin.files, { desc = "Search files (all)" })
-  vim.keymap.set("n", "<leader>sc", MiniExtra.pickers.colorschemes, { desc = "Search colorschemes" })
-  vim.keymap.set("n", "<leader>sg", MiniPick.builtin.grep_live, { desc = "Live grep" })
-  vim.keymap.set("n", "<leader>sd", MiniExtra.pickers.git_hunks, { desc = "Search git hunks" })
+  vim.keymap.set("n", "<leader>p", MiniExtra.pickers.git_files, { desc = "Find project files" })
+  vim.keymap.set("n", "<leader>/", MiniPick.builtin.buffers, { desc = "Find open buffers" })
+  vim.keymap.set("n", "<leader>fh", MiniPick.builtin.help, { desc = "Find helptags" })
+  vim.keymap.set("n", "<leader>ff", MiniPick.builtin.files, { desc = "Find files (all)" })
+  vim.keymap.set("n", "<leader>fc", MiniExtra.pickers.colorschemes, { desc = "Find colorschemes" })
+  vim.keymap.set("n", "<leader>fg", MiniPick.builtin.grep_live, { desc = "Live grep" })
+  vim.keymap.set("n", "<leader>fd", MiniExtra.pickers.git_hunks, { desc = "Find git hunks" })
   vim.keymap.set("n", "<leader>df", file_diagnostic, { desc = "File diagnostics" })
   vim.keymap.set("n", "<leader>dw", MiniExtra.pickers.diagnostic, { desc = "Workspace diagnostics" })
 end)
