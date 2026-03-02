@@ -23,6 +23,7 @@ local ensure_installed = {
   "lua",
   "bash",
   "matlab",
+  "java",
 }
 local already_installed = require("nvim-treesitter").get_installed()
 local parser_to_install = {}

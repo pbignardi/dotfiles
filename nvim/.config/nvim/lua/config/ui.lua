@@ -40,8 +40,8 @@ MiniDeps.later(function()
   end
 end)
 
-local workspace_diagnostics = function()
-  MiniExtra.pickers.diagnostic { scope = "all" }
+local file_diagnostic = function()
+  MiniExtra.pickers.diagnostic { scope = "current" }
 end
 
 MiniDeps.later(function()
@@ -52,8 +52,8 @@ MiniDeps.later(function()
   vim.keymap.set("n", "<leader>sc", MiniExtra.pickers.colorschemes, { desc = "Search colorschemes" })
   vim.keymap.set("n", "<leader>sg", MiniPick.builtin.grep_live, { desc = "Live grep" })
   vim.keymap.set("n", "<leader>sd", MiniExtra.pickers.git_hunks, { desc = "Search git hunks" })
-  vim.keymap.set("n", "<leader>df", MiniExtra.pickers.diagnostic, { desc = "File diagnostics" })
-  vim.keymap.set("n", "<leader>dw", workspace_diagnostics, { desc = "Workspace diagnostics" })
+  vim.keymap.set("n", "<leader>df", file_diagnostic, { desc = "File diagnostics" })
+  vim.keymap.set("n", "<leader>dw", MiniExtra.pickers.diagnostic, { desc = "Workspace diagnostics" })
 end)
 
 -- statusline
@@ -178,5 +178,5 @@ MiniDeps.now(function()
   require("onedark").setup {
     style = "warmer",
   }
-  vim.cmd.colorscheme "github_dark_colorblind"
+  vim.cmd.colorscheme "onedark"
 end)

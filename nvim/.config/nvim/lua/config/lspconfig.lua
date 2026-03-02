@@ -42,7 +42,7 @@ MiniDeps.later(function()
   end
 
   require("mason-lspconfig").setup {
-    automatic_enable = false,
+    automatic_enable = true,
     ensure_installed = required,
   }
 end)
