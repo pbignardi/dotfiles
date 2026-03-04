@@ -6,6 +6,7 @@ MiniDeps.now(function()
   starter.setup {
     footer = "",
     items = {
+      starter.sections.sessions(),
       starter.sections.pick(),
       starter.sections.builtin_actions(),
     },

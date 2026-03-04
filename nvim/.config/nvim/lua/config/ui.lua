@@ -17,6 +17,10 @@ end)
 MiniDeps.now(require("mini.extra").setup)
 MiniDeps.now(function()
   require("mini.pick").setup {
+    mappings = {
+      caret_left = "<M-b>",
+      caret_right = "<M-f>",
+    },
     window = {
       config = function()
         local width = math.floor(0.6 * vim.o.columns)
@@ -43,6 +47,20 @@ end)
 local file_diagnostic = function()
   MiniExtra.pickers.diagnostic { scope = "current" }
 end
+
+MiniDeps.later(function()
+  -- add picker to search through pickers
+  MiniPick.registry.pickers = function()
+    local items = vim.tbl_keys(MiniPick.registry)
+    table.sort(items)
+    local source = { items = items, name = "Pickers", choose = function() end }
+    local chosen_picker_name = MiniPick.start { source = source }
+    if chosen_picker_name == nil then
+      return
+    end
+    return MiniPick.registry[chosen_picker_name]()
+  end
+end)
 
 MiniDeps.later(function()
   vim.keymap.set("n", "<leader>p", MiniExtra.pickers.git_files, { desc = "Find project files" })
