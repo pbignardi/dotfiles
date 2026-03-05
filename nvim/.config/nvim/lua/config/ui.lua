@@ -39,8 +39,7 @@ end)
 
 MiniDeps.later(function()
   vim.ui.select = function(items, opts, on_choice)
-    local start_opts = { window = { config = { width = vim.o.columns } } }
-    return MiniPick.ui_select(items, opts, on_choice, start_opts)
+    return MiniPick.ui_select(items, opts, on_choice, {})
   end
 end)
 
@@ -166,30 +165,33 @@ MiniDeps.later(function()
 end)
 
 -- notify
+local winconfig = function()
+  return {
+    border = "none",
+    anchor = "SE",
+    col = vim.o.columns,
+    row = vim.o.lines - 2,
+    title = "",
+  }
+end
+
+local notif_format = function(notif)
+  local content_level = { INFO = "", ERROR = "󰅙", WARN = "", DEBUG = "" }
+  local icon = content_level[notif.level] or ""
+  return icon .. " " .. notif.msg .. " "
+end
+
 MiniDeps.later(function()
   require("mini.notify").setup {
     content = {
-      format = function(notif)
-        local content_level = {
-          INFO = "  Info - ",
-          ERROR = "  Error - ",
-          WARN = "  Warning - ",
-          DEBUG = "  Debug - ",
-        }
-        local content = content_level[notif.level] or ""
-        return content .. notif.msg .. " "
-      end,
+      format = notif_format,
     },
     window = {
-      config = {
-        border = "rounded",
-      },
+      config = winconfig,
       max_width_share = 0.4,
     },
   }
 end)
-
--- set a colorscheme
 
 -- set colorscheme
 MiniDeps.now(function()
