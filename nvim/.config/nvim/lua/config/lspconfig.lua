@@ -1,4 +1,5 @@
 -- LSPCONFIG SETUP
+local map = vim.keymap.set
 
 _G.lsp_by_ft = {
   lua = { "lua_ls" },
@@ -48,28 +49,16 @@ MiniDeps.later(function()
 end)
 
 -- set custom lsp keymaps
--- there is a plugin defining mappings, maybe we should suppress them
-local lsp_keymaps = {
-  { "n", "gd", vim.lsp.buf.definition, { desc = "Goto definition", has = "definition" } },
-  { "n", "gr", vim.lsp.buf.references, { desc = "References", has = "references" } },
-  { "n", "gI", vim.lsp.buf.implementation, { desc = "Goto Implementation", has = "implementation" } },
-  { "n", "gy", vim.lsp.buf.type_definition, { desc = "Goto type definition", has = "typeDefinition" } },
-  { "n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration", has = "declaration" } },
-  { "n", "gs", vim.lsp.buf.document_symbol, { desc = "Document symbols", has = "declaration" } },
-  { "n", "gS", vim.lsp.buf.workspace_symbol, { desc = "Workspace symbols", has = "declaration" } },
-  { "n", "K", vim.lsp.buf.hover, { desc = "Hover", has = "hover" } },
-  { "i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature help", has = "signatureHelp" } },
-  { "n", "gc", vim.lsp.buf.code_action, { desc = "Code action", has = "codeAction" } },
-  { "n", "gn", vim.lsp.buf.rename, { desc = "Rename", has = "rename" } },
-}
-
 MiniDeps.later(function()
-  for _, kmap in ipairs(lsp_keymaps) do
-    local mode = kmap[1]
-    local lhs = kmap[2]
-    local rhs = kmap[3]
-    local opts = kmap[4]
-
-    vim.keymap.set(mode, lhs, rhs, { desc = "LSP " .. opts.desc })
-  end
+  map("n", "<leader>gd", ":Pick lsp scope='definition'", { desc = "goto definition" })
+  map("n", "<leader>gr", ":Pick lsp scope='references'", { desc = "references" })
+  map("n", "<leader>gI", ":Pick lsp scope='implementation'", { desc = "goto implementation" })
+  map("n", "<leader>gy", ":Pick lsp scope='type_definition'", { desc = "goto type definition" })
+  map("n", "<leader>gD", ":Pick lsp scope='declaration'", { desc = "goto declaration" })
+  map("n", "<leader>gs", ":Pick lsp scope='document_symbol'", { desc = "document symbols" })
+  map("n", "<leader>gS", ":Pick lsp scope='workspace_symbol_live'", { desc = "workspace symbols" })
+  map("n", "K", vim.lsp.buf.hover, { desc = "hover" })
+  map("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "signature help" })
+  map("n", "<leader>gc", vim.lsp.buf.code_action, { desc = "code action" })
+  map("n", "<leader>gn", vim.lsp.buf.rename, { desc = "rename" })
 end)

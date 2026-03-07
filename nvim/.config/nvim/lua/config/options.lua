@@ -21,8 +21,8 @@ vim.o.colorcolumn = "80"
 vim.o.cursorline = true
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 20
-vim.o.winborder = "solid"
--- vim.o.winblend = 20
+vim.o.winborder = "none"
+vim.o.winblend = 0
 vim.o.completeopt = "menuone,noinsert"
 
 -- gui options

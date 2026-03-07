@@ -3,11 +3,11 @@
 
 -- custom mini picker to cd into a directory and create a session there
 local change_dir = function()
-  local matches = MiniPick.get_picker_matches()
+  local matches = MiniPick.get_picker_matches() or {}
   if not matches.current then
     return true
   end
-  -- vim.fn.chdir(matches.current.path)
+  vim.fn.chdir(matches.current.path)
   print("Changed directory to: " .. vim.fn.getcwd())
   return true
 end

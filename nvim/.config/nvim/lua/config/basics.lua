@@ -37,6 +37,3 @@ MiniDeps.now(function()
   local au_opts = { pattern = "MiniGitUpdated", callback = format_summary }
   vim.api.nvim_create_autocmd("User", au_opts)
 end)
-
--- MAYBE PLUGINS
--- mini.sessions

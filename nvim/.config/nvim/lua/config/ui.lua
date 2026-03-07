@@ -10,7 +10,7 @@ MiniDeps.later(function()
       MiniFiles.open()
     end
   end
-  vim.keymap.set("n", "<leader>e", toggleFiles, { desc = "File explorer" })
+  vim.keymap.set("n", "<leader>e", toggleFiles, { desc = "file explorer" })
 end)
 
 -- fuzzy finder
@@ -43,12 +43,46 @@ MiniDeps.later(function()
   end
 end)
 
-local file_diagnostic = function()
-  MiniExtra.pickers.diagnostic { scope = "current" }
-end
+-- register custom pickers
+MiniDeps.now(function()
+  -- add picker to sort open files by visit
+  MiniPick.registry.sorted_buffers = function()
+    local items, cwd = {}, vim.fn.getcwd()
+    local curr_buf_id = vim.fn.bufnr()
+    for _, buf_info in ipairs(vim.fn.getbufinfo()) do
+      if buf_info.listed == 1 then
+        local name = vim.fs.relpath(cwd, buf_info.name) or buf_info.name
 
+        -- exclude current buffer from item list
+        -- if buf_info.bufnr ~= curr_buf_id then
+        table.insert(items, { text = name, bufnr = buf_info.bufnr, _lastused = buf_info.lastused })
+        -- end
+      end
+    end
+
+    -- sort by recency
+    table.sort(items, function(a, b)
+      if a.bufnr == curr_buf_id then
+        return false
+      end
+      return a._lastused > b._lastused
+    end)
+
+    -- define custom show
+    local show = function(buf_id, items_to_show, query)
+      MiniPick.default_show(buf_id, items_to_show, query, { show_icons = true })
+    end
+    local opts = { source = { name = "Buffers", items = items, show = show } }
+    return MiniPick.start(opts)
+  end
+
+  MiniPick.registry.file_diagnostic = function()
+    MiniExtra.pickers.diagnostic { scope = "current" }
+  end
+end)
+
+-- add picker to search through pickers
 MiniDeps.later(function()
-  -- add picker to search through pickers
   MiniPick.registry.pickers = function()
     local items = vim.tbl_keys(MiniPick.registry)
     table.sort(items)
@@ -62,15 +96,15 @@ MiniDeps.later(function()
 end)
 
 MiniDeps.later(function()
-  vim.keymap.set("n", "<leader>p", MiniExtra.pickers.git_files, { desc = "Find project files" })
-  vim.keymap.set("n", "<leader>/", MiniPick.builtin.buffers, { desc = "Find open buffers" })
-  vim.keymap.set("n", "<leader>fh", MiniPick.builtin.help, { desc = "Find helptags" })
-  vim.keymap.set("n", "<leader>ff", MiniPick.builtin.files, { desc = "Find files (all)" })
-  vim.keymap.set("n", "<leader>fc", MiniExtra.pickers.colorschemes, { desc = "Find colorschemes" })
-  vim.keymap.set("n", "<leader>fg", MiniPick.builtin.grep_live, { desc = "Live grep" })
-  vim.keymap.set("n", "<leader>fd", MiniExtra.pickers.git_hunks, { desc = "Find git hunks" })
-  vim.keymap.set("n", "<leader>df", file_diagnostic, { desc = "File diagnostics" })
-  vim.keymap.set("n", "<leader>dw", MiniExtra.pickers.diagnostic, { desc = "Workspace diagnostics" })
+  vim.keymap.set("n", "<leader>p", ":Pick git_files<CR>", { desc = "project files" })
+  vim.keymap.set("n", "<leader>/", ":Pick sorted_buffers<CR>", { desc = "open buffers" })
+  vim.keymap.set("n", "<leader>fh", ":Pick help<CR>", { desc = "help tags" })
+  vim.keymap.set("n", "<leader>ff", ":Pick files<CR>", { desc = "files" })
+  vim.keymap.set("n", "<leader>fc", ":Pick colorschemes<CR>", { desc = "color schemes" })
+  vim.keymap.set("n", "<leader>fg", ":Pick grep_live<CR>", { desc = "grep" })
+  vim.keymap.set("n", "<leader>fd", ":Pick git_hunks<CR>", { desc = "git hunks" })
+  vim.keymap.set("n", "<leader>df", ":Pick file_diagnostic<CR>", { desc = "diagnostics" })
+  vim.keymap.set("n", "<leader>dw", ":Pick diagnostic<CR>", { desc = "diagnostics (workspace)" })
 end)
 
 -- statusline
@@ -156,7 +190,7 @@ end)
 -- indentscope
 MiniDeps.later(function()
   require("mini.indentscope").setup {
-    delay = 20,
+    delay = 0,
     draw = {
       animation = require("mini.indentscope").gen_animation.none(),
     },
@@ -165,6 +199,7 @@ MiniDeps.later(function()
 end)
 
 -- notify
+local content_level = { INFO = "", ERROR = "󰅙", WARN = "", DEBUG = "" }
 local winconfig = function()
   return {
     border = "none",
@@ -176,9 +211,9 @@ local winconfig = function()
 end
 
 local notif_format = function(notif)
-  local content_level = { INFO = "", ERROR = "󰅙", WARN = "", DEBUG = "" }
   local icon = content_level[notif.level] or ""
-  return icon .. " " .. notif.msg .. " "
+  local msg = notif.msg
+  return icon .. " " .. msg
 end
 
 MiniDeps.later(function()
@@ -189,6 +224,65 @@ MiniDeps.later(function()
     window = {
       config = winconfig,
       max_width_share = 0.4,
+    },
+  }
+  vim.notify = MiniNotify.make_notify {
+    ERROR = { duration = 5000, hl_group = "DiagnosticError" },
+    WARN = { duration = 5000, hl_group = "DiagnosticWarn" },
+    INFO = { duration = 5000, hl_group = "DiagnosticInfo" },
+    DEBUG = { duration = 0, hl_group = "DiagnosticHint" },
+    TRACE = { duration = 0, hl_group = "DiagnosticOk" },
+    OFF = { duration = 0, hl_group = "DiagnosticInfo" },
+  }
+end)
+
+-- key hinting
+local miniclue = require "mini.clue"
+MiniDeps.later(function()
+  miniclue.setup {
+    window = {
+      config = { anchor = "NE", col = "auto", row = "auto" },
+    },
+    triggers = {
+      -- Leader triggers
+      { mode = { "n", "x" }, keys = "<Leader>" },
+
+      -- `[` and `]` keys
+      { mode = "n", keys = "[" },
+      { mode = "n", keys = "]" },
+
+      -- `g` key
+      { mode = { "n", "x" }, keys = "g" },
+
+      -- Marks
+      { mode = { "n", "x" }, keys = "'" },
+      { mode = { "n", "x" }, keys = "`" },
+
+      -- Registers
+      { mode = { "n", "x" }, keys = '"' },
+      { mode = { "i", "c" }, keys = "<C-r>" },
+
+      -- Window commands
+      { mode = "n", keys = "<C-w>" },
+
+      -- `z` key
+      { mode = { "n", "x" }, keys = "z" },
+    },
+
+    clues = {
+      -- Enhance this by adding descriptions for <Leader> mapping groups
+      miniclue.gen_clues.square_brackets(),
+      miniclue.gen_clues.builtin_completion(),
+      miniclue.gen_clues.g(),
+      miniclue.gen_clues.marks(),
+      miniclue.gen_clues.registers(),
+      -- miniclue.gen_clues.windows(),
+      miniclue.gen_clues.z(),
+      { mode = "n", keys = "<leader>g", desc = "+lsp" },
+      { mode = "n", keys = "<leader>d", desc = "+diagnostic" },
+      { mode = "n", keys = "<leader>f", desc = "+fuzzyfind" },
+      { mode = "n", keys = "<leader>s", desc = "+sessions" },
+      { mode = "n", keys = "<leader>t", desc = "+trailspace" },
     },
   }
 end)
