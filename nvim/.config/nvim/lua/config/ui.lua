@@ -45,26 +45,30 @@ end)
 
 -- register custom pickers
 MiniDeps.now(function()
+  local fs_normalize = function(path)
+    if vim.fn.has "win32" or vim.fn.has "win64" then
+      return string.lower(vim.fs.normalize(path))
+    else
+      return vim.fs.normalize(path)
+    end
+  end
   -- add picker to sort open files by visit
   MiniPick.registry.sorted_buffers = function()
-    local items, cwd = {}, vim.fn.getcwd()
+    local items, cwd = {}, fs_normalize(vim.fn.getcwd())
     local curr_buf_id = vim.fn.bufnr()
     for _, buf_info in ipairs(vim.fn.getbufinfo()) do
       if buf_info.listed == 1 then
-        local name = vim.fs.relpath(cwd, buf_info.name) or buf_info.name
+        local name = vim.fs.relpath(cwd, fs_normalize(buf_info.name)) or buf_info.name
 
         -- exclude current buffer from item list
-        -- if buf_info.bufnr ~= curr_buf_id then
-        table.insert(items, { text = name, bufnr = buf_info.bufnr, _lastused = buf_info.lastused })
-        -- end
+        if buf_info.bufnr ~= curr_buf_id then
+          table.insert(items, { text = name, bufnr = buf_info.bufnr, _lastused = buf_info.lastused })
+        end
       end
     end
 
     -- sort by recency
     table.sort(items, function(a, b)
-      if a.bufnr == curr_buf_id then
-        return false
-      end
       return a._lastused > b._lastused
     end)
 
