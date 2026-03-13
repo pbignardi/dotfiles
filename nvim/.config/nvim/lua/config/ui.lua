@@ -7,7 +7,7 @@ MiniDeps.now(require("mini.files").setup)
 MiniDeps.later(function()
   local toggleFiles = function()
     if not MiniFiles.close() then
-      MiniFiles.open()
+      MiniFiles.open(vim.api.nvim_buf_get_name(0))
     end
   end
   vim.keymap.set("n", "<leader>e", toggleFiles, { desc = "file explorer" })
@@ -105,7 +105,8 @@ MiniDeps.later(function()
   vim.keymap.set("n", "<leader>fh", ":Pick help<CR>", { desc = "help tags" })
   vim.keymap.set("n", "<leader>ff", ":Pick files<CR>", { desc = "files" })
   vim.keymap.set("n", "<leader>fc", ":Pick colorschemes<CR>", { desc = "color schemes" })
-  vim.keymap.set("n", "<leader>fg", ":Pick grep_live<CR>", { desc = "grep" })
+  vim.keymap.set("n", "<leader>fw", ":Pick grep_live<CR>", { desc = "grep" })
+  vim.keymap.set("n", "<leader>fa", ":Pick pickers<CR>", { desc = "all pickers" })
   vim.keymap.set("n", "<leader>fd", ":Pick git_hunks<CR>", { desc = "git hunks" })
   vim.keymap.set("n", "<leader>df", ":Pick file_diagnostic<CR>", { desc = "diagnostics" })
   vim.keymap.set("n", "<leader>dw", ":Pick diagnostic<CR>", { desc = "diagnostics (workspace)" })
