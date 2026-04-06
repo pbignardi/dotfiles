@@ -19,6 +19,7 @@ end
 require("mini.deps").setup { path = { package = path_package } }
 
 -- install external plugins
+MiniDeps.add { source = "folke/snacks.nvim" }
 MiniDeps.add { source = "mfussenegger/nvim-dap" }
 MiniDeps.add { source = "nvim-java/nvim-java", depends = { "MunifTanjim/nui.nvim" } }
 MiniDeps.add { source = "projekt0n/github-nvim-theme" }
@@ -56,3 +57,4 @@ require "config.formatters"
 require "config.starter"
 require "config.sessions"
 require "config.vscode"
+require "config.fuzzy"

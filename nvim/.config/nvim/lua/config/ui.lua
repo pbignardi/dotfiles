@@ -52,25 +52,20 @@ MiniDeps.now(function()
 
   -- add picker to sort open files by visit
   MiniPick.registry.open_buffers = function()
-    -- TODO: redo
     local items, cwd = {}, vim.fn.getcwd()
-    local curr_buf = vim.api.nvim_get_current_buf()
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      local info = vim.fn.getbufinfo(buf)[1]
-      if info.listed == 1 then
-        local bufname = vim.api.nvim_buf_get_name(buf)
-        if vim.api.nvim_buf_get_name(buf) then
-          bufname = vim.fs.relpath(cwd, bufname)
+    local curr_buf_id = vim.fn.bufnr()
+    for _, buf_info in ipairs(vim.fn.getbufinfo()) do
+      if buf_info.listed == 1 then
+        local name = vim.fs.relpath(cwd, buf_info.name) or buf_info.name
+        if buf_info.bufnr == curr_buf_id then
+          name = "@@@@@ " .. name
         end
-        if buf == curr_buf then
-          bufname = "@@@@@ " .. bufname
-        end
-        items[#items + 1] = {
-          text = bufname,
-          bufnr = info.bufnr,
-          _lastused = info.lastused,
-          _is_curr = (buf == curr_buf),
-        }
+        table.insert(items, {
+          text = name,
+          bufnr = buf_info.bufnr,
+          _lastused = buf_info.lastused,
+          _is_curr = (buf_info.bufnr == curr_buf_id),
+        })
       end
     end
 
