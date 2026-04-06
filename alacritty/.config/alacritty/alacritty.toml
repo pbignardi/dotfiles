@@ -11,7 +11,7 @@ dimensions.lines = 30
 option_as_alt = "Both"
 
 [font]
-normal.family = "CaskaydiaCove NF"
+normal.family = "JetBrainsMono NF"
 normal.style = "Regular"
 
 [cursor]

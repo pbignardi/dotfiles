@@ -50,13 +50,6 @@ end)
 
 -- set custom lsp keymaps
 MiniDeps.later(function()
-  map("n", "<leader>gd", ":Pick lsp scope='definition'<CR>", { desc = "goto definition" })
-  map("n", "<leader>gr", ":Pick lsp scope='references'<CR>", { desc = "references" })
-  map("n", "<leader>gI", ":Pick lsp scope='implementation'<CR>", { desc = "goto implementation" })
-  map("n", "<leader>gy", ":Pick lsp scope='type_definition'<CR>", { desc = "goto type definition" })
-  map("n", "<leader>gD", ":Pick lsp scope='declaration'<CR>", { desc = "goto declaration" })
-  map("n", "<leader>gs", ":Pick lsp scope='document_symbol'<CR>", { desc = "document symbols" })
-  map("n", "<leader>gS", ":Pick lsp scope='workspace_symbol_live'<CR>", { desc = "workspace symbols" })
   map("n", "K", vim.lsp.buf.hover, { desc = "hover" })
   map("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "signature help" })
   map("n", "<leader>gc", vim.lsp.buf.code_action, { desc = "code action" })
