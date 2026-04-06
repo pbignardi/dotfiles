@@ -45,25 +45,42 @@ end)
 
 -- register custom pickers
 MiniDeps.now(function()
-  -- add picker to sort open files by visit
-  MiniPick.registry.sorted_buffers = function()
-    local items, cwd = {}, vim.fn.getcwd()
-    local curr_buf_id = vim.fn.bufnr()
-    for _, buf_info in ipairs(vim.fn.getbufinfo()) do
-      if buf_info.listed == 1 then
-        local name = vim.fs.relpath(cwd, buf_info.name) or buf_info.name
+  -- files picker with fallback
+  MiniPick.registry.files_fallback = function()
+    MiniPick.builtin.files { tool = "fallback" }
+  end
 
-        -- exclude current buffer from item list
-        -- if buf_info.bufnr ~= curr_buf_id then
-        table.insert(items, { text = name, bufnr = buf_info.bufnr, _lastused = buf_info.lastused })
-        -- end
+  -- add picker to sort open files by visit
+  MiniPick.registry.open_buffers = function()
+    -- TODO: redo
+    local items, cwd = {}, vim.fn.getcwd()
+    local curr_buf = vim.api.nvim_get_current_buf()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      local info = vim.fn.getbufinfo(buf)[1]
+      if info.listed == 1 then
+        local bufname = vim.api.nvim_buf_get_name(buf)
+        if vim.api.nvim_buf_get_name(buf) then
+          bufname = vim.fs.relpath(cwd, bufname)
+        end
+        if buf == curr_buf then
+          bufname = "@@@@@ " .. bufname
+        end
+        items[#items + 1] = {
+          text = bufname,
+          bufnr = info.bufnr,
+          _lastused = info.lastused,
+          _is_curr = (buf == curr_buf),
+        }
       end
     end
 
-    -- sort by recency
+    -- sort by recency - place current at bottom
     table.sort(items, function(a, b)
-      if a.bufnr == curr_buf_id then
+      if a._is_curr then
         return false
+      end
+      if b._is_curr then
+        return true
       end
       return a._lastused > b._lastused
     end)
@@ -97,9 +114,9 @@ end)
 
 MiniDeps.later(function()
   vim.keymap.set("n", "<leader>p", ":Pick git_files<CR>", { desc = "project files" })
-  vim.keymap.set("n", "<leader>/", ":Pick sorted_buffers<CR>", { desc = "open buffers" })
+  vim.keymap.set("n", "<leader>/", ":Pick open_buffers<CR>", { desc = "open buffers" })
   vim.keymap.set("n", "<leader>fh", ":Pick help<CR>", { desc = "help tags" })
-  vim.keymap.set("n", "<leader>ff", ":Pick files<CR>", { desc = "files" })
+  vim.keymap.set("n", "<leader>ff", ":Pick files_fallback<CR>", { desc = "files" })
   vim.keymap.set("n", "<leader>fc", ":Pick colorschemes<CR>", { desc = "color schemes" })
   vim.keymap.set("n", "<leader>fg", ":Pick grep_live<CR>", { desc = "grep" })
   vim.keymap.set("n", "<leader>fd", ":Pick git_hunks<CR>", { desc = "git hunks" })
