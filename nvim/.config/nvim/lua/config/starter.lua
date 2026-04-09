@@ -1,9 +1,6 @@
 -- STARTUP INTERFACE
 -- setup similar to dashboard-nvim
 
-local home = vim.fs.normalize "~"
-local root = vim.fs.normalize(vim.fs.abspath "./../../../../../../../../../../../../")
-
 local pick_dir = function(cwd)
   local filter = function(item)
     return item.fs_type == "directory"
@@ -13,8 +10,7 @@ local pick_dir = function(cwd)
       change_directory = {
         char = "<C-CR>",
         func = function()
-          local matches = MiniPick.get_picker_matches() or {}
-          local current = matches.current or {}
+          local current = MiniPick.get_picker_matches().current or {}
           if current.path then
             local new_cwd = vim.fs.normalize(current.path)
             vim.fn.chdir(new_cwd)
@@ -27,11 +23,10 @@ local pick_dir = function(cwd)
     },
   }
   return function()
-    local local_opts = {
+    MiniExtra.pickers.explorer({
       cwd = cwd,
       filter = filter,
-    }
-    MiniExtra.pickers.explorer(local_opts, opts)
+    }, opts)
   end
 end
 
@@ -42,8 +37,7 @@ MiniDeps.now(function()
     footer = "",
     items = {
       starter.sections.sessions(),
-      { name = "Home", section = "Open directory", action = pick_dir(home) },
-      { name = "Root", section = "Open directory", action = pick_dir(root) },
+      { name = "Home", section = "Open directory", action = pick_dir(vim.fs.normalize "~") },
       starter.sections.builtin_actions(),
     },
     content_hooks = {
