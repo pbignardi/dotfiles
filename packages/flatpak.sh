@@ -5,8 +5,6 @@
 
 packages=(
     "com.bitwarden.desktop"
-    "com.github.ahrm.sioyek"
-    "org.kde.okular"
     "org.telegram.desktop"
 )
 uninstalled=()
