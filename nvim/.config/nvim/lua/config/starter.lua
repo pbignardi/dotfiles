@@ -7,26 +7,21 @@ local pick_dir = function(cwd)
   end
   local opts = {
     mappings = {
-      change_directory = {
+      select_target = {
         char = "<C-CR>",
         func = function()
-          local current = MiniPick.get_picker_matches().current or {}
-          if current.path then
-            local new_cwd = vim.fs.normalize(current.path)
-            vim.fn.chdir(new_cwd)
-            vim.notify("Changed path to " .. new_cwd)
-            return true
-          end
-          return false
+          return MiniPick.get_picker_matches().current
         end,
       },
     },
   }
   return function()
-    MiniExtra.pickers.explorer({
+    local target = MiniExtra.pickers.explorer({
       cwd = cwd,
       filter = filter,
     }, opts)
+    vim.fn.chdir(vim.fs.normalize(target.path))
+    vim.notify("Changed dir to: " .. target.path)
   end
 end
 
