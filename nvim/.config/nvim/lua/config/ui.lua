@@ -6,9 +6,7 @@ MiniDeps.now(require("mini.files").setup)
 
 MiniDeps.later(function()
   local toggleFiles = function()
-    if not MiniFiles.close() then
-      MiniFiles.open(vim.api.nvim_buf_get_name(0))
-    end
+    return not MiniFiles.close() and MiniFiles.open()
   end
   vim.keymap.set("n", "<leader>e", toggleFiles, { desc = "file explorer" })
 end)
