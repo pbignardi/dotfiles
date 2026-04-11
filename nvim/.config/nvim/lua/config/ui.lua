@@ -91,6 +91,11 @@ MiniDeps.later(function()
   end
 end)
 
+-- neogit
+MiniDeps.later(function()
+  vim.keymap.set("n", "<leader>qq", "<Cmd>Neogit<CR>", { desc = "status" })
+end)
+
 -- indentscope
 MiniDeps.later(function()
   require("mini.indentscope").setup {
@@ -187,6 +192,7 @@ MiniDeps.later(function()
       { mode = "n", keys = "<leader>f", desc = "+fuzzyfind" },
       { mode = "n", keys = "<leader>s", desc = "+sessions" },
       { mode = "n", keys = "<leader>t", desc = "+trailspace" },
+      { mode = "n", keys = "<leader>q", desc = "+neogit" },
     },
   }
 end)

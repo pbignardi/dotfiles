@@ -9,7 +9,7 @@ MiniDeps.now(function()
     window = {
       config = function()
         local width = math.floor(0.8 * vim.o.columns)
-        local height = math.floor(0.8 * vim.o.lines)
+        local height = math.floor(0.5 * vim.o.lines)
         return {
           anchor = "NW",
           height = height,
@@ -102,7 +102,15 @@ local buffers = function()
           end
 
           -- delete buffer
-          vim.api.nvim_buf_delete(curr_buf.bufnr, {})
+          local force = false
+          local term_match = string.match(curr_buf.text, "^term:/")
+          if term_match then
+            if vim.fn.confirm("Close terminal?", "No\nYes", 0) > 0 then
+              force = true
+            end
+          end
+
+          vim.api.nvim_buf_delete(curr_buf.bufnr, { force = force })
 
           -- update picker items
           MiniPick.set_picker_match_inds(filt_match_ids)
