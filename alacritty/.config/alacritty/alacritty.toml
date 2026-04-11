@@ -1,6 +1,6 @@
 [general]
 import = [
-    "./themes/onedark_warmer.toml"
+    "./themes/miniautumn.toml"
 ]
 live_config_reload = true
 
@@ -11,7 +11,7 @@ dimensions.lines = 30
 option_as_alt = "Both"
 
 [font]
-normal.family = "CaskaydiaCove NF"
+normal.family = "JetBrainsMono Nerd Font"
 normal.style = "Regular"
 
 [cursor]

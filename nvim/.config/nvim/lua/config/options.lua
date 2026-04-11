@@ -26,4 +26,4 @@ vim.o.winblend = 0
 vim.o.completeopt = "menuone,noinsert"
 
 -- gui options
-vim.o.guifont = "CaskaydiaCove Nerd Font:h12"
+vim.o.guifont = "JetBrainsMono Nerd Font:h12"
