@@ -21,19 +21,15 @@ local ensure_installed = {
   "c",
   "python",
   "lua",
+  "luadoc",
   "bash",
   "matlab",
   "java",
+  "vimdoc",
+  "vim",
 }
-local already_installed = require("nvim-treesitter").get_installed()
-local parser_to_install = {}
 
-for _, parser in ipairs(ensure_installed) do
-  if not vim.tbl_contains(already_installed, parser) then
-    table.insert(parser_to_install, parser)
-  end
-end
-require("nvim-treesitter").install(parser_to_install)
+require("nvim-treesitter").install(ensure_installed)
 
 -- define and configure textobjects
 local textobject_move = {
