@@ -39,6 +39,8 @@ MiniDeps.add { source = "stevearc/conform.nvim" }
 MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 
 MiniDeps.add { source = "bluz71/vim-moonfly-colors" }
+MiniDeps.add { source = "nvim-lualine/lualine.nvim" }
+
 -- common config
 require "config.basics"
 require "config.mappings"

@@ -36,41 +36,25 @@ MiniDeps.later(function()
 end)
 
 -- statusline
-local statusline = require "mini.statusline"
-local active_statusbar = function()
-  local mode, mode_hl = statusline.section_mode {}
-  local git = statusline.section_git {}
-  local diff = statusline.section_diff {}
-  if not string.find(diff, "%d") then
-    diff = ""
-  end
-
-  local diagnostics = statusline.section_diagnostics {
-    signs = { ERROR = " ", WARN = " ", INFO = " ", HINT = " " },
-    icon = "",
-  }
-  local lsp = statusline.section_lsp { icon = " LSP" }
-  local filename = "󰈙 " .. vim.fn.expand "%:t"
-  local location = statusline.section_location { trunc_width = 1000 }
-  return statusline.combine_groups {
-    { hl = mode_hl, strings = { string.upper(mode) } },
-    { hl = "MiniStatuslineFilename", strings = { filename } },
-    { hl = "MiniStatuslineDevInfo", strings = { git } },
-    { hl = "MiniStatuslineInactive", strings = { diff } },
-    "%<",
-    { hl = "MiniStatuslineInactive", strings = {} },
-    "%=",
-    { hl = "MiniStatuslineInactive", strings = { diagnostics } },
-    "%<",
-    { hl = "MiniStatuslineInactive", strings = { lsp } },
-    { hl = "MiniStatuslineDevInfo", strings = { location } },
-  }
-end
-
 MiniDeps.now(function()
-  require("mini.statusline").setup {
-    content = {
-      active = active_statusbar,
+  require("lualine").setup {
+    options = {
+      icons_enabled = true,
+      theme = "auto",
+      component_separators = { left = nil, right = nil },
+      section_separators = { left = nil, right = nil },
+    },
+    sections = {
+      lualine_a = { "mode" },
+      lualine_b = { "branch" },
+      lualine_c = { "filename", "diff" },
+      lualine_x = { "encoding", "diagnostics", "lsp_status" },
+      lualine_y = { "filetype" },
+      lualine_z = { "location" },
+    },
+    inactive_sections = {
+      lualine_c = { "filename" },
+      lualine_x = { "location" },
     },
   }
 end)
