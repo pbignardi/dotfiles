@@ -1,0 +1,8 @@
+[colors]
+ansi = ["#121212","#f29695","#b1bc66","#cfb059","#44c8d5","#df98cf","#6fc99b","#b3b3b3"]
+brights = ["#121212","#f29695","#b1bc66","#cfb059","#44c8d5","#df98cf","#6fc99b","#b3b3b3"]
+foreground = "#a6a6a6"
+background = "#121212"
+
+[metadata]
+aliases = ["nvim-generated"]

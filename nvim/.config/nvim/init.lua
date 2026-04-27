@@ -38,7 +38,8 @@ MiniDeps.add { source = "neovim/nvim-lspconfig" }
 MiniDeps.add { source = "stevearc/conform.nvim" }
 MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 
-MiniDeps.add { source = "bluz71/vim-moonfly-colors" }
+MiniDeps.add { source = "navarasu/onedark.nvim" }
+MiniDeps.add { source = "catppuccin/nvim", name = "catppuccin" }
 MiniDeps.add { source = "nvim-lualine/lualine.nvim" }
 
 -- common config
@@ -59,3 +60,4 @@ require "config.formatters"
 require "config.starter"
 require "config.sessions"
 require "config.vscode"
+require "utils.exporter"

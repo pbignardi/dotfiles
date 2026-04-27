@@ -62,13 +62,10 @@ wezterm.on("window-config-reloaded", fontsize_setters.ref_dpi(17))
 -- font configuration
 config.adjust_window_size_when_changing_font_size = false
 config.font_size = 13
-config.font = wezterm.font("CaskaydiaMono Nerd Font")
+config.font = wezterm.font("RobotoMono Nerd Font")
 
 -- colorscheme configuration
--- local custom_colorschemes = require("colorschemes")
--- custom_colorschemes.set_custom_colorscheme(config, "Oneminimal_Light")
-config.color_scheme_dirs = { "/home/paolo/.config/wezterm/colors/" }
-config.color_scheme = "NvimGenerated"
+config.color_scheme = "nvim-generated-colorscheme"
 
 -- specify wsl on windows
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then

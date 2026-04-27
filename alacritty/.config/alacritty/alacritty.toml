@@ -1,6 +1,6 @@
 [general]
 import = [
-    "./themes/miniautumn.toml"
+    "./nvim-generated-colorscheme.toml"
 ]
 live_config_reload = true
 
@@ -13,6 +13,7 @@ option_as_alt = "Both"
 [font]
 normal.family = "JetBrainsMono Nerd Font"
 normal.style = "Regular"
+size = 15
 
 [cursor]
 style.shape="Block"
