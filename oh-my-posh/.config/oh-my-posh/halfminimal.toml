@@ -1,0 +1,74 @@
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+version = 3
+final_space = true
+
+[palette]
+    gray = "#666666"
+    lime = "#87FF00"
+    purple = "#7E46B6"
+    lightblue = "#5FD7FF"
+    orange = "#D75F00"
+
+[transient_prompt]
+    template = '<b>$</> '
+    foreground = "p:gray"
+    background = "transparent"
+
+[upgrade]
+    source = 'cdn'
+    interval = '168h'
+    auto = false
+    notice = false
+
+[[blocks]]
+    type = 'prompt'
+    alignment = 'left'
+
+    [[blocks.segments]]
+        template = '({{.Venv}}) '
+        foreground = 'yellow'
+        background = 'transparent'
+        type = 'python'
+        style = 'diamond'
+
+[[blocks]]
+    type = 'prompt'
+    alignment = 'left'
+    newline = true
+
+    [[blocks.segments]]
+        template = '{{ .UserName }}'
+        foreground = 'p:purple'
+        background = 'transparent'
+        type = 'session'
+        style = 'plain'
+
+    [[blocks.segments]]
+        template = " in "
+        type = "text"
+        style = "plain"
+
+    [[blocks.segments]]
+        style = 'plain'
+        type = 'path'
+        foreground = 'p:lime'
+        template = "{{.Path}}"
+
+        [blocks.segments.properties]
+        style = 'agnoster'
+
+    [[blocks.segments]]
+        style = 'plain'
+        type = 'text'
+        foreground = 'p:orange'
+
+    [[blocks.segments]]
+        style = 'plain'
+        type = 'git'
+        foreground = 'p:orange'
+
+    [[blocks.segments]]
+        style = 'plain'
+        type = 'text'
+        foreground = 'white'
+        template = '$ '
