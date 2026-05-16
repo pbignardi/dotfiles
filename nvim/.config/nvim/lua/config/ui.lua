@@ -207,6 +207,5 @@ end)
 
 -- set colorscheme
 MiniDeps.now(function()
-  require("onedark").setup { style = "darker" }
-  vim.cmd.colorscheme "onedark"
+  vim.cmd.colorscheme "hybrid"
 end)

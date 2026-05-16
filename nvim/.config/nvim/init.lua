@@ -38,7 +38,7 @@ MiniDeps.add { source = "neovim/nvim-lspconfig" }
 MiniDeps.add { source = "stevearc/conform.nvim" }
 MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
 
-MiniDeps.add { source = "navarasu/onedark.nvim" }
+MiniDeps.add { source = "TheNiteCoder/mountaineer.vim" }
 MiniDeps.add { source = "catppuccin/nvim", name = "catppuccin" }
 MiniDeps.add { source = "nvim-lualine/lualine.nvim" }
 
