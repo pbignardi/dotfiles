@@ -207,5 +207,5 @@ end)
 
 -- set colorscheme
 MiniDeps.now(function()
-  vim.cmd.colorscheme "hybrid"
+  vim.cmd.colorscheme "mayu"
 end)
