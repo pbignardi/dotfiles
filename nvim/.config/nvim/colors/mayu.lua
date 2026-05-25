@@ -454,13 +454,20 @@ hi(0, "lualine_x_diagnostics_warn_visual", { bg = "#000000", fg = "#f28f4b", noc
 hi(0, "markdownCode", { fg = "#dab37d" })
 hi(0, "qfError", { fg = "#c85c5a" })
 hi(0, "qfLineNr", { fg = "#f28f4b" })
+
 hi(0, "MiniFilesDirectory", { fg = "#808080", italic = true })
 hi(0, "MiniFilesTitleFocused", { fg = "#e6b450", bold = true })
+
+hi(0, "MiniStarterHeader", { fg = "#39bae6", bold = true })
+hi(0, "MiniStarterSection", { fg = "#d2a6ff", bold = true })
+hi(0, "MiniStarterItem", {fg = "#bfbdb6" })
+hi(0, "MiniStarterItemBullet", { fg = "#565b66" })
+hi(0, "MiniStarterItemPrefix", { fg = "#e6b450", bold = true })
 
 -- Terminal colors
 local g = vim.g
 
-g.terminal_color_0 = "#0b0e14"
+g.terminal_color_0 = "#0e0e0e"
 g.terminal_color_1 = "#f07178"
 g.terminal_color_2 = "#aad94c"
 g.terminal_color_3 = "#e6b450"

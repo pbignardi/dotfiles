@@ -15,21 +15,35 @@ MiniDeps.now(function()
   vim.g.no_plugin_maps = true
 end)
 
--- configure tree-sitter main plugin
-local ensure_installed = {
-  "cpp",
-  "c",
-  "python",
-  "lua",
-  "luadoc",
-  "bash",
-  "matlab",
-  "java",
-  "vimdoc",
-  "vim",
+local ignored_langs = {
+  "latex",
 }
 
-require("nvim-treesitter").install(ensure_installed)
+-- configure tree-sitter autoinstall parsers
+MiniDeps.now(function()
+  vim.api.nvim_create_autocmd("FileType", {
+    callback = function(ev)
+      local lang = vim.treesitter.language.get_lang(ev.match)
+      local is_ignored = vim.tbl_contains(ignored_langs, lang)
+      if is_ignored then
+        return
+      end
+
+      local available_langs = require("nvim-treesitter").get_available()
+      local is_available = vim.tbl_contains(available_langs, lang)
+
+      if is_available then
+        local installed_langs = require("nvim-treesitter").get_installed()
+        local installed = vim.tbl_contains(installed_langs, lang)
+        if not installed then
+          require("nvim-treesitter").install(lang):wait()
+        end
+        vim.treesitter.start()
+        require("nvim-treesitter").indentexpr()
+      end
+    end,
+  })
+end)
 
 -- define and configure textobjects
 local textobject_move = {

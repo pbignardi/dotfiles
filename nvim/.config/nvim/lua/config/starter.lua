@@ -26,9 +26,17 @@ local pick_dir = function(cwd)
 end
 
 local starter = require "mini.starter"
+local header = [[
+
+                o
+;-. ,-. ,-. . , . ;-.-.
+| | |-' | | |/  | | | |
+' ' `-' `-' '   ' ' ' '
+]]
+
 MiniDeps.now(function()
   starter.setup {
-    header = "",
+    header = header,
     footer = "",
     items = {
       starter.sections.sessions(),
