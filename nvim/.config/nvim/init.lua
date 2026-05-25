@@ -50,6 +50,7 @@ require "config.treesitter"
 
 -- non-vscode config
 if vim.g.vscode then
+  require "config.vscode"
   return
 end
 require "config.ui"
@@ -59,5 +60,4 @@ require "config.completions"
 require "config.formatters"
 require "config.starter"
 require "config.sessions"
-require "config.vscode"
 require "utils.exporter"
