@@ -7,7 +7,6 @@
 ## Core packages ##
 ###################
 packages=(
-    "fastfetch"
     "git"
     "stow"
     "jq"
@@ -76,12 +75,9 @@ isWsl && return
 ####################
 
 packages=(
-    "wezterm"
     "noto-fonts-emoji"
     "distrobox"
     "podman"
-    "zathura"
-    "zathura-pdf-poppler"
 )
 uninstalled=()
 
