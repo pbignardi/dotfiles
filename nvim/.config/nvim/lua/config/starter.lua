@@ -41,6 +41,7 @@ MiniDeps.now(function()
     items = {
       starter.sections.sessions(),
       { name = "Home", section = "Open directory", action = pick_dir(vim.fs.normalize "~") },
+      starter.sections.pick(),
       starter.sections.builtin_actions(),
     },
     content_hooks = {
