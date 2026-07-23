@@ -62,7 +62,7 @@ wezterm.on("window-config-reloaded", fontsize_setters.ref_dpi(17))
 -- font configuration
 config.adjust_window_size_when_changing_font_size = false
 config.font_size = 13
-config.font = wezterm.font("RobotoMono Nerd Font")
+config.font = wezterm.font("SauceCodePro NF")
 
 -- colorscheme configuration
 config.color_scheme = "nvim-generated-colorscheme"

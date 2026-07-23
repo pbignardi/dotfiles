@@ -51,7 +51,7 @@ fi
 source $HOME/.zsh_aliases
 
 # oh my posh enabling
-eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/oneminimal.toml)"
+eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/halfminimal.toml)"
 
 # source fzf theme
 source $HOME/.config/fzf/theme.conf

@@ -47,6 +47,7 @@ final_space = true
         template = " in "
         type = "text"
         style = "plain"
+        foreground = "p:gray"
 
     [[blocks.segments]]
         style = 'plain'
