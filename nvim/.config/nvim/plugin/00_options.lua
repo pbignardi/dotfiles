@@ -25,5 +25,5 @@ vim.o.winborder = "solid"
 vim.o.winblend = 0
 vim.o.completeopt = "menuone,noinsert"
 
--- gui options
-vim.o.guifont = "JetBrainsMono Nerd Font:h12"
+-- colorscheme
+vim.cmd.colorscheme = "miniautumn"

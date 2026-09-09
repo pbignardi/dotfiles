@@ -1,9 +1,25 @@
--- TREESITTER SETUP
+-- treesitter setup
 -- Configure treesitter, textobjects and context
 
-MiniDeps.now(require("nvim-treesitter").setup)
-MiniDeps.now(require("treesitter-context").setup)
-MiniDeps.now(function()
+-- setup treesitter update before plugin installation
+vim.api.nvim_create_autocmd("PackChanged", { callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if name == "nvim-treesitter" and kind == "update" then
+        if not ev.data.active then vim.cmd.packadd('nvim-treesitter') end
+        vim.cmd("TSUpdate")
+    end
+end})
+
+-- install treesitter and plugins
+vim.pack.add({
+    "https://github.com/nvim-treesitter/nvim-treesitter",
+    "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+    "https://github.com/nvim-treesitter/nvim-treesitter-context"
+})
+
+Config.now(require("nvim-treesitter").setup)
+Config.now(require("treesitter-context").setup)
+Config.now(function()
   require("nvim-treesitter-textobjects").setup {
     move = {
       set_jumps = true,
@@ -20,7 +36,7 @@ local ignored_langs = {
 }
 
 -- configure tree-sitter autoinstall parsers
-MiniDeps.now(function()
+Config.now(function()
   vim.api.nvim_create_autocmd("FileType", {
     callback = function(ev)
       local lang = vim.treesitter.language.get_lang(ev.match)
@@ -45,6 +61,7 @@ MiniDeps.now(function()
   })
 end)
 
+-- TODO: move into mappings.lua
 -- define and configure textobjects
 local textobject_move = {
   -- function
@@ -76,7 +93,7 @@ local textobject_select = {
   { lhs = "iar", method = "select_textobject", tag = "@assignment.rhs" },
 }
 
-MiniDeps.later(function()
+Config.later(function()
   -- set textobjects move keymaps
   local tsmove = require "nvim-treesitter-textobjects.move"
   for _, map in ipairs(textobject_move) do

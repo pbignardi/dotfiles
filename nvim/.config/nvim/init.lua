@@ -1,63 +1,31 @@
--- setup mini.deps
-local path_package = vim.fn.stdpath "data" .. "/site/"
-local mini_path = path_package .. "pack/deps/start/mini.nvim"
-if not vim.loop.fs_stat(mini_path) then
-  vim.cmd 'echo "Installing `mini.nvim`" | redraw'
-  local clone_cmd = {
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/nvim-mini/mini.nvim",
-    mini_path,
-  }
-  vim.fn.system(clone_cmd)
-  vim.cmd "packadd mini.nvim | helptags ALL"
-  vim.cmd 'echo "Installed `mini.nvim`" | redraw'
+-- use _G.config from minimax for persistent data across config scripts
+_G.Config = {}
+
+-- create custom config autogroup
+local gr = vim.api.nvim_create_augroup("custom-config", {})
+Config.new_autocmd = function(event, pattern, callback, desc)
+    local opts = { group = gr, pattern = pattern, callback = callback, desc = desc}
+    vim.api.nvim_create_autocmd(event, opts)
 end
 
--- enable mini.deps
-require("mini.deps").setup { path = { package = path_package } }
+-- install mini.nvim
+vim.pack.add({ "https://github.com/nvim-mini/mini.nvim" })
+
+-- configure now and later functions
+local misc = require("mini.misc")
+Config.now = function(f) misc.safely('now', f) end
+Config.later = function(f) misc.safely('later', f) end
+Config.now_if_args = vim.fn.argc(-1) > 0 and Config.now or Config.later
+Config.on_event = function(ev, f) misc.safely('event:' .. ev, f) end
+Config.on_filetype = function(ft, f) misc.safely('filetype:'.. ft, f) end
+
 
 -- install external plugins
-MiniDeps.add { source = "NeogitOrg/neogit", depends = { "nvim-lua/plenary.nvim" } }
-MiniDeps.add { source = "mfussenegger/nvim-dap" }
-MiniDeps.add { source = "nvim-java/nvim-java", depends = { "MunifTanjim/nui.nvim" } }
-MiniDeps.add {
-  source = "nvim-treesitter/nvim-treesitter",
-  hooks = {
-    post_checkout = function()
-      vim.cmd "TSUpdate"
-    end,
-  },
-}
-MiniDeps.add { source = "nvim-treesitter/nvim-treesitter-textobjects" }
-MiniDeps.add { source = "nvim-treesitter/nvim-treesitter-context" }
-MiniDeps.add { source = "mason-org/mason.nvim" }
-MiniDeps.add { source = "mason-org/mason-lspconfig.nvim" }
-MiniDeps.add { source = "neovim/nvim-lspconfig" }
-MiniDeps.add { source = "stevearc/conform.nvim" }
-MiniDeps.add { source = "Saghen/blink.cmp", checkout = "v1.9.1" }
+-- MiniDeps.add { source = "NeogitOrg/neogit", depends = { "nvim-lua/plenary.nvim" } }
+-- MiniDeps.add { source = "mfussenegger/nvim-dap" }
+-- MiniDeps.add { source = "nvim-java/nvim-java", depends = { "MunifTanjim/nui.nvim" } }
 
-MiniDeps.add { source = "TheNiteCoder/mountaineer.vim" }
-MiniDeps.add { source = "catppuccin/nvim", name = "catppuccin" }
-MiniDeps.add { source = "nvim-lualine/lualine.nvim" }
-
--- common config
-require "config.basics"
-require "config.mappings"
-require "config.options"
-require "config.treesitter"
-
--- non-vscode config
-if vim.g.vscode then
-  require "config.vscode"
-  return
-end
-require "config.ui"
-require "config.fuzzy"
-require "config.lspconfig"
-require "config.completions"
-require "config.formatters"
-require "config.starter"
-require "config.sessions"
-require "utils.exporter"
+-- MiniDeps.add { source = "neovim/nvim-lspconfig" }
+-- MiniDeps.add { source = "stevearc/conform.nvim" }
+--
+-- MiniDeps.add { source = "TheNiteCoder/mountaineer.vim" }

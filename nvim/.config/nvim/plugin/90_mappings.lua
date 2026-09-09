@@ -1,4 +1,7 @@
+-- Custom mappings
+
 local map = vim.keymap.set
+local now, later = Config.now, Config.later
 
 -- misc
 map("n", "<leader>so", ":source %<CR>", { desc = "source current file" })
@@ -11,3 +14,8 @@ map("n", "k", "v:count == 0? 'gk' : 'k'", { expr = true, silent = true })
 map("n", "<C-u>", "<C-u>zz", { desc = "half page up" })
 map("n", "<C-d>", "<C-d>zz", { desc = "half page down" })
 map("n", "<leader>x", ":bd<CR>", { desc = "close current buffer" })
+
+-- trailspace trim
+later(function()
+  vim.keymap.set("n", "<leader>ts", require("mini.trailspace").trim, { desc = "Trim trailing spaces" })
+end)
