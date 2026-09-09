@@ -41,7 +41,14 @@ Config.later(function()
 end)
 
 -- diff
-Config.later(require("mini.diff").setup)
+Config.later(function()
+  require("mini.diff").setup {
+    view = {
+      style = "sign",
+      signs = { add = "+", change = "~", delete = "-" },
+    },
+  }
+end)
 
 -- git
 Config.later(require("mini.git").setup)
@@ -61,28 +68,29 @@ end)
 local content_level = { INFO = "", ERROR = "󰅙", WARN = "", DEBUG = "" }
 
 Config.later(function()
-  require("mini.notify").setup {
+  local notify = require "mini.notify"
+  notify.setup {
     content = {
-        format = function(notif)
-            local icon = content_level[notif.level] or ""
-            local msg = notif.msg
-            return icon .. " " .. msg
-        end,
+      format = function(notif)
+        local icon = content_level[notif.level] or ""
+        local msg = notif.msg
+        return icon .. " " .. msg
+      end,
     },
     window = {
-        config = function()
-            return {
-                border = "none",
-                anchor = "SE",
-                col = vim.o.columns,
-                row = vim.o.lines - 2,
-                title = "",
-            }
-        end,
+      config = function()
+        return {
+          border = "none",
+          anchor = "SE",
+          col = vim.o.columns,
+          row = vim.o.lines - 2,
+          title = "",
+        }
+      end,
       max_width_share = 0.4,
     },
   }
-  vim.notify = MiniNotify.make_notify {
+  vim.notify = notify.make_notify {
     ERROR = { duration = 5000, hl_group = "DiagnosticError" },
     WARN = { duration = 5000, hl_group = "DiagnosticWarn" },
     INFO = { duration = 5000, hl_group = "DiagnosticInfo" },
@@ -94,54 +102,54 @@ end)
 
 -- key hinting
 Config.later(function()
-    local clue = require("mini.clue")
-    clue.setup {
-        window = {
-            config = { anchor = "NE", col = "auto", row = "auto" },
-        },
-        triggers = {
-            -- Leader triggers
-            { mode = { "n", "x" }, keys = "<Leader>" },
+  local clue = require "mini.clue"
+  clue.setup {
+    window = {
+      config = { anchor = "NE", col = "auto", row = "auto" },
+    },
+    triggers = {
+      -- Leader triggers
+      { mode = { "n", "x" }, keys = "<Leader>" },
 
-            -- `[` and `]` keys
-            { mode = "n", keys = "[" },
-            { mode = "n", keys = "]" },
+      -- `[` and `]` keys
+      { mode = "n", keys = "[" },
+      { mode = "n", keys = "]" },
 
-            -- `g` key
-            { mode = { "n", "x" }, keys = "g" },
+      -- `g` key
+      { mode = { "n", "x" }, keys = "g" },
 
-            -- Marks
-            { mode = { "n", "x" }, keys = "'" },
-            { mode = { "n", "x" }, keys = "`" },
+      -- Marks
+      { mode = { "n", "x" }, keys = "'" },
+      { mode = { "n", "x" }, keys = "`" },
 
-            -- Registers
-            { mode = { "n", "x" }, keys = '"' },
-            { mode = { "i", "c" }, keys = "<C-r>" },
+      -- Registers
+      { mode = { "n", "x" }, keys = '"' },
+      { mode = { "i", "c" }, keys = "<C-r>" },
 
-            -- Window commands
-            { mode = "n", keys = "<C-w>" },
+      -- Window commands
+      { mode = "n", keys = "<C-w>" },
 
-            -- `z` key
-            { mode = { "n", "x" }, keys = "z" },
-        },
+      -- `z` key
+      { mode = { "n", "x" }, keys = "z" },
+    },
 
-        clues = {
-            -- Enhance this by adding descriptions for <Leader> mapping groups
-            clue.gen_clues.square_brackets(),
-            clue.gen_clues.builtin_completion(),
-            clue.gen_clues.g(),
-            clue.gen_clues.marks(),
-            clue.gen_clues.registers(),
-            -- miniclue.gen_clues.windows(),
-            clue.gen_clues.z(),
-            { mode = "n", keys = "<leader>g", desc = "+lsp" },
-            { mode = "n", keys = "<leader>d", desc = "+diagnostic" },
-            { mode = "n", keys = "<leader>f", desc = "+fuzzyfind" },
-            { mode = "n", keys = "<leader>s", desc = "+sessions" },
-            { mode = "n", keys = "<leader>t", desc = "+trailspace" },
-            { mode = "n", keys = "<leader>q", desc = "+neogit" },
-        },
-    }
+    clues = {
+      -- Enhance this by adding descriptions for <Leader> mapping groups
+      clue.gen_clues.square_brackets(),
+      clue.gen_clues.builtin_completion(),
+      clue.gen_clues.g(),
+      clue.gen_clues.marks(),
+      clue.gen_clues.registers(),
+      -- miniclue.gen_clues.windows(),
+      clue.gen_clues.z(),
+      { mode = "n", keys = "<leader>g", desc = "+lsp" },
+      { mode = "n", keys = "<leader>d", desc = "+diagnostic" },
+      { mode = "n", keys = "<leader>f", desc = "+fuzzyfind" },
+      { mode = "n", keys = "<leader>s", desc = "+sessions" },
+      { mode = "n", keys = "<leader>t", desc = "+trailspace" },
+      { mode = "n", keys = "<leader>q", desc = "+neogit" },
+    },
+  }
 end)
 
 -- mini git after config

@@ -26,4 +26,4 @@ vim.o.winblend = 0
 vim.o.completeopt = "menuone,noinsert"
 
 -- colorscheme
-vim.cmd.colorscheme = "miniautumn"
+vim.cmd.colorscheme "miniautumn"
