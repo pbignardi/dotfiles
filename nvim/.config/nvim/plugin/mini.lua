@@ -33,6 +33,9 @@ Config.now(require("mini.files").setup)
 -- statusline
 Config.now(require("mini.statusline").setup)
 
+-- bufremove
+Config.now(require("mini.bufremove").setup)
+
 -- tabline
 Config.later(function()
   require("mini.tabline").setup {
