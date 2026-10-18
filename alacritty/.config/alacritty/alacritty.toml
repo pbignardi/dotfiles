@@ -1,6 +1,6 @@
 [general]
 import = [
-    "./nvim-generated-colorscheme.toml"
+    "./themes/mayu-lc.toml"
 ]
 live_config_reload = true
 
@@ -11,9 +11,10 @@ dimensions.lines = 30
 option_as_alt = "Both"
 
 [font]
-normal.family = "IoskeleyMonoNL Nerd Font"
+normal.family = "UbuntuMono Nerd Font"
 normal.style = "Regular"
-size = 13
+size = 16
+offset = { x = 0, y = 2 }
 
 [cursor]
 style.shape="Block"

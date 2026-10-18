@@ -1,0 +1,28 @@
+# Colors (Ayu Dark)
+
+# Default colors
+[colors.primary]
+background = '#161616'
+foreground = '#C6C6C6'
+
+# Normal colors
+[colors.normal]
+black   = '#0E0E0E'
+red     = '#f59f92'
+green   = '#dbd082'
+yellow  = '#eabb97'
+blue    = '#bcc0f9'
+magenta = '#b77b8f'
+cyan    = '#77c1c5'
+white   = '#e8e8e8'
+
+# Bright colors
+[colors.bright]
+black   = '#717171'
+red     = '#f59f92'
+green   = '#dbd082'
+yellow  = '#eabb97'
+blue    = '#bcc0f9'
+magenta = '#b77b8f'
+cyan    = '#77c1c5'
+white   = '#e8e8e8'
