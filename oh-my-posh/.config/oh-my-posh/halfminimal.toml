@@ -2,16 +2,9 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
 version = 3
 final_space = true
 
-[palette]
-    gray = "#666666"
-    lime = "#87FF00"
-    purple = "#7E46B6"
-    lightblue = "#5FD7FF"
-    orange = "#D75F00"
-
 [transient_prompt]
     template = '<b>$</> '
-    foreground = "p:gray"
+    foreground = "darkGray"
     background = "transparent"
 
 [upgrade]
@@ -38,7 +31,7 @@ final_space = true
 
     [[blocks.segments]]
         template = '{{ .UserName }}'
-        foreground = 'p:purple'
+        foreground = 'magenta'
         background = 'transparent'
         type = 'session'
         style = 'plain'
@@ -47,12 +40,12 @@ final_space = true
         template = " in "
         type = "text"
         style = "plain"
-        foreground = "p:gray"
+        foreground = "darkGray"
 
     [[blocks.segments]]
         style = 'plain'
         type = 'path'
-        foreground = 'p:lime'
+        foreground = 'blue'
         template = "{{.Path}}"
 
         [blocks.segments.properties]
@@ -61,12 +54,12 @@ final_space = true
     [[blocks.segments]]
         style = 'plain'
         type = 'text'
-        foreground = 'p:orange'
+        foreground = 'lightRed'
 
     [[blocks.segments]]
         style = 'plain'
         type = 'git'
-        foreground = 'p:orange'
+        foreground = 'lightRed'
 
     [[blocks.segments]]
         style = 'plain'
