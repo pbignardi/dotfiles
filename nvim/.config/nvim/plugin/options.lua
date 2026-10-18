@@ -24,6 +24,3 @@ vim.o.sidescrolloff = 20
 vim.o.winborder = "rounded"
 vim.o.winblend = 0
 vim.o.completeopt = "menuone,noinsert"
-
--- colorscheme
-vim.cmd.colorscheme "miniautumn"

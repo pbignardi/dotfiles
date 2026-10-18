@@ -7,4 +7,4 @@ vim.pack.add {
 }
 
 -- set colorscheme
-vim.cmd.colorscheme "miniwinter"
+vim.cmd.colorscheme "mayu_lc"
