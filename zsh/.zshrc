@@ -64,9 +64,6 @@ eval "$(fzf --zsh)"
 # setup zoxide
 eval "$(zoxide init zsh)"
 
-# source colors
-source $HOME/.zsh_colors
-
 # setup xum sessionizer
 # eval "$(xum zsh)"
 bindkey -s "^b" "xum create^M"
