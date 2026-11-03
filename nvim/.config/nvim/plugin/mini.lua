@@ -24,6 +24,10 @@ Config.later(require("mini.trailspace").setup)
 -- mini.git
 Config.now(require("mini.git").setup)
 
+if vim.g.vscode then
+  return
+end
+
 -- mini.extra
 Config.later(require("mini.extra").setup)
 
@@ -32,6 +36,17 @@ Config.now(require("mini.files").setup)
 
 -- statusline
 Config.now(require("mini.statusline").setup)
+
+-- statusline
+Config.now(function()
+  local statuscolumn = require "mini.statuscolumn"
+  statuscolumn.setup {
+    content = statuscolumn.gen_content.main {
+      -- { pos = "cursor", sep = "▍" },
+      { format = "lf=s", sep = "▍" },
+    },
+  }
+end)
 
 -- bufremove
 Config.now(require("mini.bufremove").setup)
@@ -68,9 +83,6 @@ Config.later(function()
     },
   }
 end)
-
--- git
-Config.later(require("mini.git").setup)
 
 -- indentscope
 Config.now(function()
@@ -171,30 +183,7 @@ Config.later(function()
   }
 end)
 
--- mini git after config
-
-local git_log_cmd = [[Git log --pretty=format:\%h\ \%as\ │\ \%s --topo-order]]
-local git_keymaps = {
-  { "n", "gl", "<Cmd>" .. git_log_cmd .. "<CR>", "Log" },
-  { "n", "go", "<Cmd>lua MiniDiff.toggle_overlay()<CR>", "Toggle overlay" },
-  { "x", "gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at selection" },
-}
-local minigit_after = function()
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "MiniGitUpdated",
-    callback = function(data)
-      local summary = vim.b[data.buf].minigit_summary
-      vim.b[data.buf].minigit_summary_string = summary.head_name or ""
-    end,
-  })
-
-  for _, kmap in ipairs(git_keymaps) do
-    vim.keymap.set(kmap[1], kmap[2], kmap[3], { desc = kmap[4] })
-  end
-end
-
 -- mini files after config
-
 Config.later(function()
   local toggleFiles = function()
     return not MiniFiles.close() and MiniFiles.open()

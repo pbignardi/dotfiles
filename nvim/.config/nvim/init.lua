@@ -26,8 +26,3 @@ end
 Config.on_filetype = function(ft, f)
   misc.safely("filetype:" .. ft, f)
 end
-
--- install external plugins
--- MiniDeps.add { source = "NeogitOrg/neogit", depends = { "nvim-lua/plenary.nvim" } }
--- MiniDeps.add { source = "mfussenegger/nvim-dap" }
--- MiniDeps.add { source = "nvim-java/nvim-java", depends = { "MunifTanjim/nui.nvim" } }

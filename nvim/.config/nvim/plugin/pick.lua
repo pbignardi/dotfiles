@@ -1,5 +1,9 @@
 -- mini.pick configuartion
 
+if vim.g.vscode then
+  return
+end
+
 Config.now(function()
   require("mini.pick").setup {
     mappings = {

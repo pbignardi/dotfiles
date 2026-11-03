@@ -27,6 +27,13 @@ map_now("n", "<leader>x", ":bd<CR>", { desc = "close current buffer" })
 -- trailspace trim
 map_later("n", "<leader>ts", require("mini.trailspace").trim, { desc = "Trim trailing spaces" })
 
+-- buffers
+map_now("n", "<leader>x", ":bd", { desc = "wipeout buffer" })
+
+if vim.g.vscode then
+  return
+end
+
 -- fuzzy finder
 map_now("n", "<leader>p", ":Pick git_files<CR>", { desc = "project files" })
 map_now("n", "<leader>/", ":Pick open_buffers<CR>", { desc = "open buffers" })
@@ -46,6 +53,3 @@ map_later("n", "<leader>gy", ":Pick lsp scope='type_definition'<CR>", { desc = "
 map_later("n", "<leader>gD", ":Pick lsp scope='declaration'<CR>", { desc = "goto declaration" })
 map_later("n", "<leader>gs", ":Pick lsp scope='document_symbol'<CR>", { desc = "document symbols" })
 map_later("n", "<leader>gS", ":Pick lsp scope='workspace_symbol_live'<CR>", { desc = "workspace symbols" })
-
--- buffers
-map_now("n", "<leader>x", ":bd", { desc = "wipeout buffer" })

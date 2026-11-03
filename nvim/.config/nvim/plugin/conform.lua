@@ -1,7 +1,11 @@
 -- conform.nvim formatter interface
 
+if vim.g.vscode then
+  return
+end
+
 -- install conform.nvim
-vim.pack.add({"https://github.com/stevearc/conform.nvim"})
+vim.pack.add { "https://github.com/stevearc/conform.nvim" }
 
 -- setup conform
 Config.later(function()

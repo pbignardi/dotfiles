@@ -1,4 +1,8 @@
 -- mini files configuration
+if vim.g.vscode then
+  return
+end
+
 Config.later(function()
   local toggleFiles = function()
     return not MiniFiles.close() and MiniFiles.open()
