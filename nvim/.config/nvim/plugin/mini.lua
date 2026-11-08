@@ -168,17 +168,16 @@ Config.later(function()
       -- Enhance this by adding descriptions for <Leader> mapping groups
       clue.gen_clues.square_brackets(),
       clue.gen_clues.builtin_completion(),
-      clue.gen_clues.g(),
+      -- clue.gen_clues.g(),
       clue.gen_clues.marks(),
       clue.gen_clues.registers(),
-      -- miniclue.gen_clues.windows(),
       clue.gen_clues.z(),
       { mode = "n", keys = "<leader>g", desc = "+lsp" },
+      { mode = "n", keys = "<leader>gp", desc = "+pick" },
       { mode = "n", keys = "<leader>d", desc = "+diagnostic" },
       { mode = "n", keys = "<leader>f", desc = "+fuzzyfind" },
       { mode = "n", keys = "<leader>s", desc = "+sessions" },
       { mode = "n", keys = "<leader>t", desc = "+trailspace" },
-      { mode = "n", keys = "<leader>q", desc = "+neogit" },
     },
   }
 end)

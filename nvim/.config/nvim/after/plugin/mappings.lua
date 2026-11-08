@@ -15,7 +15,6 @@ end
 -- misc
 map_later("n", "<leader>so", ":source %<CR>", { desc = "source current file" })
 map_later("v", "<leader>xr", ":lua<CR>", { desc = "run current Lua selection" })
-map_now("n", "<C-s>", "<cmd>w<CR>", { desc = "save file" })
 
 -- buffer
 map_now("n", "j", "v:count == 0? 'gj' : 'j'", { expr = true, silent = true })
@@ -46,10 +45,14 @@ map_later("n", "<leader>df", ":Pick file_diagnostic<CR>", { desc = "diagnostics"
 map_later("n", "<leader>dw", ":Pick diagnostic<CR>", { desc = "diagnostics (workspace)" })
 
 -- lsp keybinds
-map_later("n", "<leader>gd", ":Pick lsp scope='definition'<CR>", { desc = "goto definition" })
-map_later("n", "<leader>gr", ":Pick lsp scope='references'<CR>", { desc = "references" })
-map_later("n", "<leader>gI", ":Pick lsp scope='implementation'<CR>", { desc = "goto implementation" })
-map_later("n", "<leader>gy", ":Pick lsp scope='type_definition'<CR>", { desc = "goto type definition" })
-map_later("n", "<leader>gD", ":Pick lsp scope='declaration'<CR>", { desc = "goto declaration" })
-map_later("n", "<leader>gs", ":Pick lsp scope='document_symbol'<CR>", { desc = "document symbols" })
+map_later("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "signature help" })
+map_later("n", "<leader>gd", vim.lsp.buf.definition, { desc = "goto definition" })
+map_later("n", "<leader>gr", vim.lsp.buf.rename, { desc = "rename" })
+map_later("n", "<leader>ga", vim.lsp.buf.code_action, { desc = "code action" })
+map_later("n", "<leader>gR", ":Pick lsp scope='references'<CR>", { desc = "references" })
+map_later("n", "<leader>gi", ":Pick lsp scope='implementation'<CR>", { desc = "goto implementation" })
+map_later("n", "<leader>gt", ":Pick lsp scope='type_definition'<CR>", { desc = "goto type definition" })
+map_later("n", "<leader>gO", ":Pick lsp scope='document_symbol'<CR>", { desc = "document symbols" })
 map_later("n", "<leader>gS", ":Pick lsp scope='workspace_symbol_live'<CR>", { desc = "workspace symbols" })
+map_later("n", "<leader>gpd", ":Pick lsp scope='definition'<CR>", { desc = "pick definition" })
+map_later("n", "<leader>gpD", ":Pick lsp scope='declaration'<CR>", { desc = "pick declaration" })
