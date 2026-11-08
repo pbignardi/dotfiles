@@ -11,17 +11,8 @@ Config.now(function()
       caret_right = "<M-f>",
     },
     window = {
-      config = function()
-        local width = math.floor(0.8 * vim.o.columns)
-        local height = math.floor(0.5 * vim.o.lines)
-        return {
-          anchor = "NW",
-          height = height,
-          width = width,
-          row = math.floor(0.5 * (vim.o.lines - height)),
-          col = math.floor(0.5 * (vim.o.columns - width)),
-        }
-      end,
+      -- picker + always-visible preview (see lua/pick_preview.lua)
+      config = require("pick_preview").win_config,
     },
   }
 end)
